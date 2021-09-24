@@ -1,0 +1,25 @@
+﻿@model DynamicPageDetailModel
+@using Lipar.Core.ReadingTime
+
+@{
+    Html.AddMetaDescription(Model.MetaKeywords);
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("Homepage")">@T("Web.Breadcrumb.Home")</a></li>
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("DynamicPageDetail" , new { EntityName = "page" , SeName = CalculateWordsCount.CleanSeoUrl(Model.DynamicPageName)})">@Model.DynamicPageName</a></li>
+        <li class="breadcrumb-item active">@Model.Title</li>
+    </ol>
+</nav>
+
+<article class="card">
+    <div class="card-header">
+        <span>@Model.Title</span>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-light text-justify" role="alert">
+            <hr />
+            <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
+        </div>
+    </div>
+</article>

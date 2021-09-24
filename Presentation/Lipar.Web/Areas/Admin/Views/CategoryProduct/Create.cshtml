@@ -1,0 +1,29 @@
+﻿@model Lipar.Web.Areas.Admin.Models.Application.CategoryModel
+@{
+    Html.SetActiveMenuItemSystemName("Category Product List");
+    ViewBag.PageTitle = T("Admin.CategoryProduct.Add.Card.Title").Text;
+}
+
+<form asp-action="Create" asp-controller="CategoryProduct" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.CategoryProduct.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Add")
+                </button>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+</form>

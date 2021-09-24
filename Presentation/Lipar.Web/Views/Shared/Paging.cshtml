@@ -1,0 +1,63 @@
+﻿@model Lipar.Web.Framework.Models.PagingInfo
+@using Lipar.Web.Framework.Models
+
+@functions{
+    string AnchorInnerHtml(int i, PagingInfo pagingInfo)
+    {
+        var anchorInnerHtml = "";
+
+        if (pagingInfo.TotalPages <= 10)
+            anchorInnerHtml = i.ToString();
+        else
+        {
+            if (pagingInfo.CurrentPage <= 5)
+            {
+                if ((i <= 8) || (i == pagingInfo.TotalPages))
+                    anchorInnerHtml = i.ToString();
+                else if (i == pagingInfo.TotalPages - 1)
+                    anchorInnerHtml = "..";
+            }
+
+
+        }
+
+        return anchorInnerHtml;
+    }
+}
+
+@{
+    var anchorInnerHtml = "";
+
+    for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        anchorInnerHtml = AnchorInnerHtml(i, Model);
+        var href = "";
+        var className = "";
+
+        if (anchorInnerHtml == "..")
+            href = "#";
+        else
+            href = Url.RouteUrl(Model.Route, new { page = i });
+
+        if (i == Model.CurrentPage)
+            className = "active";
+
+        if (string.IsNullOrEmpty(className))
+        {
+            <li>
+                <a href="@href">
+                    @AnchorInnerHtml(i, Model)
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="@className">
+                <a href="@href">
+                    @AnchorInnerHtml(i, Model)
+                </a>
+            </li>
+        }
+    }
+
+}

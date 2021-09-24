@@ -1,0 +1,110 @@
+﻿@model PositionSearchModel
+@using Lipar.Entities
+@{
+    Html.SetActiveMenuItemSystemName("Position List");
+    ViewBag.PageTitle = T("Admin.Position.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="Position" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#position-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="position-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="FirstName" class="control-label">@T("Admin.User.Field.FirstName")</label>
+                    <input type="text" class="form-control" asp-for="FirstName">
+                </div>
+
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="LastName" class="control-label">@T("Admin.User.Field.LastName")</label>
+                    <input type="text" class="form-control" asp-for="LastName">
+                </div>
+
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="NationalCode" class="control-label">@T("Admin.User.Field.NationalCode")</label>
+                    <input type="text" class="form-control" asp-for="NationalCode">
+                </div>
+
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="DepartmentId" class="control-label">@T("Admin.Position.Field.Department")</label>
+                    <lipar-select asp-for="DepartmentId" asp-items="Model.AvailableDepartments" />
+                </div>
+
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="EnabledTypeId" class="control-label">@T("Admin.Position.Field.EnableType")</label>
+                    <lipar-select asp-for="EnabledTypeId" asp-items="Model.AvailableEnabledType" />
+                </div>
+            </div>
+
+            <div class="btn-group-justified float-right">
+                <button id="search-position-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.Position.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "position-grid",
+                    SearchButtonId = "search-position-list",
+                    UrlRead = new DataUrl("List", "Position", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                            {
+                        new FilterParameter(nameof(PositionSearchModel.FirstName)),
+                        new FilterParameter(nameof(PositionSearchModel.LastName)),
+                        new FilterParameter(nameof(PositionSearchModel.NationalCode)),
+                        new FilterParameter(nameof(PositionSearchModel.DepartmentId)),
+                        new FilterParameter(nameof(PositionSearchModel.EnabledTypeId)),
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.FirstName))
+                {
+                    Title = T("Admin.User.Field.FirstName").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.LastName))
+                {
+                    Title = T("Admin.User.Field.LastName").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.NationalCode))
+                {
+                    Title = T("Admin.User.Field.NationalCode").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.Email))
+                {
+                    Title = T("Admin.User.Field.Email").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.PositionTypeTitle))
+                {
+                    Title = T("Admin.Position.Field.PositionType").Text,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(PositionModel.Id))
+                {
+                    Title = "",
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

@@ -1,0 +1,18 @@
+﻿@model RoleModel
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>@T("Admin.RolePrmission.List.Title").Text</th>
+        </tr>
+    </thead>
+    @foreach (var command in Model.AvailableCommands)
+    {
+        var allowed = Model.AvailableRolePermission.ToList().Any(rp => rp.CommandId == command.Id);
+        <tr>
+            <th>
+                <input name="allowed_@command.Id" value="@command.SystemName" type="checkbox" @(allowed ? "checked = checked" : null) />
+                @command.Name
+            </th>
+        </tr>
+    }
+</table>

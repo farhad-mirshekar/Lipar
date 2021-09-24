@@ -1,0 +1,118 @@
+﻿@model Lipar.Web.Areas.Admin.Models.Application.ProductModel
+
+<div class="form-group">
+    <label asp-for="Name">@T("Admin.Product.Field.Name")</label>
+    <input type="text" class="form-control" asp-for="Name">
+</div>
+<div class="form-group">
+    <label asp-for="CategoryId">@T("Admin.Product.Field.Category")</label>
+    <lipar-select asp-for="CategoryId" asp-items="@Model.AvailableCategories" asp-required="true" />
+</div>
+<div class="form-group">
+    <label asp-for="ShortDescription">@T("Admin.Product.Field.ShortDescription")</label>
+    <lipar-froala-editor asp-for="ShortDescription" />
+</div>
+<div class="form-group">
+    <label asp-for="FullDescription">@T("Admin.Product.Field.FullDescription")</label>
+    <lipar-froala-editor asp-for="FullDescription" />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9 form-group">
+            <label asp-for="ShowOnHomePage">@T("Admin.Product.Field.ShowOnHomePage")</label>
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" asp-for="ShowOnHomePage" />
+        </div>
+        <div class="col-md-9 form-group">
+            <label asp-for="AllowCustomerReviews">@T("Admin.Product.Field.AllowCustomerReviews")</label>
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" asp-for="AllowCustomerReviews" />
+        </div>
+        <div class="col-md-9 form-group">
+            <label asp-for="CallForPrice">@T("Admin.Product.Field.CallForPrice")</label>
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" asp-for="CallForPrice" />
+        </div>
+        <div class="col-md-9 form-group">
+            <label asp-for="SpecialOffer">@T("Admin.Product.Field.SpecialOffer")</label>
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" asp-for="SpecialOffer" />
+        </div>
+        <div class="col-md-9 form-group">
+            <label asp-for="Published">@T("Admin.Product.Field.Published")</label>
+        </div>
+        <div class="col-md-2">
+            <input type="checkbox" asp-for="Published" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 form-group">
+            <label asp-for="Weight">@T("Admin.Product.Field.Weight")</label>
+            <input type="number" class="form-control" asp-for="Weight">
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Width">@T("Admin.Product.Field.Width")</label>
+            <input type="number" class="form-control" asp-for="Width">
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Length">@T("Admin.Product.Field.Length")</label>
+            <input type="number" class="form-control" asp-for="Length">
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Height">@T("Admin.Product.Field.Height")</label>
+            <input type="number" class="form-control" asp-for="Height">
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="StockQuantity">@T("Admin.Product.Field.StockQuantity")</label>
+            <input type="number" class="form-control" asp-for="StockQuantity">
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="Price">@T("Admin.Product.Field.Price")</label>
+            <input type="number" class="form-control" asp-for="Price">
+            <span asp-validation-for="Price"></span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <label asp-for="DeliveryDateId">@T("Admin.Product.Field.DeliveryDate")</label>
+            <lipar-select asp-for="DeliveryDateId" asp-items="@Model.AvailableDeliveryDate" />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="ShippingCostId">@T("Admin.Product.Field.ShippingCost")</label>
+            <lipar-select asp-for="ShippingCostId" asp-items="@Model.AvailableShippingCost" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label asp-for="DiscountTypeId">@T("Admin.Product.Field.DiscountType")</label>
+            <lipar-select asp-for="DiscountTypeId" asp-items="@Model.AvailableDiscountType" />
+        </div>
+        <div class="col-md-6" hidden>
+            <label asp-for="Discount">@T("Admin.Product.Field.Discount")</label>
+            <input type="number" class="form-control" asp-for="Discount">
+            <span asp-validation-for="Discount"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#DiscountTypeId').change(function (e) {
+        var $this = $(this);
+        if ($this.val() != null && $this.val() != "") {
+            $('#Discount').closest('div').removeAttr('hidden');
+        } else {
+            $('#Discount').closest('div').prop('hidden', true);
+            $('#Discount').val(null);
+        }
+    })
+</script>

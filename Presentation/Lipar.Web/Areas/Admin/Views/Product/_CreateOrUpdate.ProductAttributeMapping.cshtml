@@ -1,0 +1,16 @@
+﻿@model ProductAttributeMappingModel
+
+<input asp-for="Id" type="hidden" />
+<input asp-for="ProductId" type="hidden" />
+
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">@T("Admin.ProductAttributeMapping.Tab.Mapping")</span>
+    </div>
+    <div class="card-body">
+        @await Html.PartialAsync("_CreateOrUpdate.ProductAttributeMapping.Info", Model)
+    </div>
+</section>
+
+@await Html.PartialAsync("_CreateOrUpdate.ProductAttributeMapping.Values", Model)
+

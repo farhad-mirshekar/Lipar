@@ -1,0 +1,27 @@
+﻿@model FaqModel
+
+<form asp-action="FaqEdit" asp-controller="FaqGroup" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="pull-right">
+                <span class="card-title">@T("Admin.Faq.Edit.Card.Title")</span>
+            </div>
+
+            <div class="pull-left">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <a asp-action="Edit" asp-route-Id="@Model.FaqGroupId" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.Faq.Info", Model)
+        </div>
+    </section>
+</form>
+
+

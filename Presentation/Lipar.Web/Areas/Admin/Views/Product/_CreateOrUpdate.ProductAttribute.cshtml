@@ -1,0 +1,35 @@
+﻿@model ProductModel
+
+<div class="card">
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "product-attribute-mapping-grid",
+                UrlRead = new DataUrl("ProductAttributeMappingList", "Product", new RouteValueDictionary { [nameof(Model.ProductAttributeMappingSearchModel.ProductId)] = Model.ProductAttributeMappingSearchModel.ProductId }),
+                Length = Model.ProductAttributeMappingSearchModel.PageSize,
+                LengthMenu = Model.ProductAttributeMappingSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.TextPrompt))
+            {
+                Title = T("Admin.ProductAttributeMapping.Field.TextPrompt").Text,
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.IsRequired))
+            {
+                Title = T("Admin.ProductAttributeMapping.Field.IsRequired").Text,
+                Render = new RenderBoolean(),
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonEdit(new DataUrl("~/Admin/Product/ProductAttributeMappingEdit/"))
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+</div>

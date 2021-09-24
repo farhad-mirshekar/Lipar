@@ -1,0 +1,88 @@
+﻿@model CommandSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Command List");
+    ViewBag.PageTitle = T("Admin.Command.List.Title").Text;
+}
+
+<form asp-controller="Command" asp-action="List" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#command-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="command-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="Name">@T("Admin.Command.Field.Name")</label>
+                    <input asp-for="Name" maxlength="70" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button id="search-command-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.Command.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "command-grid",
+                    SearchButtonId = "search-command-list",
+                    UrlRead = new DataUrl("List", "Command", null),
+                    UrlDelete = new DataUrl("Delete", "Command", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                                                        {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.Name))
+                {
+                    Title = T("Admin.Command.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.TitleCrumb))
+                {
+                    Title = T("Admin.Command.Field.TitleCrumb").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.Id))
+                {
+                    Title = "",
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.Id))
+                {
+                    Title = "",
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.Name)').val('');
+            $('#search-command-list').click();
+        });
+    })
+</script>

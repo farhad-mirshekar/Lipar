@@ -1,0 +1,42 @@
+﻿@model ProductQuestionModel
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">@T("Admin.ProductAnswers.List")</span>
+    </div>
+    <div class="card-body">
+        @{ 
+            var gridModel = new DataTablesModel
+            {
+                Name = "product-answers-grid",
+                RefreshButton=true,
+                Length = Model.ProductAnswersSearchModel.Length,
+                LengthMenu = Model.ProductAnswersSearchModel.AvailablePageSizes,
+                UrlRead = new DataUrl("ProductAnswersList", "Product", new RouteValueDictionary { [nameof(Model.ProductAnswersSearchModel.ProductQuestionId)] = Model.Id })
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAnswersModel.AnswerText))
+            {
+                Title = T("Admin.ProductAnswers.Field.AnswerText").Text
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAnswersModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "10",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonEdit(new DataUrl("~/Admin/Product/ProductAnswersEdit"))
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.Id))
+            {
+                Title = T("Admin.Common.Delete").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+            });
+
+            @await Html.PartialAsync("Table",gridModel)
+        }
+    </div>
+</div>

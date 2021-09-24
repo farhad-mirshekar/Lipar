@@ -1,0 +1,84 @@
+﻿@model ProductListModel
+@using Lipar.Entities.Domain.Application.Enums;
+@using Lipar.Core.ReadingTime;
+
+<section class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">@T("")</span>
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    @foreach (var item in Model.AvailableProducts)
+                    {
+                        decimal? temp1 = 0;
+                        decimal? temp2 = 0;
+                        var imgUrl = $"images/site/product-empty.png";
+                        var mediaModel = item.Pictures.AvailableMedia.OrderBy(pic => pic.Priority).FirstOrDefault();
+                        if (mediaModel != null)
+                        {
+                            imgUrl = $"images/uploaded/{mediaModel.MediaId}-{mediaModel.Name}{mediaModel.MimeType}";
+                        }
+                        <div class="col-lg-4 col-md-6 col-sm-6 d-flex align-items-stretch">
+                            <div class="card">
+                                <div class="img-box-product">
+                                    <img src="@imgUrl" alt="@(mediaModel != null ? mediaModel.AltAttribute : "product-empty")" class="card-img-top img-rounded" />
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@(item.Name.Length > 20 ? item.Name.Substring(0, 19) + " ...." : item.Name)</h5>
+                                    <div class="d-block">
+                                        @if (item.CallForPrice)
+                                        {
+                                            <label class="text-danger control-label mt-2 text-center">جهت اطلاع از آخرین قیمت، تماس حاصل فرمایید</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="control-label">
+                                                قیمت اصلی : @string.Format("{0:C0} تومان", item.Price).Replace("$", "")
+                                            </label>
+
+                                            if (item.DiscountTypeId.HasValue && item.DiscountTypeId.Value != 0)
+                                            {
+                                                if (item.DiscountTypeId == (int)DiscountTypeEnum.Amount)
+                                                {
+                                                    temp1 = item.Discount;
+                                                    <label class="control-label text-info">
+                                                        تخفیف محصول : @string.Format("{0:C0} تومان", item.Discount).Replace("$", "")
+                                                    </label>
+                                                }
+                                                else if (item.DiscountTypeId == (int)DiscountTypeEnum.Percentage)
+                                                {
+                                                    temp1 = (item.Price * item.Discount) / 100;
+                                                    <label class="control-label text-info">
+                                                        تخفیف محصول : @string.Format("{0:C0} درصد", item.Discount).Replace("$", "")
+                                                    </label>
+                                                }
+                                            }
+                                            if (item.DiscountTypeId == null)
+                                            {
+                                                var priceNew = item.Price - (temp1 + temp2);
+                                                <label class="control-label text-success">
+                                                    قیمت نهایی : @string.Format("{0:C0} تومان", priceNew).Replace("$", "")
+                                                </label>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group-justified" style="float:left">
+                                        <a href="@Url.RouteUrl("ProductDetail",new { EntityName = "Product" , SeName = CalculateWordsCount.CleanSeoUrl(item.Name)})" class="btn btn-outline-primary">مشاهده</a>
+                                        <button type="button" class="btn btn-outline-info" onclick="product.addProductToCompareList('@Url.RouteUrl("AddProductToCompare", new { ProductId = item.Id })');return false;" value="افزودن به لیست مقایسه" title="مقایسه">
+                                            <i class="fa fa-crop"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

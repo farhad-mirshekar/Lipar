@@ -1,0 +1,79 @@
+﻿@model GallerySearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Gallery List");
+    ViewBag.PageTitle = T("Admin.Gallery.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="Gallery" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#gallery-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="gallery-list-search">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>@T("Admin.Gallery.Field.Name")</label>
+                    <input asp-for="Name" maxlength="70" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button id="search-gallery-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">
+                @T("Admin.Gallery.List.Title")
+            </span>
+        </div>
+
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "gallery-grid",
+                    SearchButtonId = "search-gallery-list",
+                    UrlRead = new DataUrl("List", "Gallery", null),
+                    UrlDelete = new DataUrl("Delete", "Gallery", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                            {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryModel.Name))
+                {
+                    Title = T("Admin.Gallery.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryModel.Id))
+                {
+                    Title = "",
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.Name)').val('');
+            $('#search-gallery-list').click();
+        });
+    })
+</script>

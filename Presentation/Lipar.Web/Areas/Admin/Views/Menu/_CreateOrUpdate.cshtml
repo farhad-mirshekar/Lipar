@@ -1,0 +1,28 @@
+﻿@model MenuModel
+
+<input asp-for="Id" type="hidden" />
+
+<nav>
+    <div class="nav nav-tabs" id="menu-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-menu-info-tab" data-toggle="tab" href="#nav-menu-info" role="tab" aria-controls="nav-menu-info" aria-selected="true">@T("Admin.Menu.Tab.Info").Text</a>
+        @if (Model.Id != 0)
+        {
+            <a class="nav-item nav-link" id="nav-menu-item-tab" data-toggle="tab" href="#nav-menu-item" role="tab" aria-controls="nav-menu-item" aria-selected="false">@T("Admin.MenuItem.Tab").Text</a>
+        }
+    </div>
+</nav>
+<div class="tab-content" id="menu-tabContent">
+    <div class="tab-pane fade show active" id="nav-menu-info" role="tabpanel" aria-labelledby="nav-menu-info-tab">
+        @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
+    </div>
+    @if (Model.Id != 0)
+    {
+        <div class="tab-pane fade" id="nav-menu-item" role="tabpanel" aria-labelledby="nav-menu-item-tab">
+            @await Html.PartialAsync("_CreateOrUpdate.MenuItem", Model)
+        </div>
+    }
+</div>
+
+
+
+

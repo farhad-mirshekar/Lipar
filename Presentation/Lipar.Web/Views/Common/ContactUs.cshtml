@@ -1,0 +1,54 @@
+﻿@model ContactUsModel
+
+@if (Model.State)
+{
+    <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <text>
+            @Model.Result
+        </text>
+    </div>
+}
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">@T("Web.ContactUs.Page.Title")</span>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-route="ContactUs">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName">@T("Web.ContactUs.Field.FirstName")</label>
+                    <input type="text" class="form-control" asp-for="FirstName" />
+                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName">@T("Web.ContactUs.Field.LastName")</label>
+                    <input type="text" class="form-control" asp-for="LastName" />
+                    <span class="text-danger" asp-validation-for="LastName"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Phone">@T("Web.ContactUs.Field.Phone")</label>
+                    <input type="tel" class="form-control" asp-for="Phone" />
+                    <span class="text-danger" asp-validation-for="Phone"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Email">@T("Web.ContactUs.Field.Email")</label>
+                    <input type="email" class="form-control" asp-for="Email" />
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="ContactUsTypeId">@T("Web.ContactUs.Field.ContactUsType")</label>
+                    <lipar-select asp-for="ContactUsTypeId" asp-items="@Model.AvailableContactUsType" />
+                </div>
+                <div class="form-group col-md-12">
+                    <label asp-for="Body">@T("Web.ContactUs.Field.Body")</label>
+                    <textarea class="form-control" asp-for="Body" rows="4" cols="4"></textarea>
+                    <span class="text-danger" asp-validation-for="Body"></span>
+                </div>
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-success float-right">@T("Web.ContactUs.Send")</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

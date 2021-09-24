@@ -1,0 +1,10 @@
+﻿@section BodySection{ 
+    <div class="row">
+        <div class="col-md-9">
+            @await Component.InvokeAsync("LatestProducts")
+        </div>
+        <div class="col-md-3">
+           @await Component.InvokeAsync("BlogSide")
+        </div>
+    </div>
+}

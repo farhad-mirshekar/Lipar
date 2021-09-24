@@ -1,0 +1,36 @@
+﻿@model FaqGroupModel
+@{
+    Html.SetActiveMenuItemSystemName("Faq Group List");
+    ViewBag.PageTitle = T("Admin.FaqGroup.Edit.Card.Title").Text;
+}
+
+<form asp-action="Edit" asp-controller="Blog" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="pull-right">
+                <span class="card-title">@T("Admin.FaqGroup.Edit.Card.Title") - @Model.Name</span>
+            </div>
+
+            <div class="pull-left">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <span id="faq-group-delete" class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                    @T("Admin.Common.Delete")
+                </span>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+</form>
+
+<lipar-delete-confirmation asp-button-id="faq-group-delete" asp-model-id="@Model.Id" />
+

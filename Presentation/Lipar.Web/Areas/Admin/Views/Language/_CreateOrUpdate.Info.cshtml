@@ -1,0 +1,27 @@
+﻿@model LanguageModel
+
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label asp-for="Name" class="control-label">نام زبان</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="نام زبان را وارد نمایید" required>
+                <span class="text-danger" asp-validation-for="Name" />
+            </div>
+            <div class="col-md-12">
+                <label asp-for="LanguageCultureId" class="control-label">نوع زبان</label>
+                <lipar-select asp-for="LanguageCultureId" asp-items="Model.AvailableLanguageCultureType" asp-required="true" />
+                <span class="text-danger" asp-validation-for="LanguageCultureId" />
+            </div>
+            <div class="col-md-12">
+                <label asp-for="UniqueSeoCode" class="control-label">نام زبان</label>
+                <input type="text" class="form-control" asp-for="UniqueSeoCode" placeholder="نام سئو زبان را وارد نمایید">
+            </div>
+            <div class="col-md-12">
+                <label asp-for="ViewStatusId" class="control-label">فعال / غیرفعال</label>
+                <lipar-select asp-for="ViewStatusId" asp-items="Model.AvailableViewStatusType" asp-required="true" />
+                <span class="text-danger" asp-validation-for="ViewStatusId" />
+            </div>
+        </div>
+    </div>
+</div>

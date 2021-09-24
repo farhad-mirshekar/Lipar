@@ -1,0 +1,27 @@
+﻿@model DeleteConfirmationModel
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="float-left">
+                <h4 class="modal-title text-danger" id="@(Model.WindowId)-title">@T("Admin.Common.Delete")</h4>
+            </div>
+            <div class="float-right">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+        </div>
+        <form asp-action="@Model.ActionName" asp-controller="@Model.ControllerName" asp-route-id="@Model.Id">
+            <div class="form-horizontal">
+                <div class="modal-body">
+                    @T("Admin.Common.DeleteConfirmation")
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn bg-danger text-light">
+                        @T("Admin.Common.Delete")
+                    </button>
+                    <span class="btn btn-primary" data-dismiss="modal">@T("Admin.Common.Cancel")</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

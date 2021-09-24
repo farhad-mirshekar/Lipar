@@ -1,0 +1,69 @@
+﻿@model Lipar.Web.Areas.Admin.Models.Portal.CategorySearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Category Portal List");
+    ViewBag.PageTitle = T("Admin.CategoryPortal.List.Title").Text;
+}
+<form asp-controller="CategoryPortal" asp-action="List" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#Category-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="Category-list-search">
+            <div class="row">
+                <div class="input-group col-md-6">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@T("Admin.CategoryPortal.Field.Name")</span>
+                    </div>
+                    <input asp-for="Name" maxlength="70" type="text" autofocus="" class="form-control meta">
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button id="search-Category-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.CategoryPortal.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "Category-grid",
+                    SearchButtonId = "search-Category-list",
+                    UrlRead = new DataUrl("List", "CategoryPortal", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                                                {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(Lipar.Web.Areas.Admin.Models.Portal.CategoryModel.Name))
+                {
+                    Title = T("Admin.CategoryPortal.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(Lipar.Web.Areas.Admin.Models.Portal.CategoryModel.NameCrumb))
+                {
+                    Title = T("Admin.CategoryPortal.Field.NameCrumb").Text
+                });
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(Lipar.Web.Areas.Admin.Models.Portal.CategoryModel.Id))
+                {
+                    Title = "",
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

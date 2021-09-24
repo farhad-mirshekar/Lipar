@@ -1,0 +1,32 @@
+﻿@model Lipar.Web.Models.Portal.BlogListModel
+@using Lipar.Core.ReadingTime
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">
+            <i class="fa fa-pencil"></i>
+            @T("Blog.Page.List").Text
+        </span>
+    </div>
+    <div class="card-body">
+        @if (Model.AvailableBlogs != null)
+        {
+            var count = 0;
+            <ul class="list-group">
+                @foreach (var item in Model.AvailableBlogs)
+                {
+                    <li class="list-group-item">
+                        <span class="badge badge-pill badge-primary">@(++count)</span>
+                        <a href="@Url.RouteUrl("BlogDetail" , new { EntityName = "blog" , SeName = CalculateWordsCount.CleanSeoUrl(item.Name)})">
+                            <span>@(item.Name.Length > 25 ? item.Name.Substring(0, 24) + " ...." : item.Name)</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <span>@T("Blog.Page.NoData")</span>
+        }
+    </div>
+</div>

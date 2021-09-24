@@ -1,0 +1,36 @@
+﻿@using Lipar.Services.Notification
+@using Lipar.Core.Common
+@using Lipar.Entities.Domain.Core.Enums
+
+@{
+    var notes = TempData.ContainsKey(LiparNotificationDefaults.NotificationListKey)
+        ? CommonHelper.DeserializeObject<IList<NotifyData>>(TempData[LiparNotificationDefaults.NotificationListKey].ToString())
+        : null;
+
+    if (notes != null)
+    {
+        foreach (var notify in notes)
+        {
+            var cssStyle = "";
+            switch (notify.NotifyType)
+            {
+                case NotifyTypeEnum.success:
+                    cssStyle = "alert-success";
+                    break;
+                case NotifyTypeEnum.warning:
+                    cssStyle = "alert-warning";
+                    break;
+                case NotifyTypeEnum.error:
+                    cssStyle = "alert-danger";
+                    break;
+            }
+
+            <div class="alert @cssStyle alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <text>
+                    @Html.Raw(notify.Message)
+                </text>
+            </div>
+        }
+    }
+}

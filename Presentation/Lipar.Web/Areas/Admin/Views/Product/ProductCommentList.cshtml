@@ -1,0 +1,131 @@
+﻿@model ProductCommentSearchModel
+
+
+@{
+    Html.SetActiveMenuItemSystemName("Product Comment List");
+    ViewBag.PageTitle = T("Admin.ProductComment.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="ProductAttribute" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-comment-list-search"></i>
+            </div>
+        </div>
+        <div class="card-body collapse" id="product-comment-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="CommentStatusId" class="control-label">@T("Admin.ProductComment.Field.CommentStatusType")</label>
+                    <lipar-select asp-for="CommentStatusId" asp-items="@Model.AvailableCommentStatusType" />
+                </div>
+            </div>
+
+            <div class="btn-group-justified float-right">
+                <button id="search-product-comment-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.ProductComment.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "product-comment-grid",
+                    SearchButtonId = "search-product-comment-list",
+                    UrlRead = new DataUrl("ProductCommentList", "Product", null),
+                    UrlDelete = new DataUrl("ProductCommentDelete", "Product", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                        {
+                        new FilterParameter(nameof(Model.CommentStatusId))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.FullName))
+                {
+                    Title = T("Admin.ProductComment.Field.UserId").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.ProductName))
+                {
+                    Title = T("Admin.ProductComment.Field.ProductId").Text,
+                    Render = new RenderCustom("renderColumnProductName"),
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.CommentText))
+                {
+                    Title = T("Admin.ProductComment.Field.CommentText").Text,
+                    Render = new RenderCustom("renderColumnCommentText"),
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.CommentStatusId))
+                {
+                    Title = T("Admin.ProductComment.Field.CommentStatusType").Text,
+                    Render = new RenderCustom("renderColumnCommentStatusType")
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.Id))
+                {
+                    Title = T("Admin.Common.Edit").Text,
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("ProductCommentEdit"))
+                });
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductCommentModel.Id))
+                {
+                    Title = T("Admin.Common.Delete").Text,
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonRemove("")
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+
+                <script>
+                    function renderColumnCommentStatusType(data, type, row, meta) {
+                        var commentStatus = 'نامشخص';
+                        switch (data) {
+                            case 1:
+                                commentStatus = 'فعال';
+                                break;
+                            case 2:
+                                commentStatus = 'غیرفعال';
+                                break;
+                        }
+
+                        return commentStatus;
+                    }
+
+                    function renderColumnCommentText(data, type, row, meta) {
+                        var commentText = data.length > 30 ? `${data.substring(0, 30)} ....` : data;
+
+                        return commentText;
+                    }
+
+                    function renderColumnProductName(data, type, row, meta) {
+                        var productName = data.length > 20 ? `${data.substring(0, 20)} ....` : data;
+
+                        return productName;
+                    }
+                </script>
+            }
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.CommentStatusId)').val('');
+            $('#search-product-comment-list').click();
+        });
+    })
+</script>

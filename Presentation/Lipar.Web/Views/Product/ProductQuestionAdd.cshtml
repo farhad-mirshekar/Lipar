@@ -1,0 +1,30 @@
+﻿@model ProductQuestionModel
+@{ 
+    Layout = null;
+}
+<script>
+    $.validator.unobtrusive.parse($("#productQuestionCreate"));
+</script>
+
+    <form id="productQuestionCreate" novalidate="novalidate">
+        <input type="hidden" asp-for="ProductId" />
+
+        <section class="card">
+            <div class="card-header">
+                <span class="card-title">@T("Product.Page.ProductQuestion.CreateQuestion")</span>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-12">
+                        <label asp-for="QuestionText">@T("Web.ProductQuestion.Field.QuestionText")</label>
+                        <textarea class="form-control" asp-for="QuestionText"></textarea>
+                        <span class="text-danger" asp-validation-for="QuestionText"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" onclick="product.addProductQuestion('@Url.RouteUrl("AddProductQuestion")'); return false;" class="btn btn-success float-right">@T("Web.Comment.Add")</button>
+            </div>
+        </section>
+    </form>

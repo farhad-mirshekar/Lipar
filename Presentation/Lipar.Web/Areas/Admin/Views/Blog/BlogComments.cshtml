@@ -1,0 +1,94 @@
+﻿@model BlogCommentSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Blog List");
+    ViewBag.PageTitle = T("Admin.BlogComment.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="Blog" method="post">
+    @*<section class="card">
+            <div class="card-header">
+                <div class="pull-left" title="@T("Admin.Common.Search")">
+                    <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#blog-list-search"></i>
+                    <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse" id="blog-list-search">
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-4">
+                        <label asp-for="Name" class="control-label">@T("Admin.Blog.Field.Name")</label>
+                        <input type="text" class="form-control" asp-for="Name">
+                    </div>
+                </div>
+
+                <div class="btn-group-justified float-right">
+                    <button id="search-blog-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                </div>
+            </div>
+        </section>*@
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.BlogComment.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "blog-comment-grid",
+                    SearchButtonId = "search-blog-comment-list",
+                    UrlRead = new DataUrl("Comments", "Blog", null),
+                    UrlDelete = new DataUrl("BlogCommentDelete", "Blog", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.Body))
+                {
+                    Title = T("Admin.BlogComment.Field.Body").Text,
+                    Render = new RenderCustom("renderBodyLength")
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CreatorFullName))
+                {
+                    Title = T("Admin.BlogComment.Field.User").Text,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CommentStatus.Title))
+                {
+                    Title = T("Admin.BlogComment.Field.CommentStatusType").Text,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CreationDate))
+                {
+                    Title = T("Admin.BlogComment.Field.CreationDate").Text,
+                    Render = new RenderDate(),
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("BlogCommentEdit"))
+                });
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonRemove("")
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+
+                <script>
+                    function renderBodyLength(data, type, row, meta) {
+                        var body = data.length > 30 ? `${data.substring(0, 30)} ....` : data;
+
+                        return body;
+                    }
+                </script>
+            }
+        </div>
+    </section>
+</form>

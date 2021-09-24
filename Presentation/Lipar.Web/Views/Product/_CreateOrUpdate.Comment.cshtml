@@ -1,0 +1,26 @@
+﻿@model ProductCommentModel
+
+<form id="productCommentCreate" novalidate="novalidate">
+    <input type="hidden" asp-for="ProductId" />
+    <input type="hidden" asp-for="ParentId" />
+    <input type="hidden" asp-for="Slug" />
+
+    <section class="card">
+        <div class="card-header">
+            <span class="card-title">@T("Web.Comment.Create")</span>
+        </div>
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-12">
+                    <label asp-for="CommentText">@T("Web.Comment.Body")</label>
+                    <textarea class="form-control" asp-for="CommentText"></textarea>
+                    <span class="text-danger" asp-validation-for="CommentText"></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" onclick="product.addProductComment('@Url.RouteUrl("AddProductComment")'); return false;" class="btn btn-success float-right">@T("Web.Comment.Add")</button>
+        </div>
+    </section>
+</form>

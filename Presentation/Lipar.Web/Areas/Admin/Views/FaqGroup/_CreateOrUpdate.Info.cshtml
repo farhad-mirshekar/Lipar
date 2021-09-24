@@ -1,0 +1,13 @@
+﻿@model FaqGroupModel
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <label asp-for="Name">@T("Admin.FaqGroup.Field.Name")</label>
+                <input type="text" class="form-control" asp-for="Name" />
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+        </div>
+    </div>
+</div>

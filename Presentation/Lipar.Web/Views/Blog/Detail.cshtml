@@ -1,0 +1,131 @@
+﻿@model Lipar.Web.Models.Portal.BlogModel
+@using Lipar.Core.Common
+@using Lipar.Entities.Domain.Core.Enums
+@inject Lipar.Core.IWorkContext _workContext
+
+@{
+    Html.AddMetaDescription(Model.MetaKeywords);
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("Homepage")">@T("Web.Breadcrumb.Home")</a></li>
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("Blogs")">@T("Web.Breadcrumb.Blogs")</a></li>
+        <li class="breadcrumb-item active">@Model.Name</li>
+    </ol>
+</nav>
+
+@{
+    var result = TempData["Lipar.Web.Blog.Comment"] as string;
+}
+@if (!string.IsNullOrEmpty(result))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert">
+                <span class="text-info">@result</span>
+            </div>
+        </div>
+    </div>
+}
+
+<article class="card">
+    <div class="card-header">
+        <span>@Model.Name</span>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-light text-justify" role="alert">
+            <div class="alert-heading">
+                <p>@Model.Description</p>
+            </div>
+            <hr />
+            <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
+        </div>
+    </div>
+</article>
+
+@if (_workContext.CurrentUser == null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert">
+                <span class="text-info text-center">@T("Web.Comment.YouMustBeLoggedIn")</span>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    @if (Model.CommentStatusId == (int)CommentStatusEnum.Open)
+    {
+        @await Html.PartialAsync("_CreateOrUpdate.Comment", Model.BlogCommentModel)
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert">
+                    <span class="text-info">@T("Web.Comment.CommentStatusType.Block")</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div class="card">
+    <div class="card-header">
+        <i class="fa fa-comment"></i>
+        <span>@T("Web.Comment.Title")</span>
+    </div>
+    <div class="card-body">
+        <ul style="list-style:none">
+            @foreach (var blogComment in Model.BlogComments.Where(bc => bc.ParentId == null))
+            {
+                <li class="mb-3">
+                    <div class="card" id="blog-comment-@blogComment.Id">
+                        <div class="card-header">
+                            <div class="float-left d-flex flex-row">
+                                <i class="fa fa-user p-1"></i>
+                                <span class="card-title p-1">@blogComment.FullName</span>
+
+                                <i class="fa fa-calendar ml-2 p-1"></i>
+                                <span class="p-1">@convertCreationDate(blogComment.CreationDate)</span>
+                            </div>
+
+                            @if (_workContext.CurrentUser != null)
+                            {
+                                <div class="float-right">
+                                    <button class="btn btn-outline-success blog-comment-replay" data-id="@blogComment.Id">@T("Web.Comment.Replay")</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body">
+                            @Html.Raw(blogComment.Body)
+                        </div>
+                    </div>
+
+                    @await Component.InvokeAsync("BlogComment", new { Id = blogComment.Id })
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@functions{
+    string convertCreationDate(DateTime? creationDate)
+    {
+        return $"{CommonHelper.GetPersianYear(creationDate.Value)}/{CommonHelper.GetPersianMonth(creationDate.Value)}/{CommonHelper.GetPersianDay(creationDate.Value)}";
+    }
+}
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('button.blog-comment-replay').click(function () {
+                var $this = $(this);
+                var val = $this.data('id');
+                $('input#ParentId').val(val);
+            });
+        });
+    </script>
+}

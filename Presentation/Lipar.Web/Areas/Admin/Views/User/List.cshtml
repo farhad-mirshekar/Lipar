@@ -1,0 +1,91 @@
+﻿@model UserSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("User List");
+    ViewBag.PageTitle = T("Admin.User.List.Title").Text;
+}
+
+<form asp-controller="User" asp-action="List" method="post">
+    <div class="card">
+        <div class="card-header">
+            <div class="float-right" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#user-list-search"></i>
+            </div>
+        </div>
+        <div class="card-body collapse" id="user-list-search">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>@T("Admin.User.Field.Username")</label>
+                    <input asp-for="Username" maxlength="70" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button id="search-user-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+
+            </div>
+        </div>
+    </div>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.User.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "users-grid",
+                    SearchButtonId = "search-user-list",
+                    UrlRead = new DataUrl("List", "User", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                                        {
+                    new FilterParameter(nameof(Model.Username))
+                }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Username))
+                {
+                    Title = @T("Admin.User.Field.Username").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Email))
+                {
+                    Title = @T("Admin.User.Field.Email").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.NationalCode))
+                {
+                    Title = @T("Admin.User.Field.NationalCode").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.LastLoginDate))
+                {
+                    Title = @T("Admin.User.Field.LastLoginDate").Text,
+                    Render = new RenderDate()
+
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Id))
+                {
+                    Title = T("Admin.Common.Edit").Text,
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.Username)').val('');
+            $('#search-user-list').click();
+        });
+    })
+</script>

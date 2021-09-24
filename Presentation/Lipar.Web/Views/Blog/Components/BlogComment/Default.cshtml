@@ -1,0 +1,44 @@
+﻿@model List<Lipar.Web.Models.Portal.BlogCommentListModel>
+@using Lipar.Core.Common
+@inject Lipar.Core.IWorkContext _workContext
+
+@{
+    foreach (var item in Model)
+    {
+        <ul style="list-style:none">
+            <li class="mb-3">
+                <div class="card m-4 p-3" id="blog-comment-@item.Id">
+                    <div class="card-header">
+                        <div class="float-left d-flex flex-row">
+                            <i class="fa fa-user p-1"></i>
+                            <span class="card-title p-1">@item.FullName</span>
+
+                            <i class="fa fa-calendar ml-2 p-1"></i>
+                            <span class="p-1">@convertCreationDate(item.CreationDate)</span>
+                        </div>
+
+                        @if (_workContext.CurrentUser != null)
+                        {
+                            <div class="float-right">
+                                <button class="btn btn-outline-success blog-comment-replay" data-id="@item.Id">@T("Web.Comment.Replay")</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body">
+                        @Html.Raw(item.Body)
+                    </div>
+                </div>
+            </li>
+            @await Component.InvokeAsync("BlogComment", new { Id = item.Id })
+        </ul>
+
+    }
+}
+
+
+@functions{
+    string convertCreationDate(DateTime? creationDate)
+    {
+        return $"{CommonHelper.GetPersianYear(creationDate.Value)}/{CommonHelper.GetPersianMonth(creationDate.Value)}/{CommonHelper.GetPersianDay(creationDate.Value)}";
+    }
+}

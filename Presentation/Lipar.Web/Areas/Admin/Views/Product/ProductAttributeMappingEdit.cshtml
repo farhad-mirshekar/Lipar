@@ -1,0 +1,37 @@
+﻿@model ProductAttributeMappingModel
+@{
+    Html.SetActiveMenuItemSystemName("Product List");
+    ViewBag.PageTitle = T("Admin.Product.Add.Card.Title").Text;
+}
+
+<form asp-action="ProductAttributeMappingEdit" asp-controller="Product" method="post" id="productattribute-form">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.ProductAttributeMapping.Edit.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <span id="product-attribute-mapping-delete" class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                    @T("Admin.Common.Delete")
+                </span>
+                <a asp-action="Edit" asp-route-Id="@Model.ProductId" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.ProductAttributeMapping", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>
+
+<lipar-delete-confirmation asp-button-id="product-attribute-mapping-delete" asp-model-id="@Model.Id" />

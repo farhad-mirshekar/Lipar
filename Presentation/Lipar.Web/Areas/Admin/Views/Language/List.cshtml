@@ -1,0 +1,64 @@
+﻿@model LanguageSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Language List");
+    ViewBag.PageTitle = T("Admin.Language.List.Title").Text;
+}
+
+<form asp-controller="Language" asp-action="List" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#language-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="language-list-search">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>@T("Admin.Language.Field.Name")</label>
+                    <input asp-for="Name" maxlength="70" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button id="search-language-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.Language.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "language-grid",
+                    SearchButtonId = "search-language-list",
+                    UrlRead = new DataUrl("List", "Language", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                                        {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LanguageModel.Name))
+                {
+                    Title = T("Admin.Langugage.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LanguageModel.Id))
+                {
+                    Title = T("Admin.Common.Edit").Text,
+                    Width = "80",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

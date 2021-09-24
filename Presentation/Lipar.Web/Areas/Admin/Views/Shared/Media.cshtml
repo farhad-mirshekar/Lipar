@@ -1,0 +1,152 @@
+﻿@*@model MediaSearchModel
+
+@{
+    var gridModel = new DataTablesModel
+    {
+        Name = "media-grid",
+        UrlRead = new DataUrl("List", "Media", new RouteValueDictionary { [nameof(Model.ParentId)] = Model.ParentId }),
+        UrlUpdate = new DataUrl("Edit", "Media", new RouteValueDictionary { [nameof(Model.ParentId)] = Model.ParentId }),
+        Length = Model.PageSize,
+        LengthMenu = Model.AvailablePageSizes,
+    };
+
+    gridModel.ColumnCollection.Add(new ColumnProperty(nameof(MediaModel.Name))
+    {
+        Title = T("Admin.Media.Field.Name").Text,
+        Editable = true,
+        EditType = EditType.String
+    });
+    gridModel.ColumnCollection.Add(new ColumnProperty(nameof(MediaModel.AltAttribute))
+    {
+        Title = T("Admin.Media.Field.AltAttribute").Text,
+        Editable = true,
+        EditType = EditType.String
+    });
+    gridModel.ColumnCollection.Add(new ColumnProperty(nameof(MediaModel.Priority))
+    {
+        Title = T("Admin.Media.Field.Priority").Text,
+        Editable = true,
+        EditType = EditType.Number
+    });
+
+    gridModel.ColumnCollection.Add(new ColumnProperty(nameof(MediaModel.Id))
+    {
+        Title = T("Admin.Common.Edit").Text,
+        Width = "100",
+        ClassName = LiparColumnClassDefaults.Button,
+        Render = new RenderButtonsInlineEdit()
+    });
+
+    gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LocaleStringResourceModel.Id))
+    {
+        Title = T("Admin.Common.Delete").Text,
+        Width = "100",
+        ClassName = LiparColumnClassDefaults.Button,
+        Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+
+    });
+
+    @await Html.PartialAsync("Table", gridModel)
+}
+
+
+<section class="card mt-2">
+    <div class="card-header">
+        <div class="pull-right">
+            <span>@T("Admin.Media.Add.Card.Title")</span>
+        </div>
+        <div class="pull-left">
+            <i class="fa fa-plus" aria-hidden="true" data-toggle="collapse" href="#media-add-collapse"></i>
+        </div>
+    </div>
+    <div class="card-body collapse" id="media-add-collapse">
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="@Model.AddMediaModel.Name">
+                    @T("Admin.Media.Field.Name")
+                </label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" class="form-control" asp-for="@Model.AddMediaModel.Name" />
+                <span asp-validation-for="@Model.AddMediaModel.Name"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="@Model.AddMediaModel.AltAttribute">
+                    @T("Admin.Media.Field.AltAttribute")
+                </label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" class="form-control" asp-for="@Model.AddMediaModel.AltAttribute" />
+                <span asp-validation-for="@Model.AddMediaModel.AltAttribute"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="@Model.AddMediaModel.Priority">
+                    @T("Admin.Media.Field.AddMediaModel")
+                </label>
+            </div>
+            <div class="col-md-9">
+                <input type="number" asp-for="@Model.AddMediaModel.Priority" class="form-control" />
+                <span asp-validation-for="@Model.AddMediaModel.Priority"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <label asp-for="@Model.AddMediaModel.MediaId">
+                    @T("Admin.Media.Field.MediaId")
+                </label>
+            </div>
+            <div class="col-md-9">
+                @Html.EditorFor(b => b.AddMediaModel.MediaId)
+                <span asp-validation-for="@Model.AddMediaModel.MediaId"></span>
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left">
+            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('#media-add-btn').click(function () {
+            $('#media-add-btn').attr('disabled', true);
+           var MediaId= $("#@Html.IdFor(model=>model.AddMediaModel.MediaId)").val();
+
+            if (MediaId == 0) {
+                $('#media-add-btn').attr('disabled', false);
+                return;
+            }
+            var postData = {
+                Name: $("#@Html.IdFor(model=>model.AddMediaModel.Name)").val(),
+                AltAttribute: $("#@Html.IdFor(model=>model.AddMediaModel.AltAttribute)").val(),
+                MediaType: $("#@Html.IdFor(model=>model.AddMediaModel.Priority)").val(),
+                MediaId: MediaId
+            };
+
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                type: 'Post',
+                url: "@Html.Raw(Url.Action("Edit","Media",new { ParentId = Model.ParentId}))",
+                data: postData,
+                success: function (data) {
+                    if (data.Result) {
+                        updateTable('#media-grid');
+
+                        $("#@Html.IdFor(model=>model.AddMediaModel.Name)").val('');
+                        $("#@Html.IdFor(model=>model.AddMediaModel.AltAttribute)").val('');
+                        $("#@Html.IdFor(model=>model.AddMediaModel.Priority)").val('');
+                        $("#file").val('');
+                    }
+                },
+                complete: function () {
+                    $('#media-add-btn').attr('disabled', false);
+                }
+            });
+        })
+    });
+</script>*@

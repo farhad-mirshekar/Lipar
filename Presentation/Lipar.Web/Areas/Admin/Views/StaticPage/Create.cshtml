@@ -1,0 +1,31 @@
+﻿@model StaticPageModel
+@{
+    Html.SetActiveMenuItemSystemName("Static Page List");
+    ViewBag.PageTitle = T("Admin.StaticPage.Add.Card.Title").Text;
+}
+
+<form asp-action="Create" asp-controller="StaticPage" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.StaticPage.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Add")
+                </button>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>

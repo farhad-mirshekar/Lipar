@@ -1,0 +1,155 @@
+﻿@model List<ProductModel>
+@{
+    var columnWidth = "";
+    if (Model.Count > 0)
+    {
+        columnWidth = Math.Round((decimal)(90M / Model.Count), 0).ToString() + "%";
+    }
+
+    var productAttributes = new List<ProductAttributeModel>();
+    foreach (var product in Model)
+    {
+        foreach (var productAttribute in product.ProductAttributes)
+        {
+            if (productAttributes.FirstOrDefault(p => p.ProductAttributeId == productAttribute.ProductAttributeId) == null)
+            {
+                productAttributes.Add(productAttribute);
+            }
+        }
+    }
+}
+<div class="row">
+    <div class="col-md-12 mt-2">
+        @if (Model.Count > 0)
+        {
+
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">@T("Web.CompareProduct.Page.Title")</span>
+                    <a href="#" onclick="setLocation('@Url.RouteUrl("ClearCompareList")')" class="btn btn-outline-danger pull-left">@T("Web.CompareProduct.Page.ClearAll")</a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table text-center">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    @foreach (var item in Model)
+                                    {
+                                        <td style="width: @columnWidth;">
+                                            <a href="#" class="text-danger" title="@T("Web.CompareProduct.Page.Remove")" value="@T("Web.CompareProduct.Page.Remove")" onclick="setLocation('@Url.RouteUrl("RemoveProductFromCompareList",new {ProductID = item.Id })')">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    @foreach (var product in Model)
+                                    {
+                                        var imgUrl = $"images/site/product-empty.png";
+                                        var mediaModel = product.Pictures.AvailableMedia.OrderBy(pic => pic.Priority).FirstOrDefault();
+                                        if (mediaModel != null)
+                                        {
+                                            imgUrl = $"images/uploaded/{mediaModel.MediaId}-{mediaModel.Name}{mediaModel.MimeType}";
+                                        }
+
+                                        <td>
+                                            <img src="@imgUrl" alt="@(mediaModel != null ? mediaModel.AltAttribute : "product-empty")" class="card-img-top img-rounded w-50" />
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>@T("Web.CompareProduct.Page.ProductName")</td>
+                                    @foreach (var product in Model)
+                                    {
+                                        <td style="width: @columnWidth;">
+                                            <span>@product.Name</span>
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td class="text-danger">@T("Web.CompareProduct.Page.CategoryName")</td>
+                                    @foreach (var product in Model)
+                                    {
+                                        <td style="width: @columnWidth;">
+                                            <span class="text-danger">@product.Category.NameCrumb</span>
+                                        </td>
+                                    }
+                                </tr>
+                                @foreach (var productAttribute in productAttributes)
+                                {
+                                    <tr>
+                                        <td>@productAttribute.TextPrompt</td>
+                                        @foreach (var product in Model)
+                                        {
+                                            var foundProductAttributes = product.ProductAttributes.Where(pa => pa.ProductId == product.Id).ToList();
+                                            var attributeModel = foundProductAttributes.FirstOrDefault(pa => pa.ProductAttributeId == productAttribute.ProductAttributeId);
+
+                                            if (attributeModel != null)
+                                            {
+                                                <td class="@columnWidth">
+                                                    @if (attributeModel.ProductAttributeValues.Count > 1)
+                                                    {
+                                                        <ul class="list-group">
+                                                            @foreach (var productAttributeValue in attributeModel.ProductAttributeValues)
+                                                            {
+                                                                <li class="list-group-item">
+                                                                    @{
+                                                                        if (productAttributeValue.Price.HasValue && productAttributeValue.Price.Value > 0)
+                                                                        {
+                                                                            <span>@string.Format("{0} - {1:C0} تومان", productAttributeValue.Name, productAttributeValue.Price).Replace("$", "")</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span>@string.Format("{0}", productAttributeValue.Name)</span>
+                                                                        }
+
+                                                                    }
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>
+                                                            @{
+                                                                var productAttributeValue = attributeModel.ProductAttributeValues.FirstOrDefault();
+                                                                if (productAttributeValue.Price.HasValue && productAttributeValue.Price.Value > 0)
+                                                                {
+                                                                    <span>@string.Format("{0} - {1:C0} تومان", productAttributeValue.Name, productAttributeValue.Price).Replace("$", "")</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>@string.Format("{0}", productAttributeValue.Name)</span>
+                                                                }
+                                                            }
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+
+                                            else
+                                            {
+                                                <td class="@columnWidth">
+                                                    <span>-----</span>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <span>@T("Web.CompareProduct.Page.NotProductInListCompare")</span>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model RoleModel
+
+<input asp-for="Id" type="hidden" />
+
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label asp-for="Name" class="control-label">@T("Admin.Role.Field.Name")</label>
+                <input type="text" class="form-control" asp-for="Name">
+                <span class="text-danger" asp-validation-for="Name" />
+            </div>
+            @if (Model.AvailableCommands.Count() > 0)
+            {
+                <div class="col-md-12">
+                    @await Html.PartialAsync("_CreateOrUpdate.Command", Model)
+                </div>
+            }
+        </div>
+    </div>
+</div>

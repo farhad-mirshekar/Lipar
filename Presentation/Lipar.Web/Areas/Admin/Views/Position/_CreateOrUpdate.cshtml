@@ -1,0 +1,12 @@
+﻿@model PositionModel
+
+<input asp-for="Id" type="hidden" />
+
+<!--render user information-->
+@await Html.PartialAsync("_CreateOrUpdate.Info", Model)
+
+<!--render all role-->
+@if (Model.AvailableRoles != null)
+{
+    @await Html.PartialAsync("_CreateOrUpdate.Roles", Model)
+}

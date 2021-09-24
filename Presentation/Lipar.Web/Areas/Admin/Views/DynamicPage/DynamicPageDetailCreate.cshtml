@@ -1,0 +1,31 @@
+﻿@model DynamicPageDetailModel
+@{
+    Html.SetActiveMenuItemSystemName("Dynamic Page List");
+    ViewBag.PageTitle = T("Admin.DynamicPageDetail.Add.Card.Title").Text;
+}
+
+<form asp-action="DynamicPageDetailCreate" asp-controller="DynamicPage" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.DynamicPageDetail.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Add")
+                </button>
+                <a asp-action="DynamicPageDetails" asp-route-filterByPageId="@Model.DynamicPageId" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.DynamicPageDetail", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>

@@ -1,0 +1,102 @@
+﻿@model ProductQuestionSearchModel
+
+@{
+    Html.SetActiveMenuItemSystemName("Product List");
+    ViewBag.PageTitle = T("Admin.Product.List.Title").Text;
+}
+
+<form asp-action="ProductQuestionList" asp-controller="Product" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-question-list-search"></i>
+            </div>
+        </div>
+        <div class="card-body collapse" id="product-question-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="ViewStatusId" class="control-label">@T("Admin.ProductQuestion.Field.ViewStatusId")</label>
+                    <lipar-select asp-for="ViewStatusId" asp-items="@Model.AvailableViewStatus" />
+                </div>
+            </div>
+
+            <div class="btn-group-justified float-right">
+                <button id="search-product-question-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.Product.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "product-grid",
+                    SearchButtonId = "search-product-question-list",
+                    UrlRead = new DataUrl("ProductQuestionList", "Product", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                                        {
+                        new FilterParameter(nameof(Model.ViewStatusId))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.QuestionText))
+                {
+                    Title = T("Admin.ProductQuestion.Field.QuestionText").Text,
+                    Render = new RenderCustom("renderColumnQuestionText")
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.ProductName))
+                {
+                    Title = T("Admin.ProductQuestion.Field.ProductId").Text,
+                    Render = new RenderCustom("renderColumnProductName")
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.FullName))
+                {
+                    Title = T("Admin.ProductQuestion.Field.UserId").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("ProductQuestionEdit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+
+                <script>
+                    function renderColumnQuestionText(data, type, row, meta) {
+                        var questionText = data.length > 20 ? `${data.substring(0, 20)} ....` : data;
+
+                        return questionText;
+                    }
+
+                    function renderColumnProductName(data, type, row, meta) {
+                        var productName = data.length > 20 ? `${data.substring(0, 20)} ....` : data;
+
+                        return productName;
+                    }
+                </script>
+            }
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.ViewStatusId)').val('');
+            $('#search-product-list').click();
+        });
+    })
+</script>

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.PageTitle</title>
+
+    <link href="~/admin/css/Admin.css" rel="stylesheet" />
+    <link href="~/libs/bootstrap-rtl/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/libs/fontawesome/font-awesome.css" rel="stylesheet" />
+    <link href="~/admin/lib/datatables/datatables.css" rel="stylesheet" />
+    <link href="~/admin/lib/datatables/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/admin/lib/datatables/buttons.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/admin/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/admin/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/libs/fineuploader/fine-uploader.css" rel="stylesheet" />
+
+
+    <script src="~/libs/jquery/jquery.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.unobtrusive.js"></script>
+    <script src="~/libs/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/libs/moment.js/moment.js"></script>
+    <script src="~/libs/moment.js/moment-with-locales.js"></script>
+    <script src="~/libs/bootstrap-rtl/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/lib/datatables/datatables.js"></script>
+    <script src="~/admin/lib/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/admin/lib/datatables/buttons.bootstrap.min.js"></script>
+    <script src="~/admin/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/admin/js/admin.common.js"></script>
+    <script src="~/admin/js/admin.common.js"></script>
+
+    @RenderSection("Head", false)
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-12" id="wrapper">
+                @await Html.PartialAsync("Notifications")
+
+                <div id="content" dir="rtl">
+                    @RenderBody()
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

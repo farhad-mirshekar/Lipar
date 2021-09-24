@@ -1,0 +1,42 @@
+﻿@model Lipar.Web.Models.General.MenuModel
+@using Lipar.Core.ReadingTime
+
+@if (Model.UserHeaderLink.IsAuthenticated)
+{
+
+    <a href="@Url.Content("~/Admin")" class="d-block p-3 text-center text-white bg-info">Admin</a>
+
+}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">اولین سایت</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            @if (Model.StaticPages != null && Model.StaticPages.Count > 0)
+            {
+                foreach (var staticPage in Model.StaticPages)
+                {
+                    <li class="nav-item p-1">
+                        <a href="@Url.RouteUrl("StaticPageDetail" , new { EntityName = "page" , SeName = CalculateWordsCount.CleanSeoUrl(staticPage.Title)})">@staticPage.Title</a>
+                    </li>
+                }
+            }
+            @if (Model.dynamicPages != null && Model.dynamicPages.Count > 0)
+            {
+                foreach (var dynamicPage in Model.dynamicPages)
+                {
+                    <li class="nav-item p-1">
+                        <a href="@Url.RouteUrl("DynamicPageDetail" , new { EntityName = "page" , SeName = CalculateWordsCount.CleanSeoUrl(dynamicPage.Title)})">@dynamicPage.Title</a>
+                    </li>
+                }
+            }
+
+            <li class="nav-item p-1">
+                <a href="@Url.RouteUrl("ContactUs")">@T("Web.Menu.ContactUs")</a>
+            </li>
+        </ul>
+    </div>
+</nav>

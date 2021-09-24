@@ -1,0 +1,42 @@
+﻿@model Lipar.Web.Models.Portal.BlogListModel
+@using Lipar.Core.ReadingTime;
+
+@section BodySection{
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>@T("Blogs.Page.List.Title").Text</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.AvailableBlogs != null)
+                    {
+                        foreach (var item in Model.AvailableBlogs)
+                        {
+                            <section class="card mb-2">
+                                <div class="card-header clearfix">
+                                    <a href="@Url.RouteUrl("BlogDetail",new { EntityName="Blog" , SeName=CalculateWordsCount.CleanSeoUrl(item.Name)})">
+                                        <span class="card-header-title float-left">@item.Name</span>
+                                        <span class="card-header-link float-right">ادامه</span>
+                                    </a>
+
+                                </div>
+                                <div class="card-body">
+                                    <p>@item.Description</p>
+                                </div>
+                            </section>
+                        }
+                    }
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center" dir="ltr">
+                        <lipar-pagination paging-info="@Model.PagingInfo" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,98 @@
+﻿@model ProductSearchModel
+@{
+    Layout = "_AdminPopupLayout";
+    ViewBag.PageTitle = T("Admin.RelatedProduct.Add.Card.Title").Text;
+}
+
+<form asp-action="RelatedProductCreatePopup" asp-controller="Product" method="post"
+      asp-route-ProductId="@Context.Request.Query["ProductId"]"
+      asp-route-btnId="@Context.Request.Query["btnId"]"
+      asp-route-formId="@Context.Request.Query["formId"]">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.RelatedProduct.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Add")
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <section class="card">
+                <div class="card-header">
+                    <div class="pull-left" title="@T("Admin.Common.Search")">
+                        <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-list-search"></i>
+                    </div>
+                </div>
+                <div class="card-body collapse" id="product-list-search">
+                    <div class="row">
+                        <div class="form-group col-md-6 col-sm-4">
+                            <label asp-for="Name" class="control-label">@T("Admin.Product.Field.Name")</label>
+                            <input type="text" class="form-control" asp-for="Name">
+                        </div>
+                    </div>
+
+                    <div class="btn-group-justified float-right">
+                        <button id="search-product-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                    </div>
+                </div>
+            </section>
+
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "related-product-create-grid",
+                    UrlRead = new DataUrl("RelatedProductCreatePopupList", "Product", null),
+                    SearchButtonId = "search-product-list",
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                        {
+                            new FilterParameter(nameof(Model.Name)),
+                        }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Id))
+                {
+                    IsMasterCheckBox = true,
+                    Render = new RenderCheckBox(nameof(AddRelatedProductModel.SelectedProductIds)),
+                    ClassName = LiparColumnClassDefaults.CenterAll,
+                    Width = "50"
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Name))
+                {
+                    Title = T("Admin.Product.Field.Name").Text,
+                    ClassName = LiparColumnClassDefaults.CenterAll,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Published))
+                {
+                    Title = T("Admin.Product.Field.Published").Text,
+                    Render = new RenderBoolean(),
+                    ClassName = LiparColumnClassDefaults.CenterAll
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>
+
+@{
+    if (ViewBag.RefreshPage == true)
+    {
+        <script>
+            try {window.opener.document.forms['@(Context.Request.Query["formId"])'].@(Context.Request.Query["btnId"]).click();}
+            catch (e){}
+            window.close();
+        </script>
+    }
+
+}

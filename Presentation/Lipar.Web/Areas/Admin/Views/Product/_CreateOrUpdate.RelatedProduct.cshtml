@@ -1,0 +1,67 @@
+﻿@model ProductModel
+
+<div class="card">
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "related-product-grid",
+                UrlRead = new DataUrl("RelatedProductList", "Product", new RouteValueDictionary { [nameof(Model.RelatedProductSearchModel.ProductId1)] = Model.RelatedProductSearchModel.ProductId1 }),
+                UrlDelete = new DataUrl("RelatedProductDelete", "Product", null),
+                Length = Model.RelatedProductSearchModel.PageSize,
+                LengthMenu = Model.RelatedProductSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RelatedProductModel.ProductName2))
+            {
+                Title = T("Admin.RelatedProduct.Field.ProductName2").Text,
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RelatedProductModel.Priority))
+            {
+                Title = T("Admin.RelatedProduct.Field.Priority").Text,
+                Editable = true,
+                EditType = EditType.String,
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RelatedProductModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonEdit(new DataUrl("~/Admin/Product/RelatedProductEdit/"))
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RelatedProductModel.Id))
+            {
+                Title = T("Admin.Common.Delete").Text,
+                Width = "100",
+                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text),
+                ClassName = LiparColumnClassDefaults.Button
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+
+    <div class="card-footer">
+        <button type="submit" onclick="OpenWindow('@(Url.Action("RelatedProductCreatePopup","Product" , new { ProductId = Model.Id, btnId = "btnRelatedProductRefresh", formId = "product-form" }))', 800, 750, true); return false;" class="btn btn-primary pull-left">
+            <i class="fa fa-plus"></i>
+            @T("Admin.Common.Add")
+        </button>
+
+        <input type="submit" id="btnRelatedProductRefresh" style="display:none;" />
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#btnRelatedProductRefresh').click(function () {
+            //refresh grid
+            updateTable('#related-product-grid');
+
+            //return false to don't reload a page
+            return false;
+        });
+    });
+</script>

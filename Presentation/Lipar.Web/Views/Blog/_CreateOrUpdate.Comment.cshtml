@@ -1,0 +1,26 @@
+﻿@model Lipar.Web.Models.Portal.BlogCommentModel
+
+    <form asp-action="AddComment" asp-controller="Blog" method="post">
+        <input type="hidden" asp-for="BlogId" />
+        <input type="hidden" asp-for="ParentId" />
+        <input type="hidden" asp-for="Slug" />
+
+        <section class="card">
+            <div class="card-header">
+                <span class="card-title">@T("Web.Comment.Create")</span>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-12">
+                        <label asp-for="Body">@T("Web.Comment.Body")</label>
+                        <textarea class="form-control" asp-for="Body"></textarea>
+                        <span class="text-danger" asp-validation-for="Body"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success float-right">@T("Web.Comment.Add")</button>
+            </div>
+        </section>
+    </form>

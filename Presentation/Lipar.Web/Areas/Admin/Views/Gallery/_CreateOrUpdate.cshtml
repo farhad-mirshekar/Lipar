@@ -1,0 +1,24 @@
+﻿@model GalleryModel
+
+<input asp-for="Id" type="hidden" />
+
+<nav>
+    <div class="nav nav-tabs" id="gallery-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-gallery-info-tab" data-toggle="tab" href="#nav-gallery-info" role="tab" aria-controls="nav-gallery-info" aria-selected="true">@T("Admin.Gallery.Tab.Info").Text</a>
+        @if (Model.Id != 0)
+        {
+            <a class="nav-item nav-link" id="nav-gallery-attachment-tab" data-toggle="tab" href="#nav-gallery-attachment" role="tab" aria-controls="nav-gallery-attachment" aria-selected="false">@T("Admin.Gallery.Tab.Attachment").Text</a>
+        }
+    </div>
+</nav>
+<div class="tab-content" id="gallery-tabContent">
+    <div class="tab-pane fade show active" id="nav-gallery-info" role="tabpanel" aria-labelledby="nav-gallery-info-tab">
+        @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
+    </div>
+    @if (Model.Id != 0)
+    {
+        <div class="tab-pane fade" id="nav-gallery-attachment" role="tabpanel" aria-labelledby="nav-gallery-attachment-tab">
+            @await Html.PartialAsync("_CreateOrUpdate.Media", Model)
+        </div>
+    }
+</div>

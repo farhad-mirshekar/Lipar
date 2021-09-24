@@ -1,0 +1,18 @@
+﻿@model MenuModel
+
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label asp-for="Name" class="control-label">نام منو</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="نام منو را وارد نمایید">
+                <span class="text-danger" asp-validation-for="Name" />
+            </div>
+            <div class="col-md-12">
+                <label asp-for="Name" class="control-label">نوع زبان</label>
+                <lipar-select asp-for="LanguageId" asp-items="Model.AvailableLanguageType" asp-required="true" />
+                <span class="text-danger" asp-validation-for="LanguageId" />
+            </div>
+        </div>
+    </div>
+</div>

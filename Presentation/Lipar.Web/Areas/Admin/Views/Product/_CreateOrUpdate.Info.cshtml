@@ -1,0 +1,75 @@
+﻿@model Lipar.Web.Areas.Admin.Models.Application.ProductModel
+
+<div class="row">
+    <div class="col-lg-12">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+</div>
+<div id="productAccordion">
+    <div class="card">
+        <div class="card-header" id="headingBase">
+            <h5 class="mb-0">
+                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseBase" aria-expanded="true" aria-controls="collapseBase">
+                    @T("Admin.Product.collapseBase.Text").Text
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseBase" class="collapse show" aria-labelledby="headingBase" data-parent="#productAccordion">
+            <div class="card-body">
+                @await Html.PartialAsync("_CreateOrUpdate.Info.Base", Model)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingSeo">
+            <h5 class="mb-0">
+                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseSeo" aria-expanded="true" aria-controls="collapseSeo">
+                    @T("Admin.Product.CollapseSeo.Text").Text
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseSeo" class="collapse" aria-labelledby="headingSeo" data-parent="#productAccordion">
+            <div class="card-body">
+                @await Html.PartialAsync("_CreateOrUpdate.Seo", Model)
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Id > 0)
+    {
+        <div class="card">
+            <div class="card-header" id="headingProductAttributeMapping">
+                <h5 class="mb-0">
+                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseProductAttributeMapping" aria-expanded="true" aria-controls="collapseProductAttributeMapping">
+                        @T("Admin.Product.CollapseProductAttributeMapping.Text").Text
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseProductAttributeMapping" class="collapse" aria-labelledby="headingProductAttributeMapping" data-parent="#productAccordion">
+                <div class="card-body">
+                    @await Html.PartialAsync("_CreateOrUpdate.ProductAttribute", Model)
+                </div>
+                <div class="card-footer">
+                    <a asp-action="ProductAttributeMappingCreate" asp-route-ProductId="@Model.Id" class="btn btn-primary pull-left">
+                        <i class="fa fa-plus"></i>
+                        @T("Admin.Common.Add")
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $('#productAccordion').on('shown.bs.collapse', function () {
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable()
+                .columns.adjust()
+                .responsive.recalc();
+        });
+    });
+</script>

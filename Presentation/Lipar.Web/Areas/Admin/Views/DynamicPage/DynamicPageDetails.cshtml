@@ -1,0 +1,71 @@
+﻿@model DynamicPageDetailSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Dynamic Page List");
+    ViewBag.PageTitle = T("Admin.DynamicPageDetail.List.Title").Text;
+}
+
+<form asp-action="DynamicPageDetails" asp-controller="DynamicPage" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#blog-list-search"></i>
+                <a asp-action="DynamicPageDetailCreate" asp-route-pageId="@Model.DynamicPageId"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        @*<div class="card-body collapse" id="blog-list-search">
+                <div class="row">
+                    <div class="form-group col-md-6 col-sm-4">
+                        <label asp-for="Name" class="control-label">@T("Admin.Blog.Field.Name")</label>
+                        <input type="text" class="form-control" asp-for="Name">
+                    </div>
+                </div>
+
+                <div class="btn-group-justified float-right">
+                    <button id="search-blog-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                </div>
+            </div>*@
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.DynamicPageDetail.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "dynamic-page-detail-grid",
+                    UrlRead = new DataUrl("DynamicPageDetails", "DynamicPage", new RouteValueDictionary { [nameof(DynamicPageDetailModel.DynamicPageId)] = Model.DynamicPageId}),
+                    UrlDelete = new DataUrl("DynamicPageDetailDelete", "DynamicPage", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageDetailModel.Name))
+                {
+                    Title = T("Admin.DynamicPageDetail.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageDetailModel.Title))
+                {
+                    Title = T("Admin.DynamicPageDetail.Field.Title").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageDetailModel.ViewStatus.Title))
+                {
+                    Title = T("Admin.DynamicPageDetail.Field.ViewStatusType").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageDetailModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("DynamicPageDetailEdit"))
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

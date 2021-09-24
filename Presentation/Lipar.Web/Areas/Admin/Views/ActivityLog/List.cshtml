@@ -1,0 +1,37 @@
+﻿@model ActivityLogSearchModel
+
+@{
+    Html.SetActiveMenuItemSystemName("Activity Log List");
+    ViewBag.PageTitle = T("Admin.ActivityLog.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="ActivityLog" method="post">
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.ActivityLog.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "activity-log-grid",
+                    UrlRead = new DataUrl("List", "ActivityLog", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ActivityLogModel.Comment))
+                {
+                    Title = T("Admin.ActivityLog.Field.Comment").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ActivityLogModel.ActivityLogType))
+                {
+                    Title = T("Admin.ActivityLog.Field.ActivityLogType").Text
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

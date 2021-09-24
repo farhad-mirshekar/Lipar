@@ -1,0 +1,16 @@
+﻿@model ProductAnswersModel
+
+<input asp-for="Id" type="hidden" />
+<input asp-for="CreationDate" type="hidden" />
+<input asp-for="ProductQuestionId" type="hidden" />
+<input asp-for="UserId" type="hidden" />
+
+<div class="form-group">
+    <label asp-for="ViewStatusId">@T("Admin.ProductAnswers.Field.ViewStatusId")</label>
+    <lipar-select asp-for="ViewStatusId" asp-items="@Model.AvailableViewStatus" />
+</div>
+
+<div class="form-group">
+    <label asp-for="AnswerText">@T("Admin.ProductAnswers.Field.AnswerText")</label>
+    <textarea asp-for="AnswerText" class="form-control" rows="4" cols="4"></textarea>
+</div>

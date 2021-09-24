@@ -1,0 +1,58 @@
+﻿@model FaqGroupModel
+
+    <div class="card">
+        <div class="card-header">
+            <span>s</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "gallery-media-grid",
+                    UrlRead = new DataUrl("FaqList", "FaqGroup", new RouteValueDictionary { [nameof(Model.FaqSearchModel.FaqGroupId)] = Model.FaqSearchModel.FaqGroupId }),
+                    UrlDelete = new DataUrl("FaqDelete", "FaqGroup", null),
+                    Length = Model.FaqSearchModel.PageSize,
+                    LengthMenu = Model.FaqSearchModel.AvailablePageSizes,
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Question))
+                {
+                    Title = T("Admin.FaqModel.Field.Question").Text,
+                    Editable = true,
+                    EditType = EditType.String
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Id))
+                {
+                    Title = T("Admin.Common.Edit").Text,
+                    Width = "100",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("~/Admin/FaqGroup/FaqEdit"))
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Id))
+                {
+                    Title = T("Admin.Common.Delete").Text,
+                    Width = "100",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonRemove(null)
+
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="FaqCreate" asp-route-FaqGroupId="@Model.Id" class="btn btn-primary pull-left">
+                <i class="fa fa-plus"></i>
+                @T("Admin.Common.Add")
+            </a>
+        </div>
+    </div>
+
+<script>
+    function renderFaqEdit(data, type, row, meta) {
+        return `<a href='/Admin/FaqGroup/FaqEdit?Id=${data}&FaqGroupId=@Model.Id'><i class="fa fa-pencil"></i></a>`;
+    }
+</script>

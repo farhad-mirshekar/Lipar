@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@Html.GenerateMetaDescription()" />
+    <link href="~/libs/bootstrap-rtl/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/libs/fontawesome/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/themes/css/site.css" rel="stylesheet" />
+    <link href="~/themes/css/paging.css" rel="stylesheet" />
+    <link href="~/libs/noty/noty.css" rel="stylesheet" />
+    @RenderSection("HeadSection", false)
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="sticky-top py-1">
+            <div class="row">
+                <div class="col-md-12">
+                    @await Component.InvokeAsync("Menu")
+                </div>
+            </div>
+        </header>
+        <main role="main">
+            @RenderSection("BodySection", false)
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/libs/jquery/jquery.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.unobtrusive.js"></script>
+    <script src="~/libs/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/libs/bootstrap-rtl/js/bootstrap.bundle.min.js"></script>
+    <script src="~/libs/noty/noty.js"></script>
+    <script src="~/themes/js/product.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

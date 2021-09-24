@@ -1,0 +1,92 @@
+﻿@model DeliveryDateSearchModel
+
+
+@{
+    Html.SetActiveMenuItemSystemName("Delivery Date List");
+    ViewBag.PageTitle = T("Admin.DeliveryDate.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="DeliveryDate" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Admin.Common.Search")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#delivery-date-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="delivery-date-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="Name" class="control-label">@T("Admin.DeliveryDate.Field.Name")</label>
+                    <input type="text" class="form-control" asp-for="Name">
+                </div>
+            </div>
+
+            <div class="btn-group-justified float-right">
+                <button id="search-delivery-date-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.DeliveryDate.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "delivery-date-grid",
+                    SearchButtonId = "search-delivery-date-list",
+                    UrlRead = new DataUrl("List", "DeliveryDate", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    Filters = new List<FilterParameter>()
+                            {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Name))
+                {
+                    Title = T("Admin.DeliveryDate.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Description))
+                {
+                    Title = T("Admin.DeliveryDate.Field.Description").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Priority))
+                {
+                    Title = T("Admin.DeliveryDate.Field.Priority").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.EnabledType.Title))
+                {
+                    Title = T("Admin.DeliveryDate.Field.EnabledType").Text,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.Name)').val('');
+            $('#search-delivery-date-list').click();
+        });
+    })
+</script>

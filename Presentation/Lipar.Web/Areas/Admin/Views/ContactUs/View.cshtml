@@ -1,0 +1,46 @@
+﻿@model ContactUsModel
+
+<div class="card">
+    <div class="card-header clearfix">
+        <div class="pull-right">
+            <span class="card-title">@T("Admin.ContactUs.View.Card.Title")</span>
+        </div>
+
+        <div class="pull-left">
+            <span id="contact-us-delete" class="btn btn-danger">
+                <i class="fa fa-trash-o"></i>
+                @T("Admin.Common.Delete")
+            </span>
+            <a asp-action="List" class="btn btn-primary">
+                <i class="fa fa-arrow-circle-left"></i>
+                @T("Admin.Common.Back")
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="FirstName" class="control-label">@T("Admin.ContactUs.Field.FullName")</label>
+                <span class="text-success">@($"{Model.FirstName} {Model.LastName}")</span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Email" class="control-label">@T("Admin.ContactUs.Field.Email")</label>
+                <span class="text-success">@Model.Email</span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Phone" class="control-label">@T("Admin.ContactUs.Field.Phone")</label>
+                <span class="text-success">@Model.Phone</span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="ContactUsTypeId" class="control-label">@T("Admin.ContactUs.Field.ContactUsType")</label>
+                <span class="text-success">@Model.ContactUsType.Title</span>
+            </div>
+            <div class="form-group col-md-12">
+                <label asp-for="Body" class="control-label">@T("Admin.ContactUs.Field.Body")</label>
+                <span class="text-success text-justify">@Model.Body</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<lipar-delete-confirmation asp-button-id="contact-us-delete" asp-model-id="@Model.Id" />

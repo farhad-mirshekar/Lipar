@@ -1,0 +1,59 @@
+﻿@model BlogModel
+
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">@T("Admin.Blog.Field.Name")</label>
+            <input type="text" class="form-control" asp-for="Name" required>
+            <span class="text-danger" asp-validation-for="Name" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">@T("Admin.Blog.Field.Description")</label>
+            <input type="text" class="form-control" asp-for="Description" required>
+            <span class="text-danger" asp-validation-for="Description" />
+        </div>
+        <div class="form-group">
+            <label asp-for="MetaKeywords" class="control-label">@T("Admin.Blog.Field.MetaKeywords")</label>
+            <input type="text" class="form-control" asp-for="MetaKeywords" required>
+            <span class="text-danger" asp-validation-for="MetaKeywords" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Body" class="control-label">@T("Admin.Blog.Field.Body")</label>
+            <lipar-froala-editor asp-for="Body" />
+            <span class="text-danger" asp-validation-for="Body" />
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CommentStatusId" class="control-label">@T("Admin.Blog.Field.CommentStatusType")</label>
+                        <lipar-select asp-for="CommentStatusId" asp-items="Model.AvailableCommentStatusType" />
+                        <span class="text-danger" asp-validation-for="CommentStatusId" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ViewStatusId" class="control-label">@T("Admin.Blog.Field.ViewStatusType")</label>
+                        <lipar-select asp-for="ViewStatusId" asp-items="Model.AvailableViewStatusType" />
+                        <span class="text-danger" asp-validation-for="ViewStatusId" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="LanguageId" class="control-label">@T("Admin.Blog.Field.AvailableLanguageType")</label>
+                        <lipar-select asp-for="LanguageId" asp-items="Model.AvailableLanguageType" />
+                        <span class="text-danger" asp-validation-for="LanguageId" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label">@T("Admin.Blog.Field.AvailableCategoryType")</label>
+                        <lipar-select asp-for="CategoryId" asp-items="Model.AvailableCategoryType" />
+                        <span class="text-danger" asp-validation-for="CategoryId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

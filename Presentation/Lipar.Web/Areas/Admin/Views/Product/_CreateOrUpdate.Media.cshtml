@@ -1,0 +1,147 @@
+﻿@model ProductModel
+
+<div class="card">
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "product-media-grid",
+                UrlRead = new DataUrl("ProductMediaList", "Product", new RouteValueDictionary { [nameof(Model.ProductMediaSearchModel.ProductId)] = Model.ProductMediaSearchModel.ProductId }),
+                UrlUpdate = new DataUrl("ProductMediaEdit", "Product", null),
+                UrlDelete = new DataUrl("ProductMediaDelete", "Product", null),
+                Length = Model.ProductMediaSearchModel.PageSize,
+                LengthMenu = Model.ProductMediaSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.Name))
+            {
+                Title = T("Admin.Media.Field.Name").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.AltAttribute))
+            {
+                Title = T("Admin.Media.Field.AltAttribute").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.Priority))
+            {
+                Title = T("Admin.Media.Field.Priority").Text,
+                Editable = true,
+                EditType = EditType.Number,
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonsInlineEdit()
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.MediaId))
+            {
+                Title = T("Admin.Common.Delete").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+</div>
+
+<section class="card mt-2">
+    <div class="card-header">
+        <div class="pull-right">
+            <span>@T("Admin.Media.Add.Card.Title")</span>
+        </div>
+        <div class="pull-left">
+            <i class="fa fa-plus" aria-hidden="true" data-toggle="collapse" href="#media-add-collapse"></i>
+        </div>
+    </div>
+    <div class="card-body collapse" id="media-add-collapse">
+        <div class="row">
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Name">
+                    @T("Admin.Media.Field.Name")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Name" />
+                <span asp-validation-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Name"></span>
+            </div>
+            <div class="form-group col-md-9">
+
+                <label asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute">
+                    @T("Admin.Media.Field.AltAttribute")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute" />
+                <span asp-validation-for="@Model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute"></span>
+            </div>
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Priority">
+                    @T("Admin.Media.Field.Priority")
+                </label>
+                <input type="number" asp-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Priority" class="form-control" />
+                <span asp-validation-for="@Model.ProductMediaSearchModel.AddProductMediaModel.Priority"></span>
+            </div>
+            <div class="form-group col-md-9">
+                @Html.EditorFor(b => b.ProductMediaSearchModel.AddProductMediaModel.MediaId)
+                <span asp-validation-for="@Model.ProductMediaSearchModel.AddProductMediaModel.MediaId"></span>
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left">
+            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(() => {
+        $('#media-add-btn').click(() => {
+            $('#media-add-btn').attr('disabled', true);
+
+            var MediaId = $("#@Html.IdFor(model => model.ProductMediaSearchModel.AddProductMediaModel.MediaId)").val();
+            if (MediaId == 0) {
+                $('#media-add-btn').attr('disabled', false);
+                return;
+            }
+
+            var postData = {
+                Name: $("#@Html.IdFor(model => model.ProductMediaSearchModel.AddProductMediaModel.Name)").val(),
+                AltAttribute: $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute)").val(),
+                Priority: $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.Priority)").val(),
+                MediaId: MediaId,
+                ProductId:@Model.Id
+            };
+
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                type: 'post',
+                url: "@Html.Raw(Url.Action("ProductMediaCreate","Product"))",
+                data: postData,
+                success: function (data) {
+                    if (data.Result) {
+                        updateTable('#product-media-grid');
+
+                        $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.Name)").val('');
+                        $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute)").val('');
+                        $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.Priority)").val('');
+                        $("#file").val('');
+
+                        $('#media-add-collapse').removeClass('active');
+                        $('#media-add-btn').attr('disabled', false);
+                    }
+                },
+                complete: function () {
+                    $('#media-add-collapse').removeClass('active');
+                    $('#media-add-btn').attr('disabled', false);
+                }
+            })
+        });
+    });
+</script>

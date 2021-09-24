@@ -1,0 +1,73 @@
+﻿@model ProductAttributeMappingModel
+
+@if (Model.Id > 0)
+{
+    <section class="card">
+        <div class="card-header">
+            <span class="card-title"></span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "product-attribute-value-grid",
+                    UrlRead = new DataUrl("ProductAttributeValueList", "Product", new RouteValueDictionary { [nameof(Model.ProductAttributeValueSearchModel.ProductAttributeMappingId)] = Model.ProductAttributeValueSearchModel.ProductAttributeMappingId }),
+                    Length = Model.ProductAttributeValueSearchModel.PageSize,
+                    LengthMenu = Model.ProductAttributeValueSearchModel.AvailablePageSizes,
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeValueModel.Name))
+                {
+                    Title = T("Admin.ProductAttributeValue.Field.Name").Text,
+                });
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeValueModel.Price))
+                {
+                    Title = T("Admin.ProductAttributeValue.Field.Price").Text,
+                });
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeValueModel.IsPreSelected))
+                {
+                    Title = T("Admin.ProductAttributeValue.Field.IsPreSelected").Text,
+                    Render = new RenderBoolean(),
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeValueModel.Id))
+                {
+                    Title = T("Admin.Common.Edit").Text,
+                    Width = "100",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderCustom("renderColumnProductAttributeValueEdit")
+                });
+
+                @await Html.PartialAsync("Table", gridModel)
+
+            <script>
+                    function renderColumnProductAttributeValueEdit(data, type, row, meta) {
+                        return `<button class="btn btn-default" onclick="javascript:OpenWindow('@(Url.Content("~/Admin/Product/ProductAttributeValueEditPopup/"))${data}?btnId=btnRefresh&formId=productattribute-form', 800, 750, true);return false;"><i class="fa fa-pencil"></i></button>`;
+                    }
+            </script>
+            }
+
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" onclick="javascript: OpenWindow('@(Url.Action("ProductAttributeValueCreatePopup","Product" , new { ProductAttributeMappingId = Model.Id, btnId = "btnRefresh", formId = "productattribute-form"}))', 800, 750, true); return false;" class="btn btn-primary pull-left">
+                <i class="fa fa-plus"></i>
+                @T("Admin.Common.Add")
+            </button>
+
+            <input type="submit" id="btnRefresh" style="display:none;" />
+            <script>
+                $(document).ready(function () {
+                    $('#btnRefresh').click(function () {
+                        //refresh grid
+                        updateTable('#product-attribute-value-grid');
+
+                        //return false to don't reload a page
+                        return false;
+                    })
+                })
+            </script>
+        </div>
+    </section>
+}
+

@@ -1,0 +1,30 @@
+﻿@model ProductAttributeValueModel
+@{
+    Layout = "_AdminPopupLayout";
+    ViewBag.PageTitle = T("Admin.ProductAttributeValue.Add.Card.Title").Text;
+}
+
+<form asp-action="ProductAttributeValueCreatePopup" asp-controller="Product" method="post"
+      asp-route-ProductAttributeMappingId="@Context.Request.Query["ProductAttributeMappingId"]"
+      asp-route-btnId="@Context.Request.Query["btnId"]"
+      asp-route-formId="@Context.Request.Query["formId"]">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.ProductAttributeValue.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Add")
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.ProductAttributeValue", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>

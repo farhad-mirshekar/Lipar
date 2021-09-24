@@ -1,0 +1,21 @@
+﻿@model StaticPageModel
+
+@{
+    Html.AddMetaDescription(Model.MetaKeywords);
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("Homepage")">@T("Web.Breadcrumb.Home")</a></li>
+        <li class="breadcrumb-item active">@Model.Title</li>
+    </ol>
+</nav>
+
+<section class="card">
+    <div class="card-header">
+        <span>@Model.Title</span>
+    </div>
+    <div class="card-body text-justify">
+        <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
+    </div>
+</section>

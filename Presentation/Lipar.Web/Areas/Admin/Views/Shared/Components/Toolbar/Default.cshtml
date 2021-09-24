@@ -1,0 +1,52 @@
+﻿@model List<Lipar.Entities.Domain.Organization.Position>
+@inject Lipar.Core.IWorkContext _workContext
+
+<div id="toolbar" class="row">
+    <div class="col-md-3">
+        <div class="d-inline-block">
+            <div id="sidebar-switch">
+                <i class="fa fa-align-justify"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="d-inline-block header-icon float-right mt-1">
+            <div class="d-inline-flex mr-2">
+                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-outline-warning">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </div>
+        </div>
+        <div class="d-inline-block header-icon pull-left mt-2">
+            @{
+                if (Model != null && Model.Count > 0)
+                {
+                    <div class="d-inline-flex mr-2">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                انتخاب جایگاه
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @foreach (var position in Model)
+                                {
+                                    <a href="@Url.Action("ChangePosition","Position",new { Id = position.Id})" class="@overrideClass(position)">
+                                        @position.PositionType.Title - @position.Department.Name
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@functions {
+    string overrideClass(Lipar.Entities.Domain.Organization.Position position)
+    {
+        var cssClass = _workContext.CurrentPosition.Id == position.Id ? "dropdown-item text-success" : "dropdown-item";
+
+        return cssClass;
+    }
+}

@@ -1,0 +1,48 @@
+﻿@model Lipar.Web.Models.Organization.User.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section BodySection{
+    <section class="row">
+        <div class="col-md-7">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-7 mx-auto">
+                        <div class="card card-signin my-5">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">@T("Account.Login.Title")</h5>
+                                <form method="post" asp-route="Login" asp-route-returnurl="@Context.Request.Query["ReturnUrl"]" autocomplete="off">
+                                    <div asp-validation-summary="ModelOnly" class="message-error">@T("Account.Login.Unsuccessful")</div>
+                                    <div class="form-group">
+                                        <label asp-for="Username">@T("Admin.Login.Field.Username").Text</label>
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control" asp-for="Username" />
+                                            <span class="text-danger" asp-validation-for="Username" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Password">@T("Admin.Login.Field.Password").Text</label>
+                                        <div class="col-md-12">
+                                            <input type="password" class="form-control" asp-for="Password" />
+                                            <span class="text-danger" asp-validation-for="Password" />
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">@T("Account.Login.LoginButton")</button>
+                                    <a href="@Url.RouteUrl("SignUp")" class="btn btn-lg btn-default btn-block">
+                                        <i class="fa fa-user"></i>
+                                        @T("Account.Login.NewUser")
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}

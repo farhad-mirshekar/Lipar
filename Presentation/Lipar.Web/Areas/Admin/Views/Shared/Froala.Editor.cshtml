@@ -1,0 +1,82 @@
+﻿@model FroalaEditorModel
+
+<textarea id="@Model.Name" name="@Model.Name">@Model.Content</textarea>
+
+<link href="~/libs/froala-editor/css/froala_editor.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/froala_style.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/colors.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/char_counter.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/code_view.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/draggable.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/fullscreen.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/image.css" rel="stylesheet" />
+<link href="~/libs/froala-editor/css/plugins/video.css" rel="stylesheet" />
+
+<script src="~/libs/froala-editor/js/froala_editor.pkgd.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/align.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/char_counter.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/code_view.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/colors.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/font_family.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/font_size.min.js"></script>
+<script src="~/libs/froala-editor/js/plugins/fullscreen.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        new FroalaEditor('#@Model.Name', {
+            toolbarButtons: {
+                'moreText': {
+                    'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+                },
+                'moreParagraph': {
+                    'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+                },
+                'moreRich': {
+                    'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
+                },
+                'moreMisc': {
+                    'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                    'align': 'right',
+                    'buttonsVisible': 2
+                }
+            },
+            language: 'fa',
+            quickInsertEnabled: false,
+            charCounterCount: false,
+            toolbarSticky: false,
+            imageUploadURL: '@Html.Raw(Url.Action("PictureFroala", "Media"))',
+            // Set the video upload URL.
+            videoUploadURL: '@Html.Raw(Url.Action("VideoFroala","Media"))',
+            // Set request type.
+            videoUploadMethod: 'POST',
+            events: {
+                'video.beforeUpload': function (videos) {
+                    // Return false if you want to stop the video upload.
+                },
+                'video.uploaded': function (response) {
+
+                    // Video was uploaded to the server.
+                },
+                'image.removed': function ($img) {
+                    var fileName = $img.attr('src').split('/');
+                    console.log(fileName[0]);
+                    console.log(fileName[1]);
+                    console.log(fileName[2]);
+                    console.log(fileName[3]);
+                    $.ajax({
+                        cache: false,
+                        type: 'Post',
+                        url: `/admin/Media/DeletePictureFroala?fileName=${fileName[3]}`,
+                        success: function (data) {
+                            if (data.success) {
+                            }
+                        },
+                    });
+                },
+                'video.removed': function ($video) {
+
+                }
+            }
+        });
+    });
+</script>

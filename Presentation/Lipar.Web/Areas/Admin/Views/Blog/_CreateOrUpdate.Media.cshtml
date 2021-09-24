@@ -1,0 +1,145 @@
+﻿@model BlogModel
+
+<div class="card">
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "blog-media-grid",
+                UrlRead = new DataUrl("BlogMediaList", "Blog", new RouteValueDictionary { [nameof(Model.BlogMediaSearchModel.BlogId)] = Model.BlogMediaSearchModel.BlogId }),
+                UrlUpdate = new DataUrl("BlogMediaEdit", "Blog", null),
+                UrlDelete = new DataUrl("BlogMediaDelete", "Blog", null),
+                Length = Model.BlogMediaSearchModel.PageSize,
+                LengthMenu = Model.BlogMediaSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Name))
+            {
+                Title = T("Admin.Media.Field.Name").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.AltAttribute))
+            {
+                Title = T("Admin.Media.Field.AltAttribute").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Priority))
+            {
+                Title = T("Admin.Media.Field.Priority").Text,
+                Editable = true,
+                EditType = EditType.Number,
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonsInlineEdit()
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.MediaId))
+            {
+                Title = T("Admin.Common.Delete").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+</div>
+
+<section class="card mt-2">
+    <div class="card-header">
+        <div class="pull-right">
+            <span>@T("Admin.Media.Add.Card.Title")</span>
+        </div>
+        <div class="pull-left">
+            <i class="fa fa-plus" aria-hidden="true" data-toggle="collapse" href="#media-add-collapse"></i>
+        </div>
+    </div>
+    <div class="card-body collapse" id="media-add-collapse">
+        <div class="row">
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name">
+                    @T("Admin.Media.Field.Name")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name" />
+                <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name"></span>
+            </div>
+            <div class="form-group col-md-9">
+
+                <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute">
+                    @T("Admin.Media.Field.AltAttribute")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute" />
+                <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute"></span>
+            </div>
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority">
+                    @T("Admin.Media.Field.Priority")
+                </label>
+                <input type="number" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority" class="form-control" />
+                <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority"></span>
+            </div>
+            <div class="form-group col-md-9">
+                @Html.EditorFor(b => b.BlogMediaSearchModel.AddBlogMediaModel.MediaId)
+                <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.MediaId"></span>
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left">
+            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('#media-add-btn').click(function () {
+            $('#media-add-btn').attr('disabled', true);
+           var MediaId= $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.MediaId)").val();
+
+            if (MediaId == 0) {
+                $('#media-add-btn').attr('disabled', false);
+                return;
+            }
+            var postData = {
+                Name: $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.Name)").val(),
+                AltAttribute: $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute)").val(),
+                Priority: $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.Priority)").val(),
+                MediaId: MediaId,
+                BlogId:@Model.Id
+            };
+
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                type: 'Post',
+                url: "@Html.Raw(Url.Action("BlogMediaAdd", "Blog"))",
+                data: postData,
+                success: function (data) {
+                    if (data.Result) {
+                        updateTable('#blog-media-grid');
+
+                        $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.Name)").val('');
+                        $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute)").val('');
+                        $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.Priority)").val('');
+                        $("#file").val('');
+
+                        $('#media-add-collapse').removeClass('active');
+                        $('#media-add-btn').attr('disabled', false);
+                    }
+                },
+                complete: function () {
+                    $('#media-add-collapse').removeClass('active');
+                    $('#media-add-btn').attr('disabled', false);
+                }
+            });
+        })
+    });
+</script>

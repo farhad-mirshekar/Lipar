@@ -1,0 +1,145 @@
+﻿@model GalleryModel
+
+<div class="card">
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "gallery-media-grid",
+                UrlRead = new DataUrl("GalleryMediaList", "Gallery", new RouteValueDictionary { [nameof(Model.GalleryMediaSearchModel.GalleryId)] = Model.GalleryMediaSearchModel.GalleryId }),
+                UrlUpdate = new DataUrl("GalleryMediaEdit", "Gallery", null),
+                UrlDelete = new DataUrl("GalleryMediaDelete", "Gallery", null),
+                Length = Model.GalleryMediaSearchModel.PageSize,
+                LengthMenu = Model.GalleryMediaSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryMediaModel.Name))
+            {
+                Title = T("Admin.Media.Field.Name").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryMediaModel.AltAttribute))
+            {
+                Title = T("Admin.Media.Field.AltAttribute").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryMediaModel.Priority))
+            {
+                Title = T("Admin.Media.Field.Priority").Text,
+                Editable = true,
+                EditType = EditType.Number,
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryMediaModel.Id))
+            {
+                Title = T("Admin.Common.Edit").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonsInlineEdit()
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryMediaModel.MediaId))
+            {
+                Title = T("Admin.Common.Delete").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+</div>
+
+<section class="card mt-2">
+    <div class="card-header">
+        <div class="pull-right">
+            <span>@T("Admin.Media.Add.Card.Title")</span>
+        </div>
+        <div class="pull-left">
+            <i class="fa fa-plus" aria-hidden="true" data-toggle="collapse" href="#media-add-collapse"></i>
+        </div>
+    </div>
+    <div class="card-body collapse" id="media-add-collapse">
+        <div class="row">
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Name">
+                    @T("Admin.Media.Field.Name")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Name" />
+                <span asp-validation-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Name"></span>
+            </div>
+            <div class="form-group col-md-9">
+
+                <label asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.AltAttribute">
+                    @T("Admin.Media.Field.AltAttribute")
+                </label>
+                <input type="text" class="form-control" asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.AltAttribute" />
+                <span asp-validation-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.AltAttribute"></span>
+            </div>
+            <div class="form-group col-md-9">
+                <label asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Priority">
+                    @T("Admin.Media.Field.Priority")
+                </label>
+                <input type="number" asp-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Priority" class="form-control" />
+                <span asp-validation-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.Priority"></span>
+            </div>
+            <div class="form-group col-md-9">
+                @Html.EditorFor(b => b.GalleryMediaSearchModel.AddGalleryMediaModel.MediaId)
+                <span asp-validation-for="@Model.GalleryMediaSearchModel.AddGalleryMediaModel.MediaId"></span>
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left">
+            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('#media-add-btn').click(function () {
+            $('#media-add-btn').attr('disabled', true);
+           var MediaId= $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.MediaId)").val();
+
+            if (MediaId == 0) {
+                $('#media-add-btn').attr('disabled', false);
+                return;
+            }
+            var postData = {
+                Name: $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.Name)").val(),
+                AltAttribute: $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.AltAttribute)").val(),
+                Priority: $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.Priority)").val(),
+                MediaId: MediaId,
+                GalleryId:@Model.Id
+            };
+
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                type: 'Post',
+                url: "@Html.Raw(Url.Action("GalleryMediaAdd", "Gallery"))",
+                data: postData,
+                success: function (data) {
+                    if (data.Result) {
+                        updateTable('#gallery-media-grid');
+
+                        $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.Name)").val('');
+                        $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.AltAttribute)").val('');
+                        $("#@Html.IdFor(model=>model.GalleryMediaSearchModel.AddGalleryMediaModel.Priority)").val('');
+                        $("#file").val('');
+
+                        $('#media-add-collapse').removeClass('active');
+                        $('#media-add-btn').attr('disabled', false);
+                    }
+                },
+                complete: function () {
+                    $('#media-add-collapse').removeClass('active');
+                    $('#media-add-btn').attr('disabled', false);
+                }
+            });
+        })
+    });
+</script>

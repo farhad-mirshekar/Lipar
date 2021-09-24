@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.NetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lipar.Core\Lipar.Core.csproj" />
+    <ProjectReference Include="..\Lipar.Data\Lipar.Data.csproj" />
+    <ProjectReference Include="..\Lipar.Entities\Lipar.Entities.csproj" />
+  </ItemGroup>
+</Project>

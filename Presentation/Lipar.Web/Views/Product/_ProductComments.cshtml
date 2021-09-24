@@ -1,0 +1,73 @@
+﻿@model ProductModel
+@inject Lipar.Core.IWorkContext _workContext
+@using Lipar.Core.Common
+@{
+    var commonHelper = new CommonHelper();
+}
+
+<div class="card">
+    <div class="card-header">
+        <i class="fa fa-comment"></i>
+        <span>@T("Web.Comment.Title")</span>
+    </div>
+    <div class="card-body">
+        <ul style="list-style:none">
+            @foreach (var productComment in Model.ProductComments)
+            {
+                <li class="mb-3">
+                    <div class="card" id="blog-comment-@productComment.Id">
+                        <div class="card-header">
+                            <div class="float-left d-flex flex-row">
+                                <i class="fa fa-user p-1"></i>
+                                <span class="card-title p-1">@productComment.FullName</span>
+
+                                <i class="fa fa-calendar ml-2 p-1"></i>
+                                <span class="p-1">@commonHelper.GetPersianDateByFormat(1, productComment.CreationDate)</span>
+                            </div>
+
+                            @if (_workContext.CurrentUser != null)
+                            {
+                                <div class="float-right">
+                                    <button class="btn btn-outline-success product-comment-replay" data-id="@productComment.Id">@T("Web.Comment.Replay")</button>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body">
+                            @Html.Raw(productComment.CommentText)
+                            @if (!string.IsNullOrEmpty(productComment.ReplyText))
+                            {
+                                <hr />
+                                <span>@T("Web.Comment.ReplyComment") :</span>
+                                @Html.Raw(productComment.ReplyText)
+                            }
+
+                        </div>
+                    </div>
+
+                    @await Component.InvokeAsync("ProductComment", new { productCommentList = productComment.Children })
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<!--user is login-->
+@if (_workContext.CurrentUser != null)
+{
+    @await Html.PartialAsync("_CreateOrUpdate.Comment", Model.ProductCommentModel)
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('button.product-comment-replay').click(function () {
+            var $this = $(this);
+            var val = $this.data('id');
+
+            $('#productCommentCreate > input#ParentId').val(val);
+
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#productCommentCreate").offset().top
+            }, 2000)
+        });
+    });
+</script>

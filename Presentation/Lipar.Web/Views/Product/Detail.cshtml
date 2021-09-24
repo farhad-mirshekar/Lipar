@@ -1,0 +1,63 @@
+﻿@model ProductModel
+@{
+    ViewBag.Title = Model.Name;
+}
+
+@section HeadSection{
+    <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Name">
+    <meta name="description" property="dc.description" content="@Model.MetaDescription">
+    <meta property="og:type" content="product">
+    <meta property="product:modified_time" content="@Model.UpdatedDate">
+    <meta name="keywords" property="product:tag" content="@Model.MetaKeywords">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.Value.ToString("yyyy-MM-dd")">
+    <meta property="og:title" itemprop="headline" content="@Model.MetaTitle">
+}
+@section BodySection{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Homepage")">@T("Breadcrumb.Home")</a></li>
+            <li class="breadcrumb-item"><a href="#">@T("Breadcrumb.Product")</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+    <div class="row" data-product-id="@Model.Id" id="js-product-page">
+        <div class="col-lg-12">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        @await Html.PartialAsync("_ProductImages", Model)
+                    </div>
+                    <div class="col-md-6 col-sm-7 col-xs-12">
+                        <section>
+                            <h5>@Model.Name</h5>
+                            <div id="product-description">
+                                @Html.Raw(Model.ShortDescription)
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-3 col-sm-5 col-xs-12" id="price">
+                        @using (Html.BeginRouteForm("Product", FormMethod.Post, new { id = "product-details-form" }))
+                        {
+                            @await Html.PartialAsync("_ProductPrice", Model)
+                        }
+
+                    </div>
+                </div>
+                <div class="row">
+                    @await Html.PartialAsync("_ProductMain", Model)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            @await Html.PartialAsync("_RelatedProduct",Model)
+        </div>
+    </div>
+}
+@section Scripts{
+
+    <script>
+        $('.dropdown-menu a').on('click', function () {
+            $('.dropdown-toggle').html($(this).html() + '<span class="caret pull-left" style="margin-top: 8px;"></span>');
+        })
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model ProductAnswersModel
+@{
+    Html.SetActiveMenuItemSystemName("Product List");
+    ViewBag.PageTitle = T("Admin.ProductAnswers.Edit.Card.Title").Text;
+}
+
+<form asp-action="ProductAnswersEdit" asp-controller="Product" method="post" id="product-question-form">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.ProductAnswers.Edit.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <span id="product-answers-delete" class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                    @T("Admin.Common.Delete")
+                </span>
+                <a asp-action="ProductQuestionEdit" asp-route-Id="@Model.ProductQuestionId" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.ProductAnswers")
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>
+
+<lipar-delete-confirmation asp-button-id="product-answers-delete" asp-model-id="@Model.Id" />

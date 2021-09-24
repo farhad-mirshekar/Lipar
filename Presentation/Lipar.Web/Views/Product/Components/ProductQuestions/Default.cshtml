@@ -1,0 +1,71 @@
+﻿@model List<ProductQuestionModel>
+@inject Lipar.Core.IWorkContext _workContext;
+@using Lipar.Core.Common;
+@{
+    var commonHelper = new CommonHelper();
+}
+<div class="row">
+    <div class="col-md-3">
+        @if (_workContext.CurrentUser != null)
+        {
+            <span>@T("Product.Page.ProductQuestion.CreateQuestionInfo")</span>
+            <button class="btn-outline-danger btn-lg btn-block mt-1" onclick="product.preapreProductQuestionAdd('@Url.Action("ProductQuestionAdd","Product")'); return false;">@T("Product.Page.ProductQuestion.CreateQuestion")</button>
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">@T("Product.Page.ProductQuestions.List.Title").Text</div>
+            </div>
+            <div class="card-body">
+                @if (Model.Count > 0)
+                {
+                    <ul style="list-style:none">
+                        @foreach (var productQuestionModel in Model)
+                        {
+                            <li class="mb-3">
+                                <div class="card" id="product-question-@productQuestionModel.Id">
+                                    <div class="card-header">
+                                        <div class="float-left d-flex flex-row">
+                                            <i class="fa fa-user p-1"></i>
+                                            <span class="card-title p-1">@productQuestionModel.FullName</span>
+
+                                            <i class="fa fa-calendar ml-2 p-1"></i>
+                                            <span class="p-1">@commonHelper.GetPersianDateByFormat(1, productQuestionModel.CreationDate)</span>
+                                        </div>
+
+                                        @if (_workContext.CurrentUser != null)
+                                        {
+                                            <div class="float-right">
+                                                <button class="btn btn-outline-success product-comment-replay" data-id="@productQuestionModel.Id">@T("Web.Comment.Replay")</button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="badge badge-info">
+                                            <i class="fa fa-question" aria-hidden="true"></i>
+                                        </span>
+                                        @Html.Raw(productQuestionModel.QuestionText)
+
+                                        @await Html.PartialAsync("_ProductAnswers", productQuestionModel.ProductAnswers)
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <span class="text-center">@T("Product.Page.ProductQuestion.Empty")</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="js-product-question-create"></div>
+    </div>
+</div>

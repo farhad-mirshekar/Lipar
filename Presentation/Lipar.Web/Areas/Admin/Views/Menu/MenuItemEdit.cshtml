@@ -1,0 +1,100 @@
+﻿@model MenuItemModel
+
+    <form asp-action="MenuItemEdit" asp-controller="Menu" method="post">
+        <input asp-for="MenuId" type="hidden" />
+
+        <section class="card">
+            <div class="card-header">
+                <span class="card-title">افزودن آیتم های منو</span>
+
+                <div class="pull-left">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-floppy-o"></i>
+                        @T("Admin.Common.Add")
+                    </button>
+                    <a href="@Url.Action("Edit",new {Id = Model.MenuId })" class="btn btn-primary">
+                        <i class="fa fa-arrow-circle-left"></i>
+                        @T("Admin.Common.Back")
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="Name">
+                            @T("Admin.MenuItem.Field.Name")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" asp-for="Name" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="Url">
+                            @T("Admin.MenuItem.Field.Url")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" asp-for="Url" />
+                        <span asp-validation-for="Url"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="IconText">
+                            @T("Admin.MenuItem.Field.IconText")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" asp-for="IconText" />
+                        <span asp-validation-for="IconText"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="Priority">
+                            @T("Admin.MenuItem.Field.Priority")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="number" class="form-control" asp-for="Priority" />
+                        <span asp-validation-for="Priority"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="Parameters">
+                            @T("Admin.MenuItem.Field.Parameters")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="number" class="form-control" asp-for="Parameters" />
+                        <span asp-validation-for="Parameters"></span>
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="ForeignLinkType">
+                            @T("Admin.Admin.MenuItem.Field.ForeignLinkType")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <lipar-select asp-for="ForeignLinkType" asp-items="@Model.AvailableForeignLinkType" />
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label asp-for="ViewStatusId">
+                            @T("Admin.Admin.MenuItem.Field.ViewStatusType")
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <lipar-select asp-for="ViewStatusId" asp-items="@Model.AvailableViewStatusType" />
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>

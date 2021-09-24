@@ -1,0 +1,30 @@
+﻿@model MenuModel
+@{
+    Html.SetActiveMenuItemSystemName("Menu List");
+    ViewBag.PageTitle = T("Admin.Menu.Edit.Card.Title").Text;
+}
+
+<form asp-action="Edit" asp-controller="Menu" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.Menu.Edit.Card.Title") - @Model.Name</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+</form>

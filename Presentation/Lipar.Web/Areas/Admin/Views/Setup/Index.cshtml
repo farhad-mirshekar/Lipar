@@ -1,0 +1,200 @@
+﻿@model IEnumerable<SeedModel>
+@inject IJsonHelper Json;
+@using Lipar.Core.Common
+@{
+    var seedModels = Model.GroupBy(t => t.schema).ToList();
+}
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">اجرای Seed</span>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 alert alert-danger">
+                <p class="text-danger">
+                    <strong>توجه</strong>
+                </p>
+                <p class="text-info text-justify">
+                    لطفا قبل از اجرای دستورات، موارد ذیل را چک نمایید
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong class="text-success">دکمه اجرا :</strong>
+                        SET IDENTITY_INSERT [Schema].[TABLE_NAME] OFF
+                    </li>
+                    <li class="list-group-item">
+                        <strong class="text-info">دکمه ویرایش :</strong>
+                        SET IDENTITY_INSERT [Schema].[TABLE_NAME] OFF
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            @foreach (var seedModel in seedModels)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="#@seedModel.Key" aria-controls="@seedModel.Key" role="tab" data-toggle="tab"><b>@seedModel.Key</b></a>
+                </li>
+            }
+        </ul>
+
+        <div class="tab-content mt-2">
+            @foreach (var seedModel in seedModels)
+            {
+                <div role="tabpanel" class="tab-pane" id="@seedModel.Key">
+                    <div class="row">
+                        @foreach (var item in seedModel)
+                        {
+                            <div class="col-sm-6 col-md-4">
+                                <div class="card" data-typename="@item.typeName">
+                                    <div class="card-header">
+                                        <span class="card-title">@item.name</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <label class="text-info">تعداد رکوردهای ثبت شده:</label>
+                                            <span class="success-addmodel">0</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button class="btn btn-success run-seed">اجرا</button>
+                                                    <button class="btn btn-info run-update">ویرایش</button>
+                                                    <button class="btn btn-secondary show-records" data-toggle="modal" data-target="#myModal">مشاهده رکوردها</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                                        0%
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+	var modelTypeUpdatedCount = 0;
+        var _getSeedListUrl = '@Url.Action("GetSeedList", "Setup")',
+            _RunSeedUrl = '@Url.Action("RunSeedModel", "Setup")',
+            _RunUpdateUrl = '@Html.Raw(Url.Action("RunUpdateSeedModel", "Setup"))';
+	var seedModelTypes, selectedSeedModel;
+	var seedModels= [];
+	var message = "";
+    </script>
+
+    <script type="text/javascript">
+    $(function () {
+    @{
+        foreach (var i in Model)
+        {
+           <text>seedModels.push(@Html.Raw(CommonHelper.SerializeObject(i)));</text>
+        }
+     }
+
+        seedModelTypes = seedModels.map(t => t.typeName);
+
+        $('.run-seed').off('click').on('click', function () {
+            var modelName = $(this).closest('.card').data('typename');
+            var seedModel = seedModels.filter(t => t.typeName == modelName)[0];
+            ResetModelTypeItemUpdatedCount(seedModel.typeName);
+            var progress_bar = $(".card[data-typename='" + seedModel.typeName + "']" + " .progress-bar");
+            ResetProgressBar(progress_bar);
+            onUpdate(seedModel, _RunSeedUrl);
+        });
+
+        $('.run-update').off('click').on('click', function () {
+            var modelName = $(this).closest('.card').data('typename');
+            var seedModel = seedModels.filter(t => t.typeName == modelName)[0];
+            ResetModelTypeItemUpdatedCount(seedModel.typeName);
+            var progress_bar = $(".card[data-typename='" + seedModel.typeName + "']" + " .progress-bar");
+            ResetProgressBar(progress_bar);
+            onUpdate(seedModel, _RunUpdateUrl);
+        });
+    })
+
+        function ResetModelTypeItemUpdatedCount(key) {
+            var $that = $(".card[data-typename='" + key + "']" + " .success-addmodel");
+            $($that).html(0);
+        }
+
+        //Try RunSeed For every ModelItem
+        function onUpdate(seedModel,url) {
+            selectedSeedModel = seedModel;
+            selectedSeedModel.sendIndex = 0;
+
+            var temp = seedModel.sendIndex;
+            updateSeedModelItem_sync(1, selectedSeedModel.typeName, temp,url);
+        }
+
+        function updateSeedModelItem_sync(s, typeName, sendIndex,url) {
+            errormsg = null;
+            $.ajax({
+                //method: "POST",
+                url: url,
+                data: { typeName: typeName, index: sendIndex },
+            }).done(function (response) {
+                    var seedModel = seedModels.filter(t => t.typeName == typeName)[0];
+                    seedModel.Items[selectedSeedModel.sendIndex].Status = (response.isSuccess) ? 1 : 2;
+                    selectedSeedModel.sendIndex = selectedSeedModel.sendIndex + 1;
+                    ChangeModelTypeItemUpdatedCount(typeName, selectedSeedModel.sendIndex);
+
+                    var progress_bar = $(".card[data-typename='" + typeName + "']" + " .progress-bar");
+                    RefreshProgressBar(progress_bar, selectedSeedModel.count, selectedSeedModel.sendIndex);
+                    if (response.Message.length > 0) {
+                        message += response.Message + "\n";
+                        console.log(response.Message);
+                        message = "typeName" + ": " + typeName + " ,index: " + sendIndex + " ,message: " + response.Message;
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    message = "typeName" + ": " + typeName + " ,index: " + sendIndex + " ,message: " + jqXHR;
+                }).always(function () {
+
+                    s++;
+                    if (s <= selectedSeedModel.count) {
+                        sendIndex = sendIndex + 1;
+                        setTimeout(function () {
+                            updateSeedModelItem_sync(s, typeName, sendIndex);
+                        }, 20);
+                    } else {
+                        console.log("All Iterations complete");
+                    }
+                });
+
+        }
+
+        function ChangeModelTypeItemUpdatedCount(key, count) {
+            var $that = $(".card[data-typename='" + key + "']" + " .success-addmodel");
+            $($that).html(count);
+        }
+
+        function RefreshProgressBar(progress_bar, max, value) {
+            var progressValue = getProgress(max, value);
+            $(progress_bar).attr("aria-valuenow", progressValue);
+            $(progress_bar).css("width", progressValue + '%');
+            $(progress_bar).html(progressValue + '%');
+        }
+        function ResetProgressBar(progress_bar) {
+            $(progress_bar).attr("aria-valuenow", 0);
+            $(progress_bar).css("width", "0%");
+            $(progress_bar).html("0%");
+        }
+        function getProgress(max, value) {
+            if (max === 0)
+                return 0;
+            return Math.round((value / max) * 100);
+        }
+    </script>
+}
