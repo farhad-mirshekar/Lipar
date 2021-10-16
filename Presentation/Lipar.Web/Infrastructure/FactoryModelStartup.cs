@@ -36,6 +36,7 @@ namespace Lipar.Web.Infrastructure
         public void ApplicationConfigureService(IServiceCollection services)
         {
             services.AddTransient<App.IProductModelFactory, App.ProductModelFactory>();
+            services.AddTransient<App.IShoppingCartItemModelFactory, App.ShoppingCartItemModelFactory>();
         }
     }
 }

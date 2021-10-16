@@ -2,6 +2,7 @@
 using Lipar.Data;
 using Lipar.Entities.Domain.Application;
 using Lipar.Services.Application.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -23,7 +24,7 @@ namespace Lipar.Services.Application.Implementations
         #region Methods
         public void Add(ProductAttributeValue model)
         {
-            if(model == null)
+            if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -51,21 +52,30 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public ProductAttributeValue GetById(int Id)
+        public ProductAttributeValue GetById(int Id, bool noTracking = false)
         {
             if (Id == 0)
             {
                 return null;
             }
+            var query = _repository.Table;
 
-           return _repository.GetById(Id);
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking
+                                   .Include(a => a.ProductAttributeMapping).ThenInclude(a => a.ProductAttribute);
+
+                return query.FirstOrDefault(a => a.Id == Id);
+            }
+
+            return _repository.GetById(Id);
         }
 
         public IPagedList<ProductAttributeValue> List(ProductAttributeValueListVM listVM)
         {
             var query = _repository.TableNoTracking;
 
-            if(listVM.ProductAttributeMappingId.HasValue && listVM.ProductAttributeMappingId.Value != 0)
+            if (listVM.ProductAttributeMappingId.HasValue && listVM.ProductAttributeMappingId.Value != 0)
             {
                 query = query.Where(p => p.ProductAttributeMappingId == listVM.ProductAttributeMappingId);
             }

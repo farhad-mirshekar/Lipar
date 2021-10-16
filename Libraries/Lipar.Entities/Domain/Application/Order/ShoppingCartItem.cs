@@ -29,6 +29,7 @@ namespace Lipar.Entities.Domain.Application
         /// gets or sets the modified date
         /// </summary>
         public DateTime ModifiedDate { get; set; }
+        public Guid ShoppingCartItemId { get; set; }
         #endregion
 
         #region Navigations

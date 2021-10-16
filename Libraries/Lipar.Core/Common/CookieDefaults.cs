@@ -5,5 +5,6 @@
         public static string Prefix => ".Lipar";
         public static string ComparedProductsCookie => ".ComparedProducts";
         public static string Language => ".Language";
+        public static string ShoppingCartItems => ".ShoppingCartItems";
     }
 }

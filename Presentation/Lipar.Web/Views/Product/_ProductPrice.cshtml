@@ -1,5 +1,6 @@
 ﻿@model ProductModel
 @using Lipar.Entities.Domain.Application.Enums
+using Lipar.Services.Application
 @{
     decimal temp1 = 0;
     decimal temp2 = 0;
@@ -47,7 +48,7 @@
                 <div class="col-md-12">
                     @foreach (var productAttribute in Model.ProductAttributes)
                     {
-                        string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", productAttribute.ProductId, productAttribute.ProductAttributeId, productAttribute.Id, productAttribute.TextPrompt);
+                        string controlId = $"{LiparApplicationDefaults.ProductAttributePrefix}{productAttribute.ProductAttributeId}";
                         string TextPrompt = !string.IsNullOrEmpty(productAttribute.TextPrompt) ? productAttribute.TextPrompt : productAttribute.TextPrompt;
 
                         <label class="control-label col-xs-2">@TextPrompt</label>
@@ -55,7 +56,7 @@
                         {
                             case (int)AttributeControlTypeEnum.Dropdown:
                                 <div class="btn-group col-xs-8">
-                                    <select class="form-control" id="@controlId" name="@controlId" required="required">
+                                    <select class="form-control" name="@controlId" id="@controlId" required="required">
                                         <option value="-1"></option>
                                         @foreach (var productAttributeValue in productAttribute.ProductAttributeValues)
                                         {
@@ -79,7 +80,7 @@
                 </div>
             }
             <div class="col-md-12 text-center mt-2">
-                <button type="button" class="btn btn-danger" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddToCart", new { productId = Model.Id })', '#product-details-form');return false;">@T("Product.Button.AddToCart")</button>
+                <button type="button" class="btn btn-danger" onclick="product.addProductToCart('@Url.RouteUrl("AddToCart", new { productId = Model.Id })', '#product-details-form');return false;">@T("Product.Button.AddToCart")</button>
             </div>
         }
         else

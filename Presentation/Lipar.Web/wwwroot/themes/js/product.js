@@ -1,4 +1,10 @@
 ﻿var product = {
+    shoppingCartViewSelector: '',
+
+    init: function (shoppingCartViewSelector) {
+        this.shoppingCartViewSelector = shoppingCartViewSelector;
+    },
+
     //add product to compare list
     addProductToCompareList: function (url) {
         $.ajax({
@@ -60,6 +66,17 @@
             })
 
         }
+    },
+
+    addProductToCart: function (url, formselector) {
+        $.ajax({
+            cache: false,
+            url: url,
+            data: $(formselector).serialize(),
+            type: "POST",
+            success: this.success_process,
+            error: this.ajaxFailure
+        })
     },
 
     success_process: function (response) {

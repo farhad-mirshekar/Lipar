@@ -40,7 +40,7 @@ namespace Lipar.Services.Application.Implementations
 
         public void Delete(Product model)
         {
-            if(model == null)
+            if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -75,8 +75,9 @@ namespace Lipar.Services.Application.Implementations
             if (noTracking)
             {
                 query = _repository.TableNoTracking
-                                    .Include(p => p.ProductQuestions).ThenInclude(pq=>pq.ProductAnswers).ThenInclude(pq => pq.User)
-                                    .Include(p=>p.ProductQuestions).ThenInclude(pq => pq.User);
+                                    .Include(p => p.ProductQuestions).ThenInclude(pq => pq.ProductAnswers).ThenInclude(pq => pq.User)
+                                    .Include(p => p.ProductQuestions).ThenInclude(pq => pq.User)
+                                    .Include(p => p.ProductAttributeMappings);
 
                 var product = query.FirstOrDefault(pc => pc.Id == Id);
 
@@ -148,7 +149,7 @@ namespace Lipar.Services.Application.Implementations
 
         public string GetProductName(int Id)
         {
-            if(Id == 0)
+            if (Id == 0)
             {
                 return "";
             }

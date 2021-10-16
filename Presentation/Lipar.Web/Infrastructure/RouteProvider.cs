@@ -50,8 +50,17 @@ namespace Lipar.Web.Infrastructure
             endpointRouteBuilder.MapControllerRoute("AddProductQuestion", "Product/CreateQuestion",
                 new { controller = "Product", action = "ProductQuestionAdd" });
 
-            endpointRouteBuilder.MapControllerRoute("AddToCart", "Cart/Create",
+            endpointRouteBuilder.MapControllerRoute("AddToCart", "Cart/Create/{ProductId:min(0)}",
                 new { controller = "ShoppingCartItem", action = "ShoppingCartItemCreate" });
+
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartView", "Cart",
+                new { controller = "ShoppingCartItem", action = "Cart" });
+            
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityPlus", "Cart/QuantityPlus/{Id:min(0)}",
+                new { controller = "ShoppingCartItem", action = "CartItemPlus" });
+
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityMinus", "Cart/QuantityMinus/{Id:min(0)}",
+               new { controller = "ShoppingCartItem", action = "CartItemMinus" });
         }
         #endregion
     }

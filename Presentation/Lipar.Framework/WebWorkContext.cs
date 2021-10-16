@@ -1,4 +1,5 @@
 ﻿using Lipar.Core;
+using Lipar.Core.Common;
 using Lipar.Core.Http;
 using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Organization;
@@ -109,12 +110,11 @@ namespace Lipar.Web.Framework
                 return null;
             }
         }
-
         public IEnumerable<Command> Commands
         {
             get
             {
-                if(_cachedCommand != null)
+                if (_cachedCommand != null)
                 {
                     return _cachedCommand;
                 }
@@ -137,12 +137,27 @@ namespace Lipar.Web.Framework
                 _cachedCommand = value.ToList();
             }
         }
-
         public Center CurrentCenter
         {
             get
             {
                 return _centerService.List(new CenterListVM { }).Where(a => a.EnabledTypeId == (int)EnabledTypeEnum.Active).First();
+            }
+        }
+
+        public Guid? ShoppingCartItems
+        {
+            get
+            {
+               var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
+                if (_httpContextAccessor.HttpContext.Request.Cookies[cookieName] != null)
+                {
+                    var value = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
+
+                    return Guid.Parse(value);
+                }
+
+                return null;
             }
         }
         #endregion

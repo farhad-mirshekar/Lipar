@@ -12,10 +12,29 @@
     <link href="~/themes/css/paging.css" rel="stylesheet" />
     <link href="~/libs/noty/noty.css" rel="stylesheet" />
     @RenderSection("HeadSection", false)
+
+    <script src="~/libs/jquery/jquery.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.unobtrusive.js"></script>
+    <script src="~/libs/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/libs/bootstrap-rtl/js/bootstrap.bundle.min.js"></script>
+    <script src="~/libs/noty/noty.js"></script>
+    <script src="~/themes/js/product.js"></script>
+
 </head>
 <body>
     <div class="container-fluid">
         <header class="sticky-top py-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                      
+                    </div>
+                    <div class="col-md-4">
+                        @await Component.InvokeAsync("MiniShoppingCart")
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     @await Component.InvokeAsync("Menu")
@@ -27,15 +46,9 @@
             @RenderBody()
         </main>
     </div>
-
-    <script src="~/libs/jquery/jquery.js"></script>
-    <script src="~/libs/jquery-validate/jquery.validate.min.js"></script>
-    <script src="~/libs/jquery-validate/jquery.validate.unobtrusive.js"></script>
-    <script src="~/libs/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/libs/bootstrap-rtl/js/bootstrap.bundle.min.js"></script>
-    <script src="~/libs/noty/noty.js"></script>
-    <script src="~/themes/js/product.js"></script>
-
+    <script>
+        product.init('#shoppingCartItemCount');
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

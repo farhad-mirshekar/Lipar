@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Lipar.Data.Configuration.Application
 {
-    public class ShippingCartItemBuilder : IEntityTypeConfiguration<ShoppingCartItem>
+    public class ShoppingCartItemBuilder : IEntityTypeConfiguration<ShoppingCartItem>
     {
         public void Configure(EntityTypeBuilder<ShoppingCartItem> builder)
         {
@@ -14,6 +14,7 @@ namespace Lipar.Data.Configuration.Application
             builder.Property(s => s.Id).ValueGeneratedOnAdd();
 
             builder.Property(s => s.Quantity).HasDefaultValue(1).IsRequired();
+            builder.Property(s => s.ShoppingCartItemId).IsRequired();
 
             builder.HasOne(s => s.Product)
                 .WithMany(p => p.ShoppingCartItems)

@@ -1,4 +1,5 @@
 ﻿using Lipar.Entities.Domain.Organization;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Core
@@ -10,5 +11,9 @@ namespace Lipar.Core
         IEnumerable<Position> Positions { get; }
         IEnumerable<Command> Commands { get; set; }
         Center CurrentCenter { get; }
+        /// <summary>
+        /// get shopping cart item  by cookie
+        /// </summary>
+        Guid? ShoppingCartItems { get; }
     }
 }

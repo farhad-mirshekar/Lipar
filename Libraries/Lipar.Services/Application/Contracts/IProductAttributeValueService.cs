@@ -24,8 +24,9 @@ namespace Lipar.Services.Application.Contracts
         /// retrieve product attribute value by id method
         /// </summary>
         /// <param name="Id"></param>
+        /// <param name="noTracking">if this param True, model retrieve no tracking</param>
         /// <returns></returns>
-        ProductAttributeValue GetById(int Id);
+        ProductAttributeValue GetById(int Id,bool noTracking = false);
         /// <summary>
         /// list product attribute value method
         /// </summary>
