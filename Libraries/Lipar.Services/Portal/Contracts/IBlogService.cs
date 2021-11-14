@@ -12,5 +12,10 @@ namespace Lipar.Services.Portal.Contracts
         void Delete(Blog model);
         IPagedList<Blog> List(BlogListVM listVM);
         void DeletePicture(int MediaId);
+        /// <summary>
+        /// load blog settings
+        /// </summary>
+        /// <returns></returns>
+        BlogSetting BlogSettings();
     }
 }

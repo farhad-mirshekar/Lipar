@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lipar.Entities.Domain.General;
 
 namespace Lipar.Web.Factories
 {
@@ -19,12 +20,14 @@ namespace Lipar.Web.Factories
         public CommonModelFactory(IWorkContext workContext
                                 , IStaticPageService staticPageService
                                 , IDynamicPageService dynamicPageService
-                                , IContactUsTypeService contactUsTypeService)
+                                , IContactUsTypeService contactUsTypeService
+                                , ILanguageService languageService)
         {
             _workContext = workContext;
             _staticPageService = staticPageService;
             _dynamicPageService = dynamicPageService;
             _contactUsTypeService = contactUsTypeService;
+            _languageService = languageService;
         }
         #endregion
 
@@ -33,6 +36,7 @@ namespace Lipar.Web.Factories
         private readonly IStaticPageService _staticPageService;
         private readonly IDynamicPageService _dynamicPageService;
         private readonly IContactUsTypeService _contactUsTypeService;
+        private readonly ILanguageService _languageService;
         #endregion
 
         #region Methods
@@ -109,6 +113,25 @@ namespace Lipar.Web.Factories
             }
 
             PrepareContacatUsType(model.AvailableContactUsType);
+
+            return model;
+        }
+        public LanguageSelectorModel PrepareLanguageSelectorModel()
+        {
+            var availableLanguages = _languageService.List(new LanguageListVM { })
+                .Select(l => new LanguageModel
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    UniqueSeoCode = l.UniqueSeoCode,
+                    CreationDate = l.CreationDate
+                }).ToList();
+
+            var model = new LanguageSelectorModel
+            {
+                AvailableLanguages = availableLanguages,
+                CurrentLanguageId = _workContext.WorkingLanguage.Id,
+            };
 
             return model;
         }

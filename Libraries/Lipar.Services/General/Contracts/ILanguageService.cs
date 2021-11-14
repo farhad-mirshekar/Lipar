@@ -7,7 +7,7 @@ namespace Lipar.Services.General.Contracts
     {
         void Add(Language model);
         void Edit(Language model);
-        Language GetById(int Id);
+        Language GetById(int Id, bool noTracking = false);
         void Delete(Language model);
         IPagedList<Language> List(LanguageListVM listVM);
     }

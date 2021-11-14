@@ -1,0 +1,16 @@
+﻿@model LanguageSelectorModel
+@{ 
+    if(Model.AvailableLanguages.Count > 0)
+    {
+        var languages = Model.AvailableLanguages.Select(x => new SelectListItem
+        {
+            Text = x.UniqueSeoCode,
+            Value = Url.RouteUrl("ChangeLanguage", new {LanguageId = x.Id }),
+            Selected = x.Id.Equals(Model.CurrentLanguageId)
+        });
+
+    <div>
+        <select asp-items="languages" onchange="setLocation(this.value);" aria-label="@T("Languages.Selector.Label")"></select>
+    </div>
+    }
+}

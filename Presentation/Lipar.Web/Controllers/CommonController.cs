@@ -1,30 +1,44 @@
-﻿using Lipar.Entities.Domain.General;
+﻿using Lipar.Core;
+using Lipar.Entities.Domain.Core.Enums;
+using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Factories;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Models.General;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Globalization;
+using System.Threading;
 
 namespace Lipar.Web.Controllers
 {
     public class CommonController : BasePublishController
     {
-        #region Fields
-        private readonly ICommonModelFactory _commonModelFactory;
-        private readonly IContactUsService _contactUsService;
-        private readonly ILocaleStringResourceService _localeStringResourceService;
-        #endregion
-
         #region Ctor
         public CommonController(ICommonModelFactory commonModelFactory
                               , IContactUsService contactUsService
-                              , ILocaleStringResourceService localeStringResourceService)
+                              , ILocaleStringResourceService localeStringResourceService
+                              , ILanguageService languageService
+                              , IWorkContext workContext)
         {
             _commonModelFactory = commonModelFactory;
             _contactUsService = contactUsService;
             _localeStringResourceService = localeStringResourceService;
+            _languageService = languageService;
+            _workContext = workContext;
         }
         #endregion
+
+        #region Fields
+        private readonly ICommonModelFactory _commonModelFactory;
+        private readonly IContactUsService _contactUsService;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
+        private readonly ILanguageService _languageService;
+        private readonly IWorkContext _workContext;
+        #endregion
+
         public IActionResult PageNotFound()
         {
             Response.StatusCode = 404;
@@ -70,6 +84,21 @@ namespace Lipar.Web.Controllers
             model.Result = _localeStringResourceService.GetResource("Web.ContactUs.Error");
 
             return View(model);
+        }
+
+        public IActionResult SetLanguage(int languageId)
+        {
+            var returnUrl = Url.RouteUrl("Homepage");
+
+            var language = _languageService.GetById(languageId, true);
+
+            if(language != null && language.ViewStatusId == (int)ViewStatusEnum.Active)
+            {
+                _workContext.WorkingLanguage = language;
+            }
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(language.LanguageCulture.Seo)),new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+            
+            return Redirect(returnUrl);
         }
     }
 }

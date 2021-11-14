@@ -1,11 +1,11 @@
-﻿@model IList<ShoppingCartItemModel>
+﻿@model ShoppingCartItemListModel
 
 <div class="card">
     <div class="card-header">
         <span class="card-title">@T("Web.ShoppingCartItem.Cart.Title")</span>
     </div>
     <div class="card-body" id="cart">
-        @if (Model != null && Model.Count > 0)
+        @if (Model != null && (Model.AvailableShoppingCartItemModels != null && Model.AvailableShoppingCartItemModels.Count > 0))
         {
             @await Html.PartialAsync("_Cart", Model)
         }

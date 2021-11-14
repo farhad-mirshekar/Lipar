@@ -24,22 +24,8 @@
 </head>
 <body>
     <div class="container-fluid">
-        <header class="sticky-top py-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8">
-                      
-                    </div>
-                    <div class="col-md-4">
-                        @await Component.InvokeAsync("MiniShoppingCart")
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    @await Component.InvokeAsync("Menu")
-                </div>
-            </div>
+        <header class="py-1">
+            @await Component.InvokeAsync("Menu")
         </header>
         <main role="main">
             @RenderSection("BodySection", false)

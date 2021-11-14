@@ -1,31 +1,37 @@
 ﻿using Lipar.Core;
 using Lipar.Data;
-using Lipar.Entities;
 using Lipar.Entities.Domain.Portal;
-using Lipar.Entities.Domain.General;
 using Lipar.Services.Portal.Contracts;
 using System;
 using System.Linq;
+using Lipar.Services.General.Contracts;
+using Lipar.Core.Caching;
 
 namespace Lipar.Services.Portal.Implementations
 {
     public class BlogService : IBlogService
     {
-        #region Fields
-        private readonly IRepository<Blog> _repository;
-        private readonly IRepository<BlogMedia> _blogMediaRepository;
-        private readonly IWorkContext _workContext;
-        #endregion
-
         #region Ctor
         public BlogService(IRepository<Blog> repository
                          , IWorkContext workContext
-                         , IRepository<BlogMedia> blogMediaRepository)
+                         , IRepository<BlogMedia> blogMediaRepository
+                         , ISettingService settingService
+                         , IStaticCacheManager cacheManager)
         {
             _repository = repository;
             _workContext = workContext;
             _blogMediaRepository = blogMediaRepository;
+            _settingService = settingService;
+            _cacheManager = cacheManager;
         }
+        #endregion
+
+        #region Fields
+        private readonly IRepository<Blog> _repository;
+        private readonly IRepository<BlogMedia> _blogMediaRepository;
+        private readonly IWorkContext _workContext;
+        private readonly ISettingService _settingService;
+        private readonly IStaticCacheManager _cacheManager;
         #endregion
 
         #region Methods
@@ -92,6 +98,15 @@ namespace Lipar.Services.Portal.Implementations
             var blogMedia = query.Where(bm => bm.MediaId == MediaId).Single();
 
             _blogMediaRepository.Delete(blogMedia);
+        }
+
+        public BlogSetting BlogSettings()
+        {
+            var cacheKey = LiparPortalDefaults.Load_Blog_Settings;
+            return _cacheManager.Get(cacheKey, () =>
+            {
+                return _settingService.LoadSettings<BlogSetting>();
+            });
         }
         #endregion
     }

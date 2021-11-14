@@ -11,6 +11,8 @@ namespace Lipar.Web.Models.Application
         {
             MediaModel = new MediaModel();
             ProductAttributeValues = new List<ProductAttributeValue>();
+            DeliveryDate = new DeliveryDateModel();
+            ShippingCost = new ShippingCostModel();
         }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
@@ -23,6 +25,8 @@ namespace Lipar.Web.Models.Application
         public decimal ProductPrice { get; set; }
         public decimal? ProductDiscount { get; set; }
         public int? ProductDiscountTypeId { get; set; }
+        public DeliveryDateModel DeliveryDate { get; set; }
+        public ShippingCostModel ShippingCost { get; set; }
         public List<ProductAttributeValue> ProductAttributeValues { get; set; }
     }
 }

@@ -1,0 +1,8 @@
+﻿@model OrderSettingModel
+
+<input asp-for="Id" type="hidden" />
+<div class="form-group">
+    <label asp-for="ShoppingCartRate" class="control-label">@T("Admin.OrderSetting.Field.ShoppingCartRate")</label>
+    <input type="text" class="form-control" asp-for="ShoppingCartRate" required>
+    <span class="text-danger" asp-validation-for="ShoppingCartRate" />
+</div>

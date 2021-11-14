@@ -29,6 +29,9 @@ a{
     text-decoration:none !important;
 }
 
+ul{
+    list-style:none;
+}
 /*loading css*/
 #loading .showbox {
     position: fixed;
@@ -181,4 +184,38 @@ a{
     width: 100px;
     font-size: 16px !important;
 }
-
+/*----------------Menu--------------------*/
+.header-upper {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    z-index: 1;
+}
+.header-upper::after{
+    clear:both;
+    content:"";
+    display:block;
+}
+.header-selectors-wrapper {
+    float: left;
+    border: none;
+    padding: 0;
+}
+    .header-selectors-wrapper > div {
+        width: auto;
+        min-width: 100px;
+        margin: 0 12px 0 0;
+        line-height: 43px;
+    }
+.header-links-wrapper {
+    float: right;
+    padding: 0;
+    position:relative;
+}
+.header-links li {
+    display: inline-block;
+    margin: 0 10px;
+}
+.header-links a, .header-links span {
+    line-height: 45px;
+    text-transform: none;
+}

@@ -1,0 +1,31 @@
+﻿@model OrderSettingModel
+
+@{
+    //Html.SetActiveMenuItemSystemName("Blog List");
+    ViewBag.PageTitle = T("Admin.OrderSetting.Edit.Card.Title").Text;
+}
+
+<form asp-action="Order" asp-controller="Setting" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="pull-right">
+                <span class="card-title">@T("Admin.OrderSetting.Card.Title")</span>
+            </div>
+
+            <div class="pull-left">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Admin.Common.Edit")
+                </button>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Admin.Common.Back")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.Order", Model)
+        </div>
+    </section>
+</form>
+

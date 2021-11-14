@@ -1,13 +1,32 @@
 ﻿@model Lipar.Web.Models.General.MenuModel
 @using Lipar.Core.ReadingTime
 
-@if (Model.UserHeaderLink.IsAuthenticated)
-{
+<div class="header-upper">
+    <div class="header-selectors-wrapper">
+        @await Component.InvokeAsync("LanguageSelector")
+    </div>
+    <div class="header-links-wrapper">
+        <div class="header-links">
+            <ul>
+                @if (Model.UserHeaderLink.IsAuthenticated)
+                {
+                    <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+                    <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
+                }
+                else
+                {
+                    var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
+                        ? url.ToString()
+                        : string.Empty;
 
-    <a href="@Url.Content("~/Admin")" class="d-block p-3 text-center text-white bg-info">Admin</a>
-
-}
-
+                    <li><a href="@Url.RouteUrl("Register")" class="ico-register">@T("Account.Register")</a></li>
+                    <li><a href="@Url.RouteUrl("Login")" class="ico-login">@T("Account.Login")</a></li>
+                }
+            </ul>
+        </div>
+        
+    </div>
+</div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">اولین سایت</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -1,5 +1,8 @@
-﻿using Lipar.Entities.Domain.Portal;
+﻿using Lipar.Core.Caching;
+using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Portal;
 using Lipar.Services.General.Contracts;
+using Lipar.Services.Portal;
 using Lipar.Web.Areas.Admin.Factories.General;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
@@ -10,18 +13,21 @@ namespace Lipar.Web.Areas.Admin.Controllers
 {
     public class SettingController : BaseAdminController
     {
-        #region Fields
-        private readonly ISettingService _settingService;
-        private readonly ISettingModelFactory _settingModelFactory;
-        #endregion
-
         #region Ctor
         public SettingController(ISettingService settingService
-                               , ISettingModelFactory settingModelFactory)
+                               , ISettingModelFactory settingModelFactory
+                               , IStaticCacheManager cacheManager)
         {
             _settingService = settingService;
             _settingModelFactory = settingModelFactory;
+            _cacheManager = cacheManager;
         }
+        #endregion
+
+        #region Fields
+        private readonly ISettingService _settingService;
+        private readonly ISettingModelFactory _settingModelFactory;
+        private readonly IStaticCacheManager _cacheManager;
         #endregion
 
         #region Blog Setting Methods
@@ -38,6 +44,32 @@ namespace Lipar.Web.Areas.Admin.Controllers
             blogSetting = model.ToSettings(blogSetting);
 
             _settingService.SaveSetting(blogSetting, x => x.BlogPageSize);
+
+            //remove load blog settings cache
+            _cacheManager.Remove(LiparPortalDefaults.Load_Blog_Settings);
+
+            return View();
+        }
+        #endregion
+
+        #region Order Setting Methods
+        public IActionResult Order()
+        {
+            var model = _settingModelFactory.PrepareOrderSettingModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Order(OrderSettingModel model)
+        {
+            var orderSetting = _settingService.LoadSettings<OrderSetting>();
+            orderSetting = model.ToSettings(orderSetting);
+
+            _settingService.SaveSetting(orderSetting, x => x.ShoppingCartRate);
+
+            //remove load blog settings cache
+            //_cacheManager.Remove(LiparPortalDefaults.Load_Blog_Settings);
+
             return View();
         }
         #endregion

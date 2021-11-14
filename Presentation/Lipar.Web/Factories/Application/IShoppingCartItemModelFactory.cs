@@ -30,6 +30,6 @@ namespace Lipar.Web.Factories.Application
         /// <param name="shoppingCartItemId">shopping cart item id</param>
         /// <param name="UserId">user id</param>
         /// <returns></returns>
-        IList<ShoppingCartItemModel> PrepareShoppingCartItemListModel(Guid shoppingCartItemId);
+        ShoppingCartItemListModel PrepareShoppingCartItemListModel(Guid shoppingCartItemId);
     }
 }

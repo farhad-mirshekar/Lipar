@@ -134,6 +134,8 @@ namespace Lipar.Services.General.Implementations
             else
                 SetSetting(key, string.Empty);
 
+            _staticCacheManager.Remove(LiparPublicDefaults.Settings_All_As_Dictionary);
+
         }
 
         public void SetSetting<T>(string Name, T Key)

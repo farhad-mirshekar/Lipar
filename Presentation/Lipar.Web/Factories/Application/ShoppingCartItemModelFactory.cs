@@ -196,14 +196,16 @@ namespace Lipar.Web.Factories.Application
             };
         }
 
-        public IList<ShoppingCartItemModel> PrepareShoppingCartItemListModel(Guid shoppingCartItemId)
+        public ShoppingCartItemListModel PrepareShoppingCartItemListModel(Guid shoppingCartItemId)
         {
             var cacheKey = new CacheKey(LiparWebCacheKey.Shopping_Cart_List);
 
             return _cacheManager.Get(cacheKey, () =>
             {
+                var shoppingCartItemListModel = new ShoppingCartItemListModel();
+
                 var query = _shoppingCartItemService.GetShoppingCartItemQuery(shoppingCartItemId);
-                var result = query.Select(x => new ShoppingCartItemModel
+                var shoppingCartItemModels = query.Select(x => new ShoppingCartItemModel
                 {
                     Id = x.Id,
                     ProductId = x.ProductId,
@@ -217,14 +219,38 @@ namespace Lipar.Web.Factories.Application
                     ProductPrice = x.Product.Price,
                     ProductDiscount = x.Product.Discount,
                     ProductDiscountTypeId = x.Product.DiscountTypeId,
+                    DeliveryDate = x.Product.DeliveryDate != null ? new DeliveryDateModel
+                    {
+                        Id = x.Product.DeliveryDateId.Value,
+                        Name = x.Product.DeliveryDate.Name,
+                        Priority = x.Product.DeliveryDate.Priority,
+                        Description = x.Product.DeliveryDate.Description,
+                    }
+                    : null,
+                    ShippingCost = x.Product.ShippingCostId.HasValue ? new ShippingCostModel
+                    {
+                        Id = x.Product.ShippingCostId.Value,
+                        Price = x.Product.ShippingCost.Price,
+                        Name = x.Product.ShippingCost.Name,
+                        Priority = x.Product.ShippingCost.Priority
+                    }
+                    : null,
                     ProductAttributeValues = CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
                 }).ToList();
 
-                foreach (var item in result)
+                foreach (var shoppingCartItem in shoppingCartItemModels)
                 {
-                    item.MediaModel = PrepareMediaModel(item.ProductId);
+                    shoppingCartItem.MediaModel = PrepareMediaModel(shoppingCartItem.ProductId);
+                    shoppingCartItemListModel.CartAmount += CalculatePrice(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice, shoppingCartItem.Quantity);
                 }
-                return result;
+
+                shoppingCartItemListModel.AvailableShoppingCartItemModels = shoppingCartItemModels;
+
+                var shippingCost = shoppingCartItemModels.Where(x => x.ShippingCost != null).OrderByDescending(x => x.ShippingCost.Priority).Select(x => x.ShippingCost).FirstOrDefault();
+                
+                shoppingCartItemListModel.CartAmount = CalculateShippingCost(shoppingCartItemListModel.CartAmount, shippingCost);
+
+                return shoppingCartItemListModel;
             });
 
         }
@@ -254,6 +280,52 @@ namespace Lipar.Web.Factories.Application
 
             return mediaModel;
 
+        }
+
+        /// <summary>
+        /// calculate price
+        /// </summary>
+        /// <param name="ProductDiscountTypeId"></param>
+        /// <param name="discount"></param>
+        /// <param name="price"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        private decimal CalculatePrice(int? ProductDiscountTypeId, decimal? discount, decimal price, int quantity)
+        {
+            switch (ProductDiscountTypeId)
+            {
+                case (int)DiscountTypeEnum.Amount:
+                    price = price - (discount ?? 0);
+                    break;
+
+                case (int)DiscountTypeEnum.Percentage:
+                    price = (price * (discount ?? 1)) / 100;
+                    break;
+            }
+
+            if (quantity == 0)
+            {
+                quantity = 1;
+            }
+
+            price = price * quantity;
+            return price;
+        }
+
+        /// <summary>
+        /// calculate shipping cost
+        /// </summary>
+        /// <param name="price"></param>
+        /// <param name="shippingCost"></param>
+        /// <returns></returns>
+        private decimal CalculateShippingCost(decimal price , ShippingCostModel shippingCost)
+        {
+            if(shippingCost != null)
+            {
+                price = price - shippingCost.Price;
+            }
+
+            return price;
         }
         #endregion
     }

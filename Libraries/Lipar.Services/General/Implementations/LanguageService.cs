@@ -1,7 +1,9 @@
 ﻿using Lipar.Core;
+using Lipar.Core.Infrastructure;
 using Lipar.Data;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Lipar.Services.General.Implementations
@@ -10,21 +12,21 @@ namespace Lipar.Services.General.Implementations
     {
         #region Fields
         private readonly IRepository<Language> _repository;
-        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
-        public LanguageService(IRepository<Language> repository
-                             , IWorkContext workContext)
+        public LanguageService(IRepository<Language> repository)
         {
             _repository = repository;
-            _workContext = workContext;
         }
         #endregion
 
         #region Methods
         public void Add(Language model)
         {
+            var _workContext = EngineContext.Current.Resolve<IWorkContext>();
+            model.UserId = _workContext.CurrentUser.Id;
+
             _repository.Insert(model);
         }
 
@@ -38,12 +40,24 @@ namespace Lipar.Services.General.Implementations
             _repository.Update(model);
         }
 
-        public Language GetById(int Id)
-        => _repository.GetById(Id);
+        public Language GetById(int Id, bool noTracking = false)
+        {
+            var query = _repository.Table
+                                   .Include(x => x.LanguageCulture).AsQueryable();
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking
+                                   .Include(x => x.LanguageCulture).AsQueryable();
+
+                return query.Where(x => x.Id == Id).FirstOrDefault();
+            }
+
+            return query.FirstOrDefault(x => x.Id == Id);
+        }
 
         public IPagedList<Language> List(LanguageListVM listVM)
         {
-            var query = _repository.Table;
+            var query = _repository.TableNoTracking.Include(x => x.LanguageCulture).AsQueryable();
 
             if (!string.IsNullOrEmpty(listVM.Name))
                 query = query.Where(l => l.Name.Contains(listVM.Name.Trim()));

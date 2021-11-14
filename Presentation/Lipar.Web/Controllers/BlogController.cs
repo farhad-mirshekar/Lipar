@@ -38,7 +38,9 @@ namespace Lipar.Web.Controllers
         #region Blogs
         public IActionResult List(int? page)
         {
-            var model = _blogModelFactory.PrepareBlogList(PageIndex: page ?? 1, PageSize: 2);
+            var blogSettings = _blogService.BlogSettings();
+
+            var model = _blogModelFactory.PrepareBlogList(PageIndex: page ?? 1, PageSize: blogSettings.BlogPageSize);
             return View(model);
         }
 

@@ -2,10 +2,14 @@
 using Lipar.Core.Common;
 using Lipar.Core.Http;
 using Lipar.Entities.Domain.Core.Enums;
+using Lipar.Entities.Domain.General;
+using Lipar.Entities.Domain.General.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Authentication;
+using Lipar.Services.General.Contracts;
 using Lipar.Services.Organization.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +24,12 @@ namespace Lipar.Web.Framework
         private readonly ICommandService _commandService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICenterService _centerService;
+        private readonly ILanguageService _languageService;
 
         private User _cachedUser;
         private Position _cachedPosition;
         private IList<Command> _cachedCommand;
+        private Language _cachedLanguage;
         #endregion
 
         #region Ctor
@@ -31,13 +37,15 @@ namespace Lipar.Web.Framework
                             , IPositionService positionService
                             , IHttpContextAccessor httpContextAccessor
                             , ICommandService commandService
-                            , ICenterService centerService)
+                            , ICenterService centerService
+                            , ILanguageService languageService)
         {
             _authenticationService = authenticationService;
             _positionService = positionService;
             _httpContextAccessor = httpContextAccessor;
             _commandService = commandService;
             _centerService = centerService;
+            _languageService = languageService;
         }
         #endregion
 
@@ -149,7 +157,7 @@ namespace Lipar.Web.Framework
         {
             get
             {
-               var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
+                var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
                 if (_httpContextAccessor.HttpContext.Request.Cookies[cookieName] != null)
                 {
                     var value = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
@@ -158,6 +166,48 @@ namespace Lipar.Web.Framework
                 }
 
                 return null;
+            }
+        }
+        public Language WorkingLanguage
+        {
+            get
+            {
+                Language detectedLanguage = null;
+
+                if (_cachedLanguage != null)
+                {
+                    return _cachedLanguage;
+                }
+
+                detectedLanguage = GetLanguageFromRequest();
+                if(detectedLanguage != null)
+                {
+                    _cachedLanguage = detectedLanguage;
+                    return _cachedLanguage;
+                }
+                else
+                {
+                    var languages = _languageService.List(new LanguageListVM { });
+
+                    var language = languages.Where(x => x.LanguageCultureId == (int)LanguageCultureEnum.Persian).FirstOrDefault();
+
+                    _cachedLanguage = language;
+                    return _cachedLanguage;
+                }
+            }
+            set
+            {
+                var languageId = value?.Id ?? 0;
+                var language = _languageService.GetById(languageId, true);
+
+                if(language != null && language.Id> 0)
+                {
+                    _cachedLanguage = language;
+                }
+                else
+                {
+                    _cachedLanguage = null;
+                }
             }
         }
         #endregion
@@ -188,6 +238,23 @@ namespace Lipar.Web.Framework
                 Secure = true
             };
             _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, userGuid.ToString(), options);
+        }
+        protected Language GetLanguageFromRequest()
+        {
+            if (_httpContextAccessor.HttpContext?.Request == null)
+                return null;
+
+            var requestCulture = _httpContextAccessor.HttpContext.Features.Get<IRequestCultureFeature>()?.RequestCulture;
+
+            //try to get language by culture name
+            var requestLanguage = _languageService.List(new LanguageListVM { }).FirstOrDefault(language =>
+                language.LanguageCulture.Seo.Equals(requestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase));
+
+            //check language availability
+            if (requestLanguage == null || requestLanguage.ViewStatusId != (int)ViewStatusEnum.Active)
+                return null;
+
+            return requestLanguage;
         }
         #endregion
     }

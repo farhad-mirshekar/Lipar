@@ -25,5 +25,11 @@ namespace Lipar.Web.Factories
         /// <param name="contactUs"></param>
         /// <returns></returns>
         ContactUsModel PrepareContactUsModel(ContactUsModel model);
+
+        /// <summary>
+        /// prepare language selector model
+        /// </summary>
+        /// <returns></returns>
+        LanguageSelectorModel PrepareLanguageSelectorModel();
     }
 }

@@ -147,6 +147,9 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         {
             CreateMap<BlogSetting, BlogSettingModel>();
             CreateMap<BlogSettingModel, BlogSetting>();
+
+            CreateMap<OrderSetting, OrderSettingModel>();
+            CreateMap<OrderSettingModel, OrderSetting>();
         }
         protected void CreateContactUsMap()
         {

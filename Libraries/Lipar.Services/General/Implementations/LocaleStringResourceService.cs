@@ -78,7 +78,7 @@ namespace Lipar.Services.General.Implementations
 
         public string GetResource(string Format)
         {
-            return GetResource(Format, 1);
+            return GetResource(Format, _workContext.WorkingLanguage.Id);
         }
 
         private string GetResource(string resourceKey, int LanguageId)

@@ -34,5 +34,14 @@ namespace Lipar.Web.Framework.Infrastructure.Extensions
         {
             EngineContext.Current.ConfigureRequestPipeline(application);
         }
+        public static void ConfigurationCulture(this IApplicationBuilder application)
+        {
+            var supportedCultures = new[] { "fa-IR","en-US" };
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[1])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            application.UseRequestLocalization(localizationOptions);
+        }
     }
 }

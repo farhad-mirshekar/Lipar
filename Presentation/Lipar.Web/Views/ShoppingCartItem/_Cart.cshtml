@@ -1,10 +1,15 @@
-﻿@model IList<ShoppingCartItemModel>
+﻿@model ShoppingCartItemListModel
+
 @using Lipar.Entities.Domain.Application.Enums
+@inject Lipar.Services.Application.Contracts.IOrderService _orderService
 @{
     Layout = null;
+    var orderSetting = _orderService.OrderSettings();
+    var shippingCost = Model.AvailableShoppingCartItemModels.Where(s => s.ShippingCost != null).OrderByDescending(s => s.ShippingCost.Priority).Select(s=>s.ShippingCost).FirstOrDefault();
+    var deliveryDate = Model.AvailableShoppingCartItemModels.Where(s => s.DeliveryDate != null).OrderByDescending(s => s.DeliveryDate.Priority).Select(s => s.DeliveryDate).FirstOrDefault();
 }
 @{
-    foreach (var shoppingCartItem in Model)
+    foreach (var shoppingCartItem in Model.AvailableShoppingCartItemModels)
     {
         decimal temp1 = 0;
         decimal temp2 = 0;
@@ -88,4 +93,60 @@
             </div>
         </div>
     }
+<div class="row mt-2">
+    @{
+        if (shippingCost != null && shippingCost.Price > 0)
+        {
+            <div class="col-md-4">
+                <label class="label label-default">@T("Web.ShoppingCartItem.Cart.shippingCost") (@shippingCost.Name) : </label>
+                <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price).Replace("$", "")</label>
+            </div>
+        }
+        else
+        {
+            if (Model.CartAmount < orderSetting.ShoppingCartRate)
+            {
+
+                <div class="col-md-4">
+                    <label class="label label-default">@T("Web.ShoppingCartItem.Cart.shippingCost") </label>
+                    <label class="label text-danger">@string.Format("{0:C0} تومان", orderSetting.ShoppingCartRate).Replace("$", "")</label>
+                </div>
+            }
+        }
+        if (shippingCost != null && (shippingCost.Price > 0 || Model.CartAmount < orderSetting.ShoppingCartRate || Model.CartAmount > orderSetting.ShoppingCartRate))
+        {
+            if (shippingCost.Price > 0)
+            {
+                <div class="col-md-4">
+                    <label class="label label-default">@T("Web.ShoppingCartItem.Cart.CartAmount")</label>
+                    <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price + Model.CartAmount).Replace("$", "")</label>
+                </div>
+            }
+            else if (Model.CartAmount < orderSetting.ShoppingCartRate)
+            {
+                <div class="col-md-4">
+                    <label class="label label-default">@T("Web.ShoppingCartItem.Cart.CartAmount")</label>
+                    <label class="label text-danger">@string.Format("{0:C0} تومان", 0 + Model.CartAmount).Replace("$", "")</label>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4">
+                    <label class="label label-default">@T("Web.ShoppingCartItem.Cart.CartAmount")</label>
+                    <label class="label text-danger">@string.Format("{0:C0} تومان", Model.CartAmount).Replace("$", "")</label>
+                </div>
+            }
+        }
+    }
+    @if (deliveryDate != null)
+    {
+        <div class="col-md-4">
+            <label class="label label-default">
+                <i class="fa fa-calendar text-success"></i>
+                @T("Web.ShoppingCartItem.Cart.DeliveryDate")
+            </label>
+            <label class="label text-danger">@deliveryDate.Name</label>
+        </div>
+    }
+</div>
 }

@@ -13,6 +13,7 @@ namespace Lipar.Web.Framework.Infrastructure
         public void Configure(IApplicationBuilder application)
         {
             application.UseLiparAuthentication();
+            application.ConfigurationCulture();
         }
 
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
