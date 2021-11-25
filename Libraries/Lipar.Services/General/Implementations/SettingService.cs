@@ -52,10 +52,10 @@ namespace Lipar.Services.General.Implementations
 
         public Setting GetSetting(string Name)
         {
-            if (!string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
                 return null;
 
-            var query = _repository.Table;
+            var query = _repository.TableNoTracking;
             var setting = query.Where(s => s.Name.Contains(Name.Trim())).FirstOrDefault();
 
             return setting;

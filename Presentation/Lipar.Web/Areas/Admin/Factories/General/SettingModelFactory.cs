@@ -1,4 +1,5 @@
 ﻿using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.General;
 using Lipar.Entities.Domain.Portal;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
@@ -35,6 +36,15 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             var orderSettingModel = orderSetting.ToSettingsModel<OrderSettingModel>();
 
             return orderSettingModel;
+        }
+
+        public CommonSettingModel PrepareCommonSettingModel()
+        {
+            var commonSetting = _settingService.LoadSettings<CommonSetting>();
+
+            var commonSettingModel = commonSetting.ToSettingsModel<CommonSettingModel>();
+
+            return commonSettingModel;
         }
     }
 }

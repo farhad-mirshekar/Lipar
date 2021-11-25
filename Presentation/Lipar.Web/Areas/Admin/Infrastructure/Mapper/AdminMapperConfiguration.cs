@@ -150,6 +150,9 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
 
             CreateMap<OrderSetting, OrderSettingModel>();
             CreateMap<OrderSettingModel, OrderSetting>();
+
+            CreateMap<CommonSetting, CommonSettingModel>();
+            CreateMap<CommonSettingModel, CommonSetting>();
         }
         protected void CreateContactUsMap()
         {

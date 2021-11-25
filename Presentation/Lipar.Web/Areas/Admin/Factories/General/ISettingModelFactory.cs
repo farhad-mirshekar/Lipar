@@ -11,5 +11,11 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         /// </summary>
         /// <returns></returns>
         OrderSettingModel PrepareOrderSettingModel();
+
+        /// <summary>
+        /// prepare common setting model
+        /// </summary>
+        /// <returns></returns>
+        CommonSettingModel PrepareCommonSettingModel();
     }
 }

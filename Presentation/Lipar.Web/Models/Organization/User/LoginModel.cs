@@ -1,6 +1,6 @@
 ﻿using Lipar.Web.Framework.MVC.Attributes;
 
-namespace Lipar.Web.Models.Organization.User
+namespace Lipar.Web.Models.Organization
 {
     public class LoginModel
     {

@@ -152,6 +152,14 @@ namespace Lipar.Services.Organization.Implementations
             return LoginResultTypeEnum.Successful;
         }
 
+        public bool CheckDuplicateUserName(string userName)
+        {
+            userName = userName.Trim();
+            var query = _repository.TableNoTracking;
+
+            return query.Any(u => u.Username == userName);
+        }
+
         #endregion
 
         #region Utilities

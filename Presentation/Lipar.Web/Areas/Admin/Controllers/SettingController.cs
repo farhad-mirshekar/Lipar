@@ -1,5 +1,6 @@
 ﻿using Lipar.Core.Caching;
 using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.General;
 using Lipar.Entities.Domain.Portal;
 using Lipar.Services.General.Contracts;
 using Lipar.Services.Portal;
@@ -69,6 +70,27 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
             //remove load blog settings cache
             //_cacheManager.Remove(LiparPortalDefaults.Load_Blog_Settings);
+
+            return View();
+        }
+        #endregion
+
+        #region Order Setting Methods
+        public IActionResult Common()
+        {
+            var model = _settingModelFactory.PrepareCommonSettingModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Common(CommonSettingModel model)
+        {
+            var commonSetting = _settingService.LoadSettings<CommonSetting>();
+            commonSetting = model.ToSettings(commonSetting);
+
+            _settingService.SaveSetting(commonSetting, x => x.ShowCaptcha);
+            _settingService.SaveSetting(commonSetting, x => x.ShowCaptchaInLoginPage);
+            _settingService.SaveSetting(commonSetting, x => x.ShowCaptchaInRegisterPage);
 
             return View();
         }

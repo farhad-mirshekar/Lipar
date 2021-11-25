@@ -1,7 +1,10 @@
-﻿@model Lipar.Web.Models.Organization.User.LoginModel
-
+﻿@model LoginModel
+@using Lipar.Services.General.Contracts
+@inject ISettingService _settingService
 @{
     ViewData["Title"] = "Login";
+    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
+    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInLoginPage").Value, out bool showCaptchaInLoginPage);
 }
 
 @section BodySection{
@@ -30,7 +33,24 @@
                                             <span class="text-danger" asp-validation-for="Password" />
                                         </div>
                                     </div>
-
+                                    @if (showCaptcha && showCaptchaInLoginPage)
+                                    {
+                                        <div class="form-group row">
+                                            <label class="col-md-2 col-sm-2 col-form-label">
+                                                <i class="fa fa-fw fa-keyboard-o" style="font-size:1.7em !important"></i>
+                                            </label>
+                                            <div class="col-md-4 col-sm-5 form-input" style="padding-left: 0">
+                                                <input type="text" id="Captcha" name="Captcha" tabindex="3" class="form-control" placeholder="کد امنیتی">
+                                                @Html.ValidationMessage("Captcha")
+                                            </div>
+                                            <div class="col-md-1 col-sm-5" style="padding-left: 0">
+                                                <i id="captcha-reload" class="fa fa-fw fa-refresh" style="color: #265799;cursor:pointer;"></i>
+                                            </div>
+                                            <div class="col-md-5 col-sm-5">
+                                                @await Html.PartialAsync("_Captcha", "Login")
+                                            </div>
+                                        </div>
+                                    }
                                     <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">@T("Account.Login.LoginButton")</button>
                                     <a href="@Url.RouteUrl("SignUp")" class="btn btn-lg btn-default btn-block">
                                         <i class="fa fa-user"></i>
@@ -45,4 +65,17 @@
             </div>
         </div>
     </section>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+		$(document).off('click', '#captcha-reload');
+		$(document).on('click', '#captcha-reload', function (e) {
+			e.preventDefault();
+			var rnd = Math.ceil(Math.random() * 10000);
+			var imageUrl = '@Url.Action("CaptchaImage", "Captcha")'+'?prefix='+ '@Model'+'&rnd=' + rnd;
+			$("#captcha-image").attr('src', imageUrl);
+		});
+
+    </script>
 }

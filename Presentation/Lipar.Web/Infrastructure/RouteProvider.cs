@@ -64,6 +64,9 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("ChangeLanguage", "ChangeLanguage/{LanguageId:min(0)}",
                 new { controller = "Common", action = "SetLanguage" });
+
+            endpointRouteBuilder.MapControllerRoute("Register", $"{pattern}Register/"
+               , new { controller = "Account", action = "Register" });
         }
         #endregion
     }

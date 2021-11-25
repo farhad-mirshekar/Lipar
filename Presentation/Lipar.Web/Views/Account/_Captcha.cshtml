@@ -1,0 +1,6 @@
+﻿@model string
+<div id="chaptcha-container">
+    <span>
+        <img class="img-fluid" id="captcha-image" alt="Captcha" src="@Url.Action("CaptchaImage", "Captcha", new { prefix = Model })" width="90">
+    </span>
+</div>

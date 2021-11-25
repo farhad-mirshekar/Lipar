@@ -176,7 +176,7 @@ namespace Lipar.Core.Common
         /// </param>
         /// <param name="dateTime">datetime</param>
         /// <returns></returns>
-        public string GetPersianDateByFormat(int format , DateTime? dateTime)
+        public string GetPersianDateByFormat(int format, DateTime? dateTime)
         {
             switch (format)
             {
@@ -199,6 +199,85 @@ namespace Lipar.Core.Common
                 return $"{GetPersianYear(dateTime.Value)}/{GetPersianMonth(dateTime.Value)}/{GetPersianDay(dateTime.Value)}";
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// check password is safe
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static bool IsSafePassword(string password)
+        {
+            var badPasswords = new HashSet<string>
+            {
+                "password",
+                "password1",
+                "123456",
+                "12345678",
+                "1234",
+                "qwerty",
+                "12345",
+                "dragon",
+                "******",
+                "baseball",
+                "football",
+                "letmein",
+                "monkey",
+                "696969",
+                "abc123",
+                "mustang",
+                "michael",
+                "shadow",
+                "master",
+                "jennifer",
+                "111111",
+                "2000",
+                "jordan",
+                "superman",
+                "harley",
+                "1234567",
+                "iloveyou",
+                "trustno1",
+                "sunshine",
+                "123123",
+                "welcome"
+            };
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+            if (password.Length < 5)
+            {
+                return false;
+            }
+            if (badPasswords.Contains(password.ToLowerInvariant()))
+            {
+                return false;
+            }
+            if (AreAllCharsEuqal(password))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool AreAllCharsEuqal(string data)
+        {
+            if (string.IsNullOrWhiteSpace(data))
+            {
+                return false;
+            }
+            data = data.ToLowerInvariant();
+            var firstElement = data.ElementAt(0);
+            var euqalCharsLen = data.ToCharArray().Count(x => x == firstElement);
+            if (euqalCharsLen == data.Length)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -14,5 +14,11 @@ namespace Lipar.Services.Organization.Contracts
         User GetUserByUsername(string username);
         User GetUserByEmail(string email);
         void Delete(User model);
+        /// <summary>
+        /// check duplicate username
+        /// </summary>
+        /// <param name="userName">username</param>
+        /// <returns></returns>
+        bool CheckDuplicateUserName(string userName);
     }
 }

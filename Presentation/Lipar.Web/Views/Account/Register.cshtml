@@ -1,0 +1,54 @@
+﻿@model RegisterModel
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">@T("Web.Register.Page.Title")</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="Register" asp-controller="Account" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName">@T("Web.Register.Page.Field.FirstName")</label>
+                    <input type="text" class="form-control" asp-for="FirstName" />
+                    <span asp-validation-for="FirstName" class="text-danger" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName">@T("Web.Register.Page.Field.LastName")</label>
+                    <input type="text" class="form-control" asp-for="LastName" />
+                    <span asp-validation-for="LastName" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="UserName">@T("Web.Register.Page.Field.UserName")</label>
+                    <input type="text" class="form-control" asp-for="UserName" />
+                    <span asp-validation-for="UserName" class="text-danger" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="NationalCode">@T("Web.Register.Page.Field.NationalCode")</label>
+                    <input type="text" class="form-control" asp-for="NationalCode" />
+                    <span asp-validation-for="NationalCode" class="text-danger" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="CellPhone">@T("Web.Register.Page.Field.CellPhone")</label>
+                    <input type="text" class="form-control" asp-for="CellPhone" />
+                    <span asp-validation-for="CellPhone" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Password">@T("Web.Register.Page.Field.Password")</label>
+                    <input type="text" class="form-control" asp-for="Password" />
+                    <span asp-validation-for="Password" class="text-danger" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="RePassword">@T("Web.Register.Page.Field.RePassword")</label>
+                    <input type="text" class="form-control" asp-for="RePassword" />
+                    <span asp-validation-for="RePassword" class="text-danger" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success pull-left">@T("Web.Register.Page.Button.Submit")</button>
+
+        </form>
+    </div>
+</section>
