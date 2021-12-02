@@ -36,7 +36,24 @@
 
             </nav>
             <div class="col-md-10" id="wrapper">
-
+                <div id="toolbar" class="row">
+                    <div class="col-md-3">
+                        <div class="d-inline-block">
+                            <div id="sidebar-switch">
+                                <i class="fa fa-align-justify"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="d-inline-block header-icon float-right mt-1">
+                            <div class="d-inline-flex mr-2">
+                                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-outline-warning">
+                                    <i class="fa fa-sign-out"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @await Html.PartialAsync("Notifications")
 
                 <div id="content" dir="rtl">

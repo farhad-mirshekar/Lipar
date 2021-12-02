@@ -1,0 +1,15 @@
+﻿@model UserAddressModel
+
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="UserId" />
+
+<div class="form-group">
+    <label asp-for="PostalCode" class="control-label">@T("UserAddress.Field.PostalCode")</label>
+    <input type="text" class="form-control" asp-for="PostalCode" required>
+    <span class="text-danger" asp-validation-for="PostalCode" />
+</div>
+<div class="form-group">
+    <label asp-for="Address" class="control-label">@T("UserAddress.Field.Address")</label>
+    <textarea asp-for="Address" class="form-control" rows="2" cols="2" required></textarea>
+    <span class="text-danger" asp-validation-for="Address" />
+</div>

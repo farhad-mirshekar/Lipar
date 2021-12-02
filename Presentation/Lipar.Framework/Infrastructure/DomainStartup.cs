@@ -71,6 +71,7 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<ICommandTypeService, CommandTypeService>();
             services.AddTransient<IPositionTypeService, PositionTypeService>();
             services.AddTransient<IPasswordFormatTypeService, PasswordFormatTypeService>();
+            services.AddTransient<IUserAddressService, UserAddressService>();
         }
 
         protected void GeneralService(IServiceCollection services, IConfiguration configuration)

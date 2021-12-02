@@ -1,0 +1,39 @@
+﻿@model UserAddressListModel
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <span>@T("Dashoard.UserAddress.List.Title").Text</span>
+            <div class="pull-left">
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model.AvailableUserAddress != null)
+        {
+            foreach (var userAddress in Model.AvailableUserAddress)
+            {
+                <section class="card mb-2">
+                    <div class="card-body">
+                        <label class="text-info">@T("UserAddress.Field.PostalCode"):</label>
+                        <label>@userAddress.PostalCode</label>
+                        <br />
+                        <label class="text-info">@T("UserAddress.Field.Address"):</label>
+                        <label>@userAddress.Address</label>
+
+                        <div class="pull-left">
+                            <a asp-action="Edit" asp-route-Id="@userAddress.Id"> <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </section>
+            }
+        }
+    </div>
+
+    <div class="card-footer">
+        <div class="d-flex justify-content-center" dir="ltr">
+            <lipar-pagination paging-info="@Model.PagingInfo" />
+        </div>
+    </div>
+</div>
