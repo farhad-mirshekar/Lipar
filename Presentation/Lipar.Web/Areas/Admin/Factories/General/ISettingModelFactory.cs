@@ -17,5 +17,11 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         /// </summary>
         /// <returns></returns>
         CommonSettingModel PrepareCommonSettingModel();
+
+        /// <summary>
+        /// prepare security setting model
+        /// </summary>
+        /// <returns></returns>
+        SecuritySettingModel PrepareSecuritySettingModel();
     }
 }

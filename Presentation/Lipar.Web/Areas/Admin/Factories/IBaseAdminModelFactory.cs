@@ -61,5 +61,13 @@ namespace Lipar.Web.Areas.Admin.Factories
         /// <param name="defaultItemText"></param>
         /// <returns></returns>
         IList<SelectListItem> PrepareAttributes(string defaultItemText = null);
+
+        /// <summary>
+        /// prepare password format type
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="defaultItemText"></param>
+        /// <returns></returns>
+        void PreparePasswordFormatType(IList<SelectListItem> items, string defaultItemText = null);
     }
 }

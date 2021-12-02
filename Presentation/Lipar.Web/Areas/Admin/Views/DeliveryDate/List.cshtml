@@ -9,7 +9,7 @@
 <form asp-action="List" asp-controller="DeliveryDate" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#delivery-date-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -17,13 +17,13 @@
         <div class="card-body collapse" id="delivery-date-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.DeliveryDate.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("DeliveryDate.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-delivery-date-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-delivery-date-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
                 <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
             </div>
         </div>
@@ -50,22 +50,22 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Name))
                 {
-                    Title = T("Admin.DeliveryDate.Field.Name").Text
+                    Title = T("DeliveryDate.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Description))
                 {
-                    Title = T("Admin.DeliveryDate.Field.Description").Text
+                    Title = T("DeliveryDate.Field.Description").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Priority))
                 {
-                    Title = T("Admin.DeliveryDate.Field.Priority").Text
+                    Title = T("DeliveryDate.Field.Priority").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.EnabledType.Title))
                 {
-                    Title = T("Admin.DeliveryDate.Field.EnabledType").Text,
+                    Title = T("DeliveryDate.Field.EnabledType").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DeliveryDateModel.Id))

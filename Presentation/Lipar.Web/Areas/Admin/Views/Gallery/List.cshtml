@@ -7,7 +7,7 @@
 <form asp-action="List" asp-controller="Gallery" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#gallery-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -15,13 +15,13 @@
         <div class="card-body collapse" id="gallery-list-search">
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label>@T("Admin.Gallery.Field.Name")</label>
+                    <label>@T("Gallery.Field.Name")</label>
                     <input asp-for="Name" maxlength="70" type="text" class="form-control">
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-gallery-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-gallery-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -51,7 +51,7 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryModel.Name))
                 {
-                    Title = T("Admin.Gallery.Field.Name").Text
+                    Title = T("Gallery.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(GalleryModel.Id))

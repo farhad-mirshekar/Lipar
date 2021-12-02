@@ -5,6 +5,7 @@ using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.General;
 using Lipar.Entities.Domain.General.Enums;
 using Lipar.Entities.Domain.Organization;
+using Lipar.Entities.Domain.Organization.Enums;
 using Lipar.Services.Authentication;
 using Lipar.Services.General.Contracts;
 using Lipar.Services.Organization.Contracts;
@@ -86,7 +87,7 @@ namespace Lipar.Web.Framework
                     return _cachedPosition;
                 }
 
-                if (CurrentUser != null)
+                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
                 {
                     var positions = _positionService.List(new PositionListVM { UserId = CurrentUser.Id });
                     var position = positions.Where(p => p.EnabledTypeId == (int)EnabledTypeEnum.Active && p.Default == true).FirstOrDefault();
@@ -108,7 +109,7 @@ namespace Lipar.Web.Framework
             get
             {
 
-                if (CurrentUser != null)
+                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
                 {
                     var positions = _positionService.List(new PositionListVM { UserId = CurrentUser.Id });
 
@@ -127,7 +128,7 @@ namespace Lipar.Web.Framework
                     return _cachedCommand;
                 }
 
-                if (CurrentUser != null)
+                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
                 {
                     var roleId = CurrentPosition.PositionRoles.Select(r => r.RoleId).First();
                     var commands = _commandService.List(new CommandListVM { RoleId = roleId });

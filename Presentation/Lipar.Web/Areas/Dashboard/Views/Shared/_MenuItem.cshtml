@@ -1,0 +1,43 @@
+﻿@model SiteMapNode
+@using System.Linq
+
+@{
+    var childNodes = Model.ChildNodes.Where(x => x.Visible).ToList();
+    var isActive = Model.ContainsSystemName(Html.GetActiveMenuItemSystemName());
+    <div class="nav flex-column">
+        <div class="card-header menu" data-parent="#sidebar-menu-container">
+            <div class="card-title" data-toggle="collapse" href="#@Model.SystemName.Replace(" ","_")" aria-expanded="false" aria-controls="@Model.SystemName.Replace(" ","_")">
+                <span class="card-title">@Model.Title</span>
+                <i class="fa fa-angle-down pull-left"></i>
+            </div>
+        </div>
+
+        @if (childNodes.Count > 0)
+        {
+            <div @(isActive ? Html.Raw("class=\"collapse show\"") : Html.Raw("class=\"collapse\""))   id="@Model.SystemName.Replace(" ","_")"  data-parent="#sidebar-menu-container">
+                <ul class="nav flex-column sub-menu">
+                    @foreach (var child in childNodes)
+                    {
+                        var active = child.ContainsSystemName(Html.GetActiveMenuItemSystemName());
+                        string url = null;
+                        if (!string.IsNullOrEmpty(child.ControllerName) && !string.IsNullOrEmpty(child.ActionName))
+                        {
+                            url = Url.Action(child.ActionName, child.ControllerName, child.RouteValues, null, null);
+                        }
+                        else if (!string.IsNullOrEmpty(child.Url))
+                        {
+                            url = child.Url.StartsWith("~/", StringComparison.Ordinal) ? Url.Content(child.Url) : child.Url;
+                        }
+
+                        <li @(active ? Html.Raw("class=\"nav-item nav-item-active\"") : Html.Raw("class=\"nav-item\""))>
+                            <a href="@url">
+                            <i class="fa @Url.Content(child.IconClass)"></i>
+                            <span>@child.Title</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+}

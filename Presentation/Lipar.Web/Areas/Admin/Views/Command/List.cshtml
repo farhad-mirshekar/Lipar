@@ -15,13 +15,13 @@
         <div class="card-body collapse" id="command-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name">@T("Admin.Command.Field.Name")</label>
+                    <label asp-for="Name">@T("Command.Field.Name")</label>
                     <input asp-for="Name" maxlength="70" type="text" class="form-control">
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-command-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-command-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -48,12 +48,12 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.Name))
                 {
-                    Title = T("Admin.Command.Field.Name").Text
+                    Title = T("Command.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.TitleCrumb))
                 {
-                    Title = T("Admin.Command.Field.TitleCrumb").Text
+                    Title = T("Command.Field.TitleCrumb").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(CommandModel.Id))
@@ -69,7 +69,7 @@
                     Title = "",
                     Width = "80",
                     ClassName = LiparColumnClassDefaults.Button,
-                    Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                    Render = new RenderButtonRemove(T("Common.Delete.Button").Text)
                 });
 
                 @await Html.PartialAsync("Table", gridModel)

@@ -3,21 +3,21 @@
 <input type="hidden" asp-for="Id" />
 
 <div class="form-group">
-    <label asp-for="Name" class="control-label">@T("Admin.ShippingCost.Field.Name")</label>
+    <label asp-for="Name" class="control-label">@T("ShippingCost.Field.Name")</label>
     <input type="text" class="form-control" asp-for="Name" required>
     <span class="text-danger" asp-validation-for="Name" />
 </div>
 <div class="form-group">
-    <label asp-for="Description" class="control-label">@T("Admin.ShippingCost.Field.Description")</label>
+    <label asp-for="Description" class="control-label">@T("ShippingCost.Field.Description")</label>
     <input type="text" class="form-control" asp-for="Description" required>
     <span class="text-danger" asp-validation-for="Description" />
 </div>
 <div class="form-group">
-    <label asp-for="Price" class="control-label">@T("Admin.ShippingCost.Field.Price")</label>
+    <label asp-for="Price" class="control-label">@T("ShippingCost.Field.Price")</label>
     <input type="number" class="form-control" asp-for="Price">
     <span class="text-danger" asp-validation-for="Price" />
 </div>
 <div class="form-group">
-    <label asp-for="EnabledTypeId" class="control-label">@T("Admin.ShippingCost.Field.EnabledType")</label>
+    <label asp-for="EnabledTypeId" class="control-label">@T("ShippingCost.Field.EnabledType")</label>
     <lipar-select asp-for="EnabledTypeId" asp-items="@Model.AvailableEnabledType" />
 </div>

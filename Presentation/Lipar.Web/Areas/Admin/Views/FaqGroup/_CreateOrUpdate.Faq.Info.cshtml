@@ -5,13 +5,13 @@
 
 <div class="row">
     <div class="col-md-12 form-group">
-        <label asp-for="Question">@T("Admin.Faq.Field.Question").Text</label>
+        <label asp-for="Question">@T("Faq.Field.Question").Text</label>
         <input type="text" asp-for="Question" class="form-control" />
         <span class="text-danger" asp-validation-for="Question"></span>
     </div>
 
     <div class="col-md-12 form-group">
-        <label asp-for="Answer">@T("Admin.Faq.Field.Answer").Text</label>
+        <label asp-for="Answer">@T("Faq.Field.Answer").Text</label>
         <textarea cols="4" rows="4" asp-for="Answer" class="form-control"></textarea>
         <span class="text-danger" asp-validation-for="Answer"></span>
     </div>

@@ -39,7 +39,8 @@ namespace Lipar.Web.Areas.Admin.Factories
                                    , IContactUsTypeService contactUsTypeService
                                    , App.IDiscountTypeService discountTypeService
                                    , ILanguageCultureService languageCultureService
-                                   , IPositionTypeService positionTypeService)
+                                   , IPositionTypeService positionTypeService
+                                   , IPasswordFormatTypeService passwordFormatTypeService)
         {
             _categoryPortalService = categoryPortalService;
             _cacheKeyService = cacheKeyService;
@@ -62,6 +63,7 @@ namespace Lipar.Web.Areas.Admin.Factories
             _discountTypeService = discountTypeService;
             _languageCultureService = languageCultureService;
             _positionTypeService = positionTypeService;
+            _passwordFormatTypeService = passwordFormatTypeService;
         }
         #endregion
 
@@ -87,6 +89,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         private readonly App.IDiscountTypeService _discountTypeService;
         private readonly ILanguageCultureService _languageCultureService;
         private readonly IPositionTypeService _positionTypeService;
+        private readonly IPasswordFormatTypeService _passwordFormatTypeService;
         #endregion
         public void PrepareAllLanguage(IList<SelectListItem> items, string defaultItemText = null)
         {
@@ -366,6 +369,18 @@ namespace Lipar.Web.Areas.Admin.Factories
             foreach (var viewStatus in viewStatuses)
             {
                 items.Add(new SelectListItem { Text = viewStatus.Title.Trim(), Value = viewStatus.Id.ToString() });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
+        public void PreparePasswordFormatType(IList<SelectListItem> items, string defaultItemText = null)
+        {
+            var passwordFormatTypes = _passwordFormatTypeService.List();
+
+            foreach (var passwordFormatType in passwordFormatTypes)
+            {
+                items.Add(new SelectListItem { Text = passwordFormatType.Title.Trim(), Value = passwordFormatType.Id.ToString() });
             }
 
             PrepareDefaultItem(items, defaultItemText);

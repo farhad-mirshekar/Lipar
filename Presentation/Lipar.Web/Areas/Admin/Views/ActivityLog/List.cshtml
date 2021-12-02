@@ -22,12 +22,12 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ActivityLogModel.Comment))
                 {
-                    Title = T("Admin.ActivityLog.Field.Comment").Text
+                    Title = T("ActivityLog.Field.Comment").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ActivityLogModel.ActivityLogType))
                 {
-                    Title = T("Admin.ActivityLog.Field.ActivityLogType").Text
+                    Title = T("ActivityLog.Field.ActivityLogType").Text
                 });
 
                 @await Html.PartialAsync("Table", gridModel)

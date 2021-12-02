@@ -1,21 +1,21 @@
 ﻿@model ProductAttributeMappingModel
 
 <div class="form-group">
-    <label asp-for="ProductAttributeId">@T("Admin.ProductAttributeMapping.Field.ProductAttributeId")</label>
+    <label asp-for="ProductAttributeId">@T("ProductAttributeMapping.Field.ProductAttributeId")</label>
     <lipar-select asp-for="ProductAttributeId" asp-items="@Model.AvailableAttributes" />
 </div>
 
 <div class="form-group">
-    <label asp-for="TextPrompt">@T("Admin.ProductAttributeMapping.Field.TextPrompt")</label>
+    <label asp-for="TextPrompt">@T("ProductAttributeMapping.Field.TextPrompt")</label>
     <input type="text" class="form-control" asp-for="TextPrompt" />
     <span class="text-danger" asp-validation-for="TextPrompt" />
 
 </div>
 <div class="form-group">
-    <label asp-for="AttributeControlTypeId">@T("Admin.ProductAttributeMapping.Field.AttributeControlType")</label>
+    <label asp-for="AttributeControlTypeId">@T("ProductAttributeMapping.Field.AttributeControlType")</label>
     <lipar-select asp-for="AttributeControlTypeId" asp-items="@Model.AvailableAttributeControlType" />
 </div>
 <div class="form-group col-md-12">
-    <label asp-for="IsRequired" class="control-label">@T("Admin.ProductAttributeMapping.Field.IsRequired")</label>
+    <label asp-for="IsRequired" class="control-label">@T("ProductAttributeMapping.Field.IsRequired")</label>
     <input type="checkbox" asp-for="IsRequired" />
 </div>

@@ -95,5 +95,25 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View();
         }
         #endregion
+
+        #region Security Setting Methods
+        public IActionResult Security()
+        {
+            var model = _settingModelFactory.PrepareSecuritySettingModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Security(SecuritySettingModel model)
+        {
+            var securitySetting = _settingService.LoadSettings<SecuritySetting>();
+            securitySetting = model.ToSettings(securitySetting);
+
+            _settingService.SaveSetting(securitySetting, x => x.EncryptionKey);
+            _settingService.SaveSetting(securitySetting, x => x.PasswordFormatType);
+
+            return View();
+        }
+        #endregion
     }
 }

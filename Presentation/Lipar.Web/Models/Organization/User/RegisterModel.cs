@@ -12,5 +12,6 @@ namespace Lipar.Web.Models.Organization
         public string RePassword { get; set; }
         [Remote(action:"CheckDuplicateUserName",controller:"Account")]
         public string UserName { get; set; }
+        public string Captcha { get; set; }
     }
 }

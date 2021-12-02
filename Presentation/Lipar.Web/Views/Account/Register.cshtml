@@ -1,4 +1,10 @@
 ﻿@model RegisterModel
+@using Lipar.Services.General.Contracts
+@inject ISettingService _settingService
+@{
+    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
+    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInRegisterPage").Value, out bool showCaptchaInRegisterPage);
+}
 <section class="card">
     <div class="card-header">
         <span class="card-title">@T("Web.Register.Page.Title")</span>
@@ -7,48 +13,79 @@
         <form asp-action="Register" asp-controller="Account" method="post">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label asp-for="FirstName">@T("Web.Register.Page.Field.FirstName")</label>
+                    <label asp-for="FirstName">@T("User.Field.FirstName")</label>
                     <input type="text" class="form-control" asp-for="FirstName" />
                     <span asp-validation-for="FirstName" class="text-danger" />
                 </div>
                 <div class="form-group col-md-6">
-                    <label asp-for="LastName">@T("Web.Register.Page.Field.LastName")</label>
+                    <label asp-for="LastName">@T("User.Field.LastName")</label>
                     <input type="text" class="form-control" asp-for="LastName" />
                     <span asp-validation-for="LastName" class="text-danger" />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label asp-for="UserName">@T("Web.Register.Page.Field.UserName")</label>
+                    <label asp-for="UserName">@T("User.Field.UserName")</label>
                     <input type="text" class="form-control" asp-for="UserName" />
                     <span asp-validation-for="UserName" class="text-danger" />
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="NationalCode">@T("Web.Register.Page.Field.NationalCode")</label>
+                    <label asp-for="NationalCode">@T("User.Field.NationalCode")</label>
                     <input type="text" class="form-control" asp-for="NationalCode" />
                     <span asp-validation-for="NationalCode" class="text-danger" />
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="CellPhone">@T("Web.Register.Page.Field.CellPhone")</label>
+                    <label asp-for="CellPhone">@T("User.Field.CellPhone")</label>
                     <input type="text" class="form-control" asp-for="CellPhone" />
                     <span asp-validation-for="CellPhone" class="text-danger" />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label asp-for="Password">@T("Web.Register.Page.Field.Password")</label>
-                    <input type="text" class="form-control" asp-for="Password" />
+                    <label asp-for="Password">@T("User.Field.Password")</label>
+                    <input type="password" class="form-control" asp-for="Password" />
                     <span asp-validation-for="Password" class="text-danger" />
                 </div>
                 <div class="form-group col-md-6">
                     <label asp-for="RePassword">@T("Web.Register.Page.Field.RePassword")</label>
-                    <input type="text" class="form-control" asp-for="RePassword" />
+                    <input type="password" class="form-control" asp-for="RePassword" />
                     <span asp-validation-for="RePassword" class="text-danger" />
                 </div>
             </div>
 
+            @if (showCaptcha && showCaptchaInRegisterPage)
+            {
+                <div class="form-group row">
+                    <label class="col-md-1 col-sm-1 col-form-label">
+                        <i class="fa fa-fw fa-keyboard-o" style="font-size:1.7em !important"></i>
+                    </label>
+                    <div class="col-md-4 col-sm-5 form-input" style="padding-left: 0">
+                        <input type="text" id="Captcha" name="Captcha" tabindex="3" class="form-control" placeholder="کد امنیتی">
+                        @Html.ValidationMessage("Captcha")
+                    </div>
+                    <div class="col-md-1 col-sm-5" style="padding-left: 0">
+                        <i id="captcha-reload" class="fa fa-fw fa-refresh" style="color: #265799;cursor:pointer;"></i>
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                        @await Html.PartialAsync("_Captcha", "Register")
+                    </div>
+                </div>
+            }
             <button type="submit" class="btn btn-success pull-left">@T("Web.Register.Page.Button.Submit")</button>
 
         </form>
     </div>
 </section>
+
+@section Scripts{
+    <script type="text/javascript">
+		$(document).off('click', '#captcha-reload');
+		$(document).on('click', '#captcha-reload', function (e) {
+			e.preventDefault();
+			var rnd = Math.ceil(Math.random() * 10000);
+			var imageUrl = '@Url.Action("CaptchaImage", "Captcha")'+'?prefix=Register&rnd=' + rnd;
+			$("#captcha-image").attr('src', imageUrl);
+		});
+
+    </script>
+}

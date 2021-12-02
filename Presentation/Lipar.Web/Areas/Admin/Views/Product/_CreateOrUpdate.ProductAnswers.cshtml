@@ -6,11 +6,11 @@
 <input asp-for="UserId" type="hidden" />
 
 <div class="form-group">
-    <label asp-for="ViewStatusId">@T("Admin.ProductAnswers.Field.ViewStatusId")</label>
+    <label asp-for="ViewStatusId">@T("ProductAnswers.Field.ViewStatusId")</label>
     <lipar-select asp-for="ViewStatusId" asp-items="@Model.AvailableViewStatus" />
 </div>
 
 <div class="form-group">
-    <label asp-for="AnswerText">@T("Admin.ProductAnswers.Field.AnswerText")</label>
+    <label asp-for="AnswerText">@T("ProductAnswers.Field.AnswerText")</label>
     <textarea asp-for="AnswerText" class="form-control" rows="4" cols="4"></textarea>
 </div>

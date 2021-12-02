@@ -1,0 +1,47 @@
+﻿@model ProfileModel
+
+<form asp-action="Profile" asp-controller="User" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Dashboard.User.Profile")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Common.Edit.Button")
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="form-group">
+                <label asp-for="FirstName">@T("User.Field.FirstName")</label>
+                <input type="text" class="form-control" asp-for="FirstName" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName">@T("User.Field.LastName")</label>
+                <input type="text" class="form-control" asp-for="LastName" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NationalCode">@T("User.Field.NationalCode")</label>
+                <input type="text" class="form-control" asp-for="NationalCode" />
+                <span asp-validation-for="NationalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CellPhone">@T("User.Field.CellPhone")</label>
+                <input type="text" class="form-control" asp-for="CellPhone" />
+                <span asp-validation-for="CellPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email">@T("User.Field.Email")</label>
+                <input type="text" class="form-control" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+    </section>
+</form>
+

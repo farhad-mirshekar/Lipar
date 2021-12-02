@@ -7,20 +7,20 @@
 <form asp-controller="User" asp-action="List" method="post">
     <div class="card">
         <div class="card-header">
-            <div class="float-right" title="@T("Admin.Common.Search")">
+            <div class="float-right" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#user-list-search"></i>
             </div>
         </div>
         <div class="card-body collapse" id="user-list-search">
             <div class="row">
                 <div class="form-group col-md-6">
-                    <label>@T("Admin.User.Field.Username")</label>
+                    <label>@T("User.Field.Username")</label>
                     <input asp-for="Username" maxlength="70" type="text" class="form-control">
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-user-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-user-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
 
             </div>
         </div>
@@ -47,29 +47,29 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Username))
                 {
-                    Title = @T("Admin.User.Field.Username").Text
+                    Title = @T("User.Field.Username").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Email))
                 {
-                    Title = @T("Admin.User.Field.Email").Text
+                    Title = @T("User.Field.Email").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.NationalCode))
                 {
-                    Title = @T("Admin.User.Field.NationalCode").Text
+                    Title = @T("User.Field.NationalCode").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.LastLoginDate))
                 {
-                    Title = @T("Admin.User.Field.LastLoginDate").Text,
+                    Title = @T("User.Field.LastLoginDate").Text,
                     Render = new RenderDate()
 
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(UserModel.Id))
                 {
-                    Title = T("Admin.Common.Edit").Text,
+                    Title = T("Common.Edit.Button").Text,
                     Width = "80",
                     ClassName = LiparColumnClassDefaults.Button,
                     Render = new RenderButtonEdit(new DataUrl("Edit"))

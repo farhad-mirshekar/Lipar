@@ -7,7 +7,7 @@
 <form asp-action="List" asp-controller="FaqGroup" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#faq-group-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-faq-group-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-faq-group-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
 
             </div>
         </div>
@@ -50,12 +50,12 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqGroupModel.Name))
                 {
-                    Title = T("Admin.FaqGroup.Field.Name").Text
+                    Title = T("FaqGroup.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqGroupModel.Id))
                 {
-                    Title = T("Admin.Common.Edit").Text,
+                    Title = T("Common.Edit.Button").Text,
                     Width = "80",
                     ClassName = LiparColumnClassDefaults.Button,
                     Render = new RenderButtonEdit(new DataUrl("Edit"))

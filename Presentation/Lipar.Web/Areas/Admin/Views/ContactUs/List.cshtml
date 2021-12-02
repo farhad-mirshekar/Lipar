@@ -8,21 +8,21 @@
 <form asp-action="List" asp-controller="ContactUs" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#contactus-list-search"></i>
             </div>
         </div>
         <div class="card-body collapse" id="contactus-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="ContactUsTypeId" class="control-label">@T("Admin.ContactUs.Field.ContactUsType")</label>
+                    <label asp-for="ContactUsTypeId" class="control-label">@T("ContactUs.Field.ContactUsType")</label>
                     <lipar-select asp-for="ContactUsTypeId" asp-items="Model.AvailableContactUsType" />
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-contactus-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-contactus-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -48,24 +48,24 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ContactUsModel.Id))
                 {
-                    Title = T("Admin.ContactUs.Field.FullName").Text,
+                    Title = T("ContactUs.Field.FullName").Text,
                     Render = new RenderCustom("renderColumnFullName"),
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ContactUsModel.Phone))
                 {
-                    Title = T("Admin.ContactUs.Field.Phone").Text,
+                    Title = T("ContactUs.Field.Phone").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ContactUsModel.Email))
                 {
-                    Title = T("Admin.ContactUs.Field.Email").Text,
+                    Title = T("ContactUs.Field.Email").Text,
                     Width = "200",
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ContactUsModel.ContactUsType.Title))
                 {
-                    Title = T("Admin.ContactUs.Field.ContactUsType").Text,
+                    Title = T("ContactUs.Field.ContactUsType").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ContactUsModel.Id))

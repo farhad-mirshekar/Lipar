@@ -16,13 +16,13 @@
             <div class="row">
                 <div class="input-group col-md-6">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">@T("Admin.CategoryProduct.Field.Name")</span>
+                        <span class="input-group-text">@T("CategoryProduct.Field.Name")</span>
                     </div>
                     <input asp-for="Name" maxlength="70" type="text" autofocus="" class="form-control meta">
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-Category-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-Category-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
             </div>
         </div>
     </section>
@@ -48,12 +48,12 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(App.CategoryModel.Name))
                 {
-                    Title = T("Admin.CategoryProduct.Field.Name").Text
+                    Title = T("CategoryProduct.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(App.CategoryModel.NameCrumb))
                 {
-                    Title = T("Admin.CategoryProduct.Field.NameCrumb").Text
+                    Title = T("CategoryProduct.Field.NameCrumb").Text
                 });
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(App.CategoryModel.Id))
                 {

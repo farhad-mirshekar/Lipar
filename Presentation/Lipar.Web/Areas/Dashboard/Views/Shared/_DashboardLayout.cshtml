@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.PageTitle</title>
+
+    <link href="~/dashboard/css/Dashboard.css" rel="stylesheet" />
+    <link href="~/libs/bootstrap-rtl/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/libs/fontawesome/font-awesome.css" rel="stylesheet" />
+
+
+    <script src="~/libs/jquery/jquery.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.js"></script>
+    <script src="~/libs/jquery-validate/jquery.validate.unobtrusive.js"></script>
+    <script src="~/libs/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/libs/bootstrap-rtl/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Head", false)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+                <div id="sidebar-close">
+                    <i class="fa fa-remove" aria-hidden="true"></i>
+                </div>
+                <div id="sidebar-title">
+                    <div id="sidebar-title-image">
+                        <img class="m-auto d-block" src="~/admin/images/logo.png" />
+                    </div>
+                </div>
+
+                @await Html.PartialAsync("Menu")
+
+            </nav>
+            <div class="col-md-10" id="wrapper">
+
+                @await Html.PartialAsync("Notifications")
+
+                <div id="content" dir="rtl">
+                    @RenderBody()
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust();
+        });
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+</body>
+</html>

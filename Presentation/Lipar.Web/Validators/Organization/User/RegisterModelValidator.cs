@@ -13,33 +13,34 @@ namespace Lipar.Web.Validators.Organization
             _localeStringResourceService = localeStringResourceService;
 
             RuleFor(r => r.FirstName)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.FirstNameNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.FirstNameNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.FirstName.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.FirstName.Validator.NotNull"));
 
             RuleFor(r => r.LastName)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.LastNameNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.LastNameNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.LastName.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.LastName.Validator.NotNull"));
 
             RuleFor(r => r.UserName)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.UserNameNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.UserNameNull"))
-                .Length(8,50).WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.UserName.Length"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.UserName.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.UserName.Validator.NotNull"))
+                .Length(8,50).WithMessage(_localeStringResourceService.GetResource("User.Field.UserName.Validator.MustLengthBetween"));
 
             RuleFor(r => r.NationalCode)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.NationalCodeNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.NationalCodeNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.NationalCode.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.NationalCode.Validator.NotNull"));
 
             RuleFor(r => r.CellPhone)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.CellPhoneNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.CellPhoneNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.CellPhone.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.CellPhone.Validator.NotNull"));
 
             RuleFor(r => r.Password)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.PasswordNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.PasswordNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.Password.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.Password.Validator.NotNull"));
 
             RuleFor(r => r.RePassword)
-                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.RePasswordNull"))
-                .NotNull().WithMessage(_localeStringResourceService.GetResource("Web.Register.Page.RePasswordNull"));
+                .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotNull"))
+                .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotNull"))
+                .Equal(s=>s.Password).WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotEqualByPassword"));
         }
     }
 }

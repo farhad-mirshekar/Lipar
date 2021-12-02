@@ -17,14 +17,14 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Question))
                 {
-                    Title = T("Admin.FaqModel.Field.Question").Text,
+                    Title = T("FaqModel.Field.Question").Text,
                     Editable = true,
                     EditType = EditType.String
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Id))
                 {
-                    Title = T("Admin.Common.Edit").Text,
+                    Title = T("Common.Edit.Button").Text,
                     Width = "100",
                     ClassName = LiparColumnClassDefaults.Button,
                     Render = new RenderButtonEdit(new DataUrl("~/Admin/FaqGroup/FaqEdit"))
@@ -32,7 +32,7 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(FaqModel.Id))
                 {
-                    Title = T("Admin.Common.Delete").Text,
+                    Title = T("Common.Delete.Button").Text,
                     Width = "100",
                     ClassName = LiparColumnClassDefaults.Button,
                     Render = new RenderButtonRemove(null)
@@ -46,7 +46,7 @@
         <div class="card-footer">
             <a asp-action="FaqCreate" asp-route-FaqGroupId="@Model.Id" class="btn btn-primary pull-left">
                 <i class="fa fa-plus"></i>
-                @T("Admin.Common.Add")
+                @T("Common.Add.Button")
             </a>
         </div>
     </div>

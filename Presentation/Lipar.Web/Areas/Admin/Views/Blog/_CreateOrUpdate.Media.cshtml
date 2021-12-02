@@ -15,26 +15,26 @@
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Name))
             {
-                Title = T("Admin.Media.Field.Name").Text,
+                Title = T("Media.Field.Name").Text,
                 Editable = true,
                 EditType = EditType.String
             });
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.AltAttribute))
             {
-                Title = T("Admin.Media.Field.AltAttribute").Text,
+                Title = T("Media.Field.AltAttribute").Text,
                 Editable = true,
                 EditType = EditType.String
             });
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Priority))
             {
-                Title = T("Admin.Media.Field.Priority").Text,
+                Title = T("Media.Field.Priority").Text,
                 Editable = true,
                 EditType = EditType.Number,
             });
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.Id))
             {
-                Title = T("Admin.Common.Edit").Text,
+                Title = T("Common.Edit").Text,
                 Width = "100",
                 ClassName = LiparColumnClassDefaults.Button,
                 Render = new RenderButtonsInlineEdit()
@@ -42,10 +42,10 @@
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogMediaModel.MediaId))
             {
-                Title = T("Admin.Common.Delete").Text,
+                Title = T("Common.Delete.Button").Text,
                 Width = "100",
                 ClassName = LiparColumnClassDefaults.Button,
-                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                Render = new RenderButtonRemove(T("Common.Delete.Button").Text)
 
             });
 
@@ -67,7 +67,7 @@
         <div class="row">
             <div class="form-group col-md-9">
                 <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name">
-                    @T("Admin.Media.Field.Name")
+                    @T("Media.Field.Name")
                 </label>
                 <input type="text" class="form-control" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name" />
                 <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Name"></span>
@@ -75,14 +75,14 @@
             <div class="form-group col-md-9">
 
                 <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute">
-                    @T("Admin.Media.Field.AltAttribute")
+                    @T("Media.Field.AltAttribute")
                 </label>
                 <input type="text" class="form-control" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute" />
                 <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.AltAttribute"></span>
             </div>
             <div class="form-group col-md-9">
                 <label asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority">
-                    @T("Admin.Media.Field.Priority")
+                    @T("Media.Field.Priority")
                 </label>
                 <input type="number" asp-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority" class="form-control" />
                 <span asp-validation-for="@Model.BlogMediaSearchModel.AddBlogMediaModel.Priority"></span>
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="btn-group-justified pull-left">
-            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+            <button id="media-add-btn" type="button" class="btn btn-primary">@T("Common.Add.Button")</button>
         </div>
     </div>
 </section>

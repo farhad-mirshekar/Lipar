@@ -82,12 +82,21 @@ namespace Lipar.Web.Framework.Menu
             var controllerName = GetStringValueFromAttribute(xmlNode, "controller");
             var actionName = GetStringValueFromAttribute(xmlNode, "action");
             var url = GetStringValueFromAttribute(xmlNode, "url");
+            var areaName = GetStringValueFromAttribute(xmlNode, "areaName");
             if (!string.IsNullOrEmpty(controllerName) && !string.IsNullOrEmpty(actionName))
             {
                 siteMapNode.ControllerName = controllerName;
                 siteMapNode.ActionName = actionName;
 
-                siteMapNode.RouteValues = new RouteValueDictionary { { "area", AreaNames.Admin } };
+                switch (areaName)
+                {
+                    case AreaNames.Dashboard:
+                        siteMapNode.RouteValues = new RouteValueDictionary { { "area", AreaNames.Dashboard } };
+                        break;
+                    default:
+                        siteMapNode.RouteValues = new RouteValueDictionary { { "area", AreaNames.Admin } };
+                        break;
+                }
             }
             else if (!string.IsNullOrEmpty(url))
             {

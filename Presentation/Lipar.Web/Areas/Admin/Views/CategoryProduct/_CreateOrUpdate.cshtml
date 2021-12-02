@@ -6,32 +6,32 @@
     <div class="card-body">
         <div class="row">
             <div class="form-group col-md-12">
-                <label asp-for="Name" class="control-label">@T("Admin.CategoryProduct.Field.Name")</label>
+                <label asp-for="Name" class="control-label">@T("CategoryProduct.Field.Name")</label>
                 <input type="text" class="form-control" asp-for="Name">
                 <span class="text-danger" asp-validation-for="Name" />
             </div>
             <div class="form-group col-md-12">
-                <label asp-for="Description" class="control-label">@T("Admin.CategoryProduct.Field.Description")</label>
+                <label asp-for="Description" class="control-label">@T("CategoryProduct.Field.Description")</label>
                 <input type="text" class="form-control" asp-for="Description">
                 <span class="text-danger" asp-validation-for="Description" />
             </div>
             <div class="form-group col-md-12">
-                <label asp-for="MetaDescription" class="control-label">@T("Admin.CategoryProduct.Field.MetaDescription")</label>
+                <label asp-for="MetaDescription" class="control-label">@T("CategoryProduct.Field.MetaDescription")</label>
                 <input type="text" class="form-control" asp-for="MetaDescription">
                 <span class="text-danger" asp-validation-for="MetaDescription" />
             </div>
             <div class="form-group col-md-12">
-                <label asp-for="EnabledTypeId" class="control-label">@T("Admin.CategoryProduct.Field.EnabledType")</label>
+                <label asp-for="EnabledTypeId" class="control-label">@T("CategoryProduct.Field.EnabledType")</label>
                 <lipar-select asp-for="EnabledTypeId" asp-items="Model.AvailableEnableType" />
                 <span class="text-danger" asp-validation-for="EnabledTypeId" />
             </div>
             <div class="form-group col-md-12">
-                <label asp-for="Name" class="control-label">@T("Admin.CategoryProduct.Field.Parent")</label>
+                <label asp-for="Name" class="control-label">@T("CategoryProduct.Field.Parent")</label>
                 <lipar-select asp-for="ParentId" asp-items="Model.AvailableCategories" />
                 <span class="text-danger" asp-validation-for="ParentId" />
             </div>
             <div class="form-group col-md-12">
-                <label asp-for="IncludeInTopMenu" class="control-label">@T("Admin.CategoryProduct.Field.IncludeInTopMenu")</label>
+                <label asp-for="IncludeInTopMenu" class="control-label">@T("CategoryProduct.Field.IncludeInTopMenu")</label>
                 <input type="checkbox" asp-for="IncludeInTopMenu" />
             </div>
         </div>

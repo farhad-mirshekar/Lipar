@@ -9,7 +9,7 @@
 <form asp-action="List" asp-controller="ShippingCost" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#shipping-cost-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -17,14 +17,14 @@
         <div class="card-body collapse" id="shipping-cost-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.ShippingCost.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("ShippingCost.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-shipping-cost-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-shipping-cost-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -50,22 +50,22 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.Name))
                 {
-                    Title = T("Admin.ShippingCost.Field.Name").Text
+                    Title = T("ShippingCost.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.Description))
                 {
-                    Title = T("Admin.ShippingCost.Field.Description").Text
+                    Title = T("ShippingCost.Field.Description").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.Price))
                 {
-                    Title = T("Admin.ShippingCost.Field.Price").Text
+                    Title = T("ShippingCost.Field.Price").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.EnabledType.Title))
                 {
-                    Title = T("Admin.ShippingCost.Field.EnabledType").Text,
+                    Title = T("ShippingCost.Field.EnabledType").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.Id))

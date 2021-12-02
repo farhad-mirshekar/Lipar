@@ -89,7 +89,7 @@ namespace Lipar.Services.General.Implementations
             resourceKey = resourceKey.Trim().ToLowerInvariant();
             var resources = GetAllResourceValues(LanguageId);
             if (resources == null || resources.Count() == 0)
-                return null;
+                return string.Empty;
 
             if (resources.ContainsKey(resourceKey))
             {

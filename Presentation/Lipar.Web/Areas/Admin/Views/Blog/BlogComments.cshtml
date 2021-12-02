@@ -44,23 +44,23 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.Body))
                 {
-                    Title = T("Admin.BlogComment.Field.Body").Text,
+                    Title = T("BlogComment.Field.Body").Text,
                     Render = new RenderCustom("renderBodyLength")
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CreatorFullName))
                 {
-                    Title = T("Admin.BlogComment.Field.User").Text,
+                    Title = T("BlogComment.Field.User").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CommentStatus.Title))
                 {
-                    Title = T("Admin.BlogComment.Field.CommentStatusType").Text,
+                    Title = T("BlogComment.Field.CommentStatusType").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogCommentModel.CreationDate))
                 {
-                    Title = T("Admin.BlogComment.Field.CreationDate").Text,
+                    Title = T("BlogComment.Field.CreationDate").Text,
                     Render = new RenderDate(),
                 });
 

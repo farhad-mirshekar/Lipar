@@ -9,7 +9,7 @@
 <form asp-action="List" asp-controller="ProductAttribute" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-attribute-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -17,14 +17,14 @@
         <div class="card-body collapse" id="product-attribute-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.ProductAttribute.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("ProductAttribute.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-product-attribute-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-product-attribute-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -50,12 +50,12 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeModel.Name))
                 {
-                    Title = T("Admin.ProductAttribute.Field.Name").Text
+                    Title = T("ProductAttribute.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeModel.Description))
                 {
-                    Title = T("Admin.ProductAttribute.Field.Description").Text,
+                    Title = T("ProductAttribute.Field.Description").Text,
                     Render = new RenderCustom("renderColumnDescription")
                 });
 

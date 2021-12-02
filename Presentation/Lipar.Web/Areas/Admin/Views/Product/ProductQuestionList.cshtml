@@ -8,20 +8,20 @@
 <form asp-action="ProductQuestionList" asp-controller="Product" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-question-list-search"></i>
             </div>
         </div>
         <div class="card-body collapse" id="product-question-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="ViewStatusId" class="control-label">@T("Admin.ProductQuestion.Field.ViewStatusId")</label>
+                    <label asp-for="ViewStatusId" class="control-label">@T("ProductQuestion.Field.ViewStatusId")</label>
                     <lipar-select asp-for="ViewStatusId" asp-items="@Model.AvailableViewStatus" />
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-product-question-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-product-question-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
                 <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
             </div>
         </div>
@@ -48,19 +48,19 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.QuestionText))
                 {
-                    Title = T("Admin.ProductQuestion.Field.QuestionText").Text,
+                    Title = T("ProductQuestion.Field.QuestionText").Text,
                     Render = new RenderCustom("renderColumnQuestionText")
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.ProductName))
                 {
-                    Title = T("Admin.ProductQuestion.Field.ProductId").Text,
+                    Title = T("ProductQuestion.Field.ProductId").Text,
                     Render = new RenderCustom("renderColumnProductName")
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductQuestionModel.FullName))
                 {
-                    Title = T("Admin.ProductQuestion.Field.UserId").Text
+                    Title = T("ProductQuestion.Field.UserId").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Id))

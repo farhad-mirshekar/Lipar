@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Lipar.Web.Models.Organization;
 using Lipar.Core.Common;
 using Microsoft.AspNetCore.Http;
+using Lipar.Entities.Domain.Organization;
+using Lipar.Entities.Domain.Core.Enums;
 
 namespace Lipar.Web.Controllers
 {
@@ -20,6 +22,7 @@ namespace Lipar.Web.Controllers
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISettingService _settingService;
+        private readonly IUserPasswordService _passwordService;
         #endregion
 
         #region Ctor
@@ -28,7 +31,8 @@ namespace Lipar.Web.Controllers
                                , IActivityLogService activityLogService
                                , ILocaleStringResourceService localeStringResourceService
                                , IHttpContextAccessor httpContextAccessor
-                               , ISettingService settingService)
+                               , ISettingService settingService
+                               , IUserPasswordService passwordService)
         {
             _userService = userService;
             _authenticationService = authenticationService;
@@ -36,6 +40,7 @@ namespace Lipar.Web.Controllers
             _localeStringResourceService = localeStringResourceService;
             _httpContextAccessor = httpContextAccessor;
             _settingService = settingService;
+            _passwordService = passwordService;
         }
         #endregion
 
@@ -53,7 +58,7 @@ namespace Lipar.Web.Controllers
 
             if (showCaptcha && showCaptchaInLoginPage)
             {
-                var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.Captcha}";
+                var cookieName = $"{CookieDefaults.Prefix}.Login{CookieDefaults.Captcha}";
                 var cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
 
                 if (string.IsNullOrEmpty(cookieValue))
@@ -115,13 +120,76 @@ namespace Lipar.Web.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInRegisterPage").Value, out bool showCaptchaInRegisterPage);
+
+            if (showCaptcha && showCaptchaInRegisterPage)
             {
-                model.Password = model.Password.Trim();
-                var isSafePassword = CommonHelper.IsSafePassword(model.Password);
+                var cookieName = $"{CookieDefaults.Prefix}.Register{CookieDefaults.Captcha}";
+                var cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
+
+                if (string.IsNullOrEmpty(cookieValue))
+                {
+                    ModelState.AddModelError("Captcha", _localeStringResourceService.GetResource("Account.Login.CaptchaInvalid"));
+                }
+
+                if (cookieValue != model.Captcha)
+                {
+                    ModelState.AddModelError("Captcha", _localeStringResourceService.GetResource("Account.Login.CaptchaInvalid"));
+                }
             }
 
-            return View();
+            if (ModelState.IsValid)
+            {
+                //check password safe
+                model.Password = model.Password.Trim();
+                var isSafePassword = CommonHelper.IsSafePassword(model.Password);
+                if (!isSafePassword)
+                {
+                    ModelState.AddModelError("Password", _localeStringResourceService.GetResource("Account.Login.Password.IsNotSafe"));
+                    return View(model);
+                }
+
+                var user = new User
+                {
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    CellPhone = model.CellPhone,
+                    CellPhoneVerified = true,
+                    NationalCode = model.NationalCode,
+                    Username = model.UserName,
+                    UserTypeId = (int)UserTypeEnum.Users_Outside_TheOrganization,
+                    EnabledTypeId = (int)EnabledTypeEnum.Active,
+                };
+
+                _userService.Add(user);
+
+                //add activity log for create user
+                _activityLogService.Add("Account.User.Create", string.Format(_localeStringResourceService.GetResource("ActivityLog.Account.User.Create"), user.Username, user.NationalCode), user);
+
+                var password = new UserPassword
+                {
+                    Password = model.Password,
+                    PasswordFormatTypeId = (int)PasswordFormatTypeEnum.Encrypted,
+                    UserId = user.Id
+                };
+
+                _passwordService.Add(password);
+
+                //add activity log for create password
+                _activityLogService.Add("Account.UserPassword.Create", string.Format(_localeStringResourceService.GetResource("ActivityLog.Account.UserPassword.Create"), user.Id), password);
+
+                //create cookie
+                _authenticationService.SignIn(user, false);
+
+                //if return url is null, redirect default in home page
+                if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+                {
+                    return RedirectToRoute("Homepage");
+                }
+            }
+
+            return View(model);
         }
         public IActionResult CheckDuplicateUserName(string userName)
         {

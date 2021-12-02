@@ -9,43 +9,43 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="FirstName">@T("Admin.User.Field.FirstName")</label>
+                <label asp-for="FirstName">@T("User.Field.FirstName")</label>
                 <input asp-for="FirstName" class="form-control" type="text" required />
                 <span class="text-danger" asp-validation-for="FirstName" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="LastName">@T("Admin.User.Field.LastName")</label>
+                <label asp-for="LastName">@T("User.Field.LastName")</label>
                 <input asp-for="LastName" class="form-control" type="text" required />
                 <span class="text-danger" asp-validation-for="LastName" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="NationalCode">@T("Admin.User.Field.NationalCode")</label>
+                <label asp-for="NationalCode">@T("User.Field.NationalCode")</label>
                 <input asp-for="NationalCode" class="form-control" type="text" required />
                 <span class="text-danger" asp-validation-for="NationalCode" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="Email">@T("Admin.User.Field.Email")</label>
+                <label asp-for="Email">@T("User.Field.Email")</label>
                 <input asp-for="Email" class="form-control" type="email" required />
                 <span class="text-danger" asp-validation-for="Email" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="CellPhone">@T("Admin.User.Field.CellPhone")</label>
+                <label asp-for="CellPhone">@T("User.Field.CellPhone")</label>
                 <input asp-for="CellPhone" class="form-control" type="text" required />
                 <span class="text-danger" asp-validation-for="CellPhone" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="DepartmentId">@T("Admin.Position.Field.Department")</label>
+                <label asp-for="DepartmentId">@T("Position.Field.Department")</label>
                 <lipar-select asp-for="DepartmentId" asp-items="Model.AvailableDepartments" />
                 <span class="text-danger" asp-validation-for="DepartmentId" />
             </div>
 
             <div class="col-md-6 col-sm-4 form-group">
-                <label asp-for="PositionTypeId">@T("Admin.Position.Field.PositionType")</label>
+                <label asp-for="PositionTypeId">@T("Position.Field.PositionType")</label>
                 <lipar-select asp-for="PositionTypeId" asp-items="Model.AvailablePositionType" />
                 <span class="text-danger" asp-validation-for="PositionTypeId" />
             </div>

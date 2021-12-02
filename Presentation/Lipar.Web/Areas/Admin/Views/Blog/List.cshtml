@@ -8,7 +8,7 @@
 <form asp-action="List" asp-controller="Blog" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#blog-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -16,13 +16,13 @@
         <div class="card-body collapse" id="blog-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.Blog.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("Blog.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-blog-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
+                <button id="search-blog-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
             </div>
         </div>
     </section>
@@ -48,24 +48,24 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.Name))
                 {
-                    Title = T("Admin.Blog.Field.Name").Text
+                    Title = T("Blog.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.Description))
                 {
-                    Title = T("Admin.Blog.Field.Description").Text
+                    Title = T("Blog.Field.Description").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.ModifiedDate))
                 {
-                    Title = T("Admin.Blog.Field.ModifiedDate").Text,
+                    Title = T("Blog.Field.ModifiedDate").Text,
                     Render = new RenderDate(),
                     Width = "200"
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BlogModel.Id))
                 {
-                    Title = T("Admin.Blog.Field.BlogComments").Text,
+                    Title = T("Blog.Field.BlogComments").Text,
                     Render = new RenderCustom("renderColumnComments"),
                     Width = "200"
                 });
@@ -82,7 +82,7 @@
                 <script>
                     function renderColumnComments(data, type, row, meta) {
                         var link = "BlogComments?filterByBlogId=" + data;
-                        var title ='@T("Admin.Blog.Field.BlogComments")';
+                        var title ='@T("Blog.Field.BlogComments")';
 
                         var countComments = row.ApprovedComments + row.NotApprovedComments;
                         return `<a class='btn btn-primary' href='${link}'>${title} - ${countComments}(${row.NotApprovedComments})</a>`;

@@ -1,0 +1,110 @@
+﻿@font-face {
+    font-family: Vazir;
+    src: url('../../libs/fonts/Vazir-FD.eot');
+    src: url('../../libs/fonts/Vazir-FD.eot?#iefix') format('embedded-opentype'), url('../../libs/fonts/Vazir-FD.woff') format('woff'), url('../../libs/fonts/Vazir-FD.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Vazir;
+    src: url('../../libs/fonts/Vazir-Bold-FD.eot');
+    src: url('../../libs/fonts/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'), url('../../libs/fonts/Vazir-Bold-FD.woff') format('woff'), url('../../libs/fonts/Vazir-Bold-FD.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Vazir;
+    src: url('../../libs/fonts/Vazir-Light-FD.eot');
+    src: url('../../libs/fonts/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'), url('../../libs/fonts/Vazir-Light-FD.woff') format('woff'), url('../../libs/fonts/Vazir-Light-FD.ttf') format('truetype');
+    font-weight: 300;
+}
+
+body {
+    font-family: Vazir,Tahoma !important;
+    font-size: 15px;
+}
+
+
+.sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(70vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+    .sidebar-sticky .nav {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+.nav-item .sub-menu {
+    padding: 0;
+    margin: 0px !important;
+    background-color: #f5f5f5;
+}
+
+.sub-menu {
+    margin-bottom: 20px;
+    list-style: none;
+    line-height: 40px;
+}
+
+.menu {
+    padding: 5px !important;
+    margin-right: 3px !important;
+    color: #6c6e71;
+    cursor: pointer;
+    border-radius: 0;
+}
+
+
+.nav .sub-menu .nav-item a {
+    text-decoration: none;
+    color: #5F6367;
+    display: block;
+    font-size: 13px;
+    padding-right: 20px;
+}
+
+.nav .sub-menu .nav-item:hover {
+    background-color: #F0F0F0;
+}
+
+.nav .nav-item .nav-link {
+    color: #6c6e71;
+    cursor: pointer;
+    border-radius: 0;
+}
+.nav-item-active{
+    background-color:rgb(164, 164, 164) !important;
+    
+}
+    .nav-item-active > a > span {
+        color: #fff !important;
+    }
+    .nav-item-active > a > i {
+        color: #bc16d5 !important;
+    }
+
+#toolbar {
+    direction: rtl;
+    background-color: #fff;
+    box-shadow: 0 0 4px 3px #ddd;
+    margin-bottom: 20px;
+    height: 44px;
+}
+
+    #toolbar .exit-icon, #toolbar .home-icon, #toolbar .message-icon {
+        color: #55595C;
+        margin-top: 9px;
+        margin-left: 7px;
+        font-size: 19px;
+    }
+

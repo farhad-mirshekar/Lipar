@@ -20,21 +20,21 @@
 
         gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LocaleStringResourceModel.ResourceName))
         {
-            Title = T("Admin.LocaleStringResource.Field.ResourceName").Text,
+            Title = T("LocaleStringResource.Field.ResourceName").Text,
             Editable = true,
             EditType = EditType.String
         });
 
         gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LocaleStringResourceModel.ResourceValue))
         {
-            Title = T("Admin.LocaleStringResource.Field.ResourceValue").Text,
+            Title = T("LocaleStringResource.Field.ResourceValue").Text,
             Editable = true,
             EditType = EditType.String
         });
 
         gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LocaleStringResourceModel.Id))
         {
-            Title = T("Admin.Common.Edit").Text,
+            Title = T("Common.Edit.Button").Text,
             Width = "100",
             ClassName = LiparColumnClassDefaults.Button,
             Render = new RenderButtonsInlineEdit()
@@ -42,10 +42,10 @@
 
         gridModel.ColumnCollection.Add(new ColumnProperty(nameof(LocaleStringResourceModel.Id))
         {
-            Title = T("Admin.Common.Delete").Text,
+            Title = T("Common.Delete.Button").Text,
             Width = "100",
             ClassName = LiparColumnClassDefaults.Button,
-            Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+            Render = new RenderButtonRemove(T("Common.Delete.Button").Text)
 
         });
 
@@ -54,7 +54,7 @@
         <section class="card mt-2">
             <div class="card-header">
                 <div class="pull-right">
-                    <span>@T("Admin.LocalStringResource.List.Title")</span>
+                    <span>@T("LocalStringResource.List.Title")</span>
                 </div>
                 <div class="pull-left">
                     <i class="fa fa-plus" aria-hidden="true" data-toggle="collapse" href="#resource-add-collapse"></i>
@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <div class="col-md-3">
                         <label asp-for="@Model.LocaleResourceSearchModel.AddResourceString.ResourceName">
-                            @T("Admin.LocaleStringResource.Field.ResourceName")
+                            @T("LocaleStringResource.Field.ResourceName")
                         </label>
                     </div>
                     <div class="col-md-9">
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <div class="col-md-3">
                         <label asp-for="@Model.LocaleResourceSearchModel.AddResourceString.ResourceValue">
-                            @T("Admin.LocaleStringResource.Field.ResourceValue")
+                            @T("LocaleStringResource.Field.ResourceValue")
                         </label>
                     </div>
                     <div class="col-md-9">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="btn-group-justified pull-left">
-                    <button id="resource-add-btn" type="button" class="btn btn-primary">@T("Admin.Common.Add")</button>
+                    <button id="resource-add-btn" type="button" class="btn btn-primary">@T("Common.Add.Button")</button>
                 </div>
             </div>
         </section>

@@ -13,17 +13,17 @@
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.TextPrompt))
             {
-                Title = T("Admin.ProductAttributeMapping.Field.TextPrompt").Text,
+                Title = T("ProductAttributeMapping.Field.TextPrompt").Text,
             });
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.IsRequired))
             {
-                Title = T("Admin.ProductAttributeMapping.Field.IsRequired").Text,
+                Title = T("ProductAttributeMapping.Field.IsRequired").Text,
                 Render = new RenderBoolean(),
             });
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductAttributeMappingModel.Id))
             {
-                Title = T("Admin.Common.Edit").Text,
+                Title = T("Common.Edit.Button").Text,
                 Width = "100",
                 ClassName = LiparColumnClassDefaults.Button,
                 Render = new RenderButtonEdit(new DataUrl("~/Admin/Product/ProductAttributeMappingEdit/"))

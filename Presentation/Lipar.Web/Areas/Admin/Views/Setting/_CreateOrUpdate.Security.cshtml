@@ -1,0 +1,12 @@
+﻿@model SecuritySettingModel
+
+<input asp-for="Id" type="hidden" />
+<div class="form-group">
+    <label asp-for="EncryptionKey" class="control-label">@T("SecuritySetting.Field.EncryptionKey")</label>
+    <input type="text" class="form-control" asp-for="EncryptionKey">
+</div>
+
+<div class="form-group">
+    <label asp-for="PasswordFormatType" class="control-label">@T("SecuritySetting.Field.PasswordFormatType")</label>
+    <lipar-select asp-for="PasswordFormatType" asp-items="@Model.AvailablePasswordFormatTypes" />
+</div>

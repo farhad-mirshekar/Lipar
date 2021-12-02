@@ -11,6 +11,7 @@ using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Entities.Domain.Application;
 using Lipar.Web.Areas.Admin.Models.Application;
+using Lipar.Services.Security;
 
 namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
 {
@@ -153,6 +154,9 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
 
             CreateMap<CommonSetting, CommonSettingModel>();
             CreateMap<CommonSettingModel, CommonSetting>();
+
+            CreateMap<SecuritySetting, SecuritySettingModel>();
+            CreateMap<SecuritySettingModel, SecuritySetting>();
         }
         protected void CreateContactUsMap()
         {

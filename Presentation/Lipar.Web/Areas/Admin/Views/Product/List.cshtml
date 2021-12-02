@@ -8,7 +8,7 @@
 <form asp-action="List" asp-controller="Product" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#product-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -16,14 +16,14 @@
         <div class="card-body collapse" id="product-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.Product.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("Product.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-product-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-product-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -49,22 +49,22 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Name))
                 {
-                    Title = T("Admin.Product.Field.Name").Text
+                    Title = T("Product.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Price))
                 {
-                    Title = T("Admin.Product.Field.Price").Text
+                    Title = T("Product.Field.Price").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.StockQuantity))
                 {
-                    Title = T("Admin.Product.Field.StockQuantity").Text
+                    Title = T("Product.Field.StockQuantity").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Published))
                 {
-                    Title = T("Admin.Product.Field.Published").Text,
+                    Title = T("Product.Field.Published").Text,
                     Render = new RenderBoolean(),
                     ClassName = LiparColumnClassDefaults.CenterAll
                 });

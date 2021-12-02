@@ -1,4 +1,5 @@
 ﻿using Lipar.Core.Security;
+using Lipar.Services.General.Contracts;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -8,20 +9,20 @@ namespace Lipar.Services.Security
 {
     public class EncryptionService : IEncryptionService
     {
-        //#region Fields
+        #region Fields
 
-        //private readonly SecuritySettings _securitySettings;
+        private readonly ISettingService _settingService;
 
-        //#endregion
+        #endregion
 
-        //#region Ctor
+        #region Ctor
 
-        //public EncryptionService(SecuritySettings securitySettings)
-        //{
-        //    _securitySettings = securitySettings;
-        //}
+        public EncryptionService(ISettingService settingService)
+        {
+            _settingService = settingService;
+        }
 
-        //#endregion
+        #endregion
 
         #region Utilities
 
@@ -86,11 +87,13 @@ namespace Lipar.Services.Security
         /// <returns>Encrypted text</returns>
         public virtual string EncryptText(string plainText, string encryptionPrivateKey = "")
         {
+            var setting = _settingService.GetSetting("SecuritySetting.EncryptionKey");
+
             if (string.IsNullOrEmpty(plainText))
                 return plainText;
 
             if (string.IsNullOrEmpty(encryptionPrivateKey))
-                encryptionPrivateKey = "";
+                encryptionPrivateKey = setting.Value;
 
             using var provider = new TripleDESCryptoServiceProvider
             {

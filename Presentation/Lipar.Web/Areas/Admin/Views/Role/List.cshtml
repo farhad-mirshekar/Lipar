@@ -7,7 +7,7 @@
 <form asp-controller="Role" asp-action="List" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#role-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -16,14 +16,14 @@
             <div class="row">
                 <div class="input-group col-md-6">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">@T("Admin.Role.Field.Name")</span>
+                        <span class="input-group-text">@T("Role.Field.Name")</span>
                     </div>
                     <input asp-for="Name" maxlength="70" type="text" class="form-control">
                 </div>
             </div>
             <div class="btn-group-justified pull-left">
-                <button id="search-role-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-role-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
 
             </div>
         </div>
@@ -50,7 +50,7 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RoleModel.Name))
                 {
-                    Title = T("Admin.Role.Field.Name").Text
+                    Title = T("Role.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(RoleModel.Id))

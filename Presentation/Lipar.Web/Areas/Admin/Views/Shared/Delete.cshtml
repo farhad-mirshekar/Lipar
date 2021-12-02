@@ -13,13 +13,13 @@
         <form asp-action="@Model.ActionName" asp-controller="@Model.ControllerName" asp-route-id="@Model.Id">
             <div class="form-horizontal">
                 <div class="modal-body">
-                    @T("Admin.Common.DeleteConfirmation")
+                    @T("Common.DeleteConfirmation.Button")
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn bg-danger text-light">
-                        @T("Admin.Common.Delete")
+                        @T("Common.Delete.Button")
                     </button>
-                    <span class="btn btn-primary" data-dismiss="modal">@T("Admin.Common.Cancel")</span>
+                    <span class="btn btn-primary" data-dismiss="modal">@T("Common.Cancel.Button")</span>
                 </div>
             </div>
         </form>

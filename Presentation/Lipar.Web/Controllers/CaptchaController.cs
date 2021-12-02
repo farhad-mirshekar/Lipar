@@ -33,7 +33,7 @@ namespace Lipar.Web.Controllers
             var captcha = $"{a} + {b} =";
 
             //store answer
-            SetCookie(CookieDefaults.Captcha, a + b);
+            SetCookie(CookieDefaults.Captcha, a + b , prefix);
 
             //image stream
             FileContentResult img = null;
@@ -78,9 +78,9 @@ namespace Lipar.Web.Controllers
         }
 
         #region Utilities
-        private void SetCookie(string cookieName, int value)
+        private void SetCookie(string cookieName, int value, string prefix)
         {
-            cookieName = $"{CookieDefaults.Prefix}{cookieName}";
+            cookieName = $"{CookieDefaults.Prefix}.{prefix}{cookieName}";
             _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName);
 
             var cookieOptions = new CookieOptions

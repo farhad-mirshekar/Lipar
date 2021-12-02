@@ -12,12 +12,15 @@ namespace Lipar.Web.Areas.Admin.Factories.General
     {
         #region Fields
         private readonly ISettingService _settingService;
+        private readonly IBaseAdminModelFactory _baseAdminModelFactory;
         #endregion
 
         #region Ctor
-        public SettingModelFactory(ISettingService settingService)
+        public SettingModelFactory(ISettingService settingService
+                                 , IBaseAdminModelFactory baseAdminModelFactory)
         {
             _settingService = settingService;
+            _baseAdminModelFactory = baseAdminModelFactory;
         }
         #endregion
         public BlogSettingModel PrepareBlogSettingModel()
@@ -45,6 +48,17 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             var commonSettingModel = commonSetting.ToSettingsModel<CommonSettingModel>();
 
             return commonSettingModel;
+        }
+
+        public SecuritySettingModel PrepareSecuritySettingModel()
+        {
+            var securitySetting = _settingService.LoadSettings<SecuritySetting>();
+
+            var securitySettingModel = securitySetting.ToSettingsModel<SecuritySettingModel>();
+
+            _baseAdminModelFactory.PreparePasswordFormatType(securitySettingModel.AvailablePasswordFormatTypes);
+
+            return securitySettingModel;
         }
     }
 }

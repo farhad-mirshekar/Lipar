@@ -9,7 +9,7 @@
 <form asp-action="List" asp-controller="DynamicPage" method="post">
     <section class="card">
         <div class="card-header">
-            <div class="pull-left" title="@T("Admin.Common.Search")">
+            <div class="pull-left" title="@T("Common.Search.Text")">
                 <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#dynamic-page-list-search"></i>
                 <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
             </div>
@@ -17,14 +17,14 @@
         <div class="card-body collapse" id="dynamic-page-list-search">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-4">
-                    <label asp-for="Name" class="control-label">@T("Admin.DynamicPage.Field.Name")</label>
+                    <label asp-for="Name" class="control-label">@T("DynamicPage.Field.Name")</label>
                     <input type="text" class="form-control" asp-for="Name">
                 </div>
             </div>
 
             <div class="btn-group-justified float-right">
-                <button id="search-dynamic-page-list" type="button" class="btn btn-primary">@T("Admin.Common.Search")</button>
-                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Admin.Common.Search.Clear")</button>
+                <button id="search-dynamic-page-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
             </div>
         </div>
     </section>
@@ -50,23 +50,23 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageModel.Name))
                 {
-                    Title = T("Admin.DynamicPage.Field.Name").Text
+                    Title = T("DynamicPage.Field.Name").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageModel.Title))
                 {
-                    Title = T("Admin.DynamicPage.Field.Title").Text
+                    Title = T("DynamicPage.Field.Title").Text
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageModel.ViewStatus.Title))
                 {
-                    Title = T("Admin.DynamicPage.Field.ViewStatusType").Text
+                    Title = T("DynamicPage.Field.ViewStatusType").Text
                 });
 
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(DynamicPageModel.Id))
                 {
-                    Title = T("Admin.DynamicPage.Field.DynamicPageDetails").Text,
+                    Title = T("DynamicPage.Field.DynamicPageDetails").Text,
                     Render = new RenderCustom("renderColumnDynamicPageDetails"),
                     Width = "200"
                 });
@@ -82,7 +82,7 @@
                 <script>
                     function renderColumnDynamicPageDetails(data, type, row, meta) {
                         var link = "DynamicPageDetails?filterByPageId=" + data;
-                        var title ='@T("Admin.DynamicPage.Field.DynamicPageDetails")';
+                        var title ='@T("DynamicPage.Field.DynamicPageDetails")';
 
                         var countDynamicPageDetails = row.ApprovedDynamicPageDetail + row.NotApprovedDynamicPageDetail;
                         return `<a class='btn btn-primary' href='${link}'>${title} - ${countDynamicPageDetails}(${row.NotApprovedDynamicPageDetail})</a>`;
