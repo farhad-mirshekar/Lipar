@@ -1,5 +1,6 @@
 ﻿using Lipar.Entities.Domain.Application;
 using Lipar.Entities.Domain.Core;
+using Lipar.Entities.Domain.Financial;
 using Lipar.Entities.Domain.General;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,7 @@ namespace Lipar.Entities.Domain.Organization
             Languages = new HashSet<Language>();
             LocaleStringResources = new HashSet<LocaleStringResource>();
             ShoppingCartItems = new HashSet<ShoppingCartItem>();
+            Banks = new HashSet<Bank>();
         }
         #endregion
 
@@ -133,6 +135,7 @@ namespace Lipar.Entities.Domain.Organization
         public ICollection<Language> Languages { get; set; }
         public ICollection<LocaleStringResource> LocaleStringResources { get; set; }
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public ICollection<Bank> Banks { get; set; }
         #endregion
     }
 }

@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20211217121304_implement-bank-bankPort")]
+    partial class implementbankbankPort
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

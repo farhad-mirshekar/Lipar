@@ -3,6 +3,8 @@ using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.General;
 using System.Collections.Generic;
 using Application = Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Financial;
+
 namespace Lipar.Entities.Domain.Core
 {
    public class EnabledType : BaseEntity
@@ -17,6 +19,8 @@ namespace Lipar.Entities.Domain.Core
             DeliveryDates = new HashSet<DeliveryDate>();
             shippingCosts = new HashSet<ShippingCost>();
             ApplicationCategories = new HashSet<Application.Category>();
+            Banks = new HashSet<Bank>();
+            BankPorts = new HashSet<BankPort>();
         }
         #endregion
 
@@ -35,6 +39,8 @@ namespace Lipar.Entities.Domain.Core
         public ICollection<DeliveryDate> DeliveryDates { get; set; }
         public ICollection<ShippingCost> shippingCosts { get; set; }
         public ICollection<Application.Category> ApplicationCategories { get; set; }
+        public ICollection<Bank> Banks { get; set; }
+        public ICollection<BankPort> BankPorts { get; set; }
         #endregion
     }
 }
