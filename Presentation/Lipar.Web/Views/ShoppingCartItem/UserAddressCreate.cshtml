@@ -1,0 +1,24 @@
+﻿@model UserAddressModel
+@{
+    Layout = null;
+}
+<script>
+    $.validator.unobtrusive.parse($("#userAddressCreate"));
+</script>
+
+<form id="userAddressCreate" novalidate="novalidate">
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Id" />
+    <section class="card">
+        <div class="card-header">
+            <span class="card-title">@T("Web.ShoppingCartItem.UserAddress.Create")</span>
+        </div>
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @await Html.PartialAsync("_CreateOrUpdate.UserAddress", Model)
+        </div>
+        <div class="card-footer">
+            <button type="button" onclick="cart.addUserAddress('@Url.RouteUrl("AddUserAddress")'); return false;" class="btn btn-success float-right">@T("Web.Comment.Add")</button>
+        </div>
+    </section>
+</form>

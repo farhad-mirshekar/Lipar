@@ -7,6 +7,7 @@ using Lipar.Services.Caching;
 using Lipar.Web.Framework.MVC.Routing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -52,6 +53,7 @@ namespace Lipar.Web.Framework.Infrastructure.Extensions
             services.AddSingleton<ILiparFileProvider, LiparFileProvider>();
             services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
             services.AddSingleton<ICacheKeyService, CacheKeyService>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
         public static void AddLiparAuthentication(this IServiceCollection services)
         {

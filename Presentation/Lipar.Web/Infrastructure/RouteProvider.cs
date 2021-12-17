@@ -67,6 +67,21 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("Register", $"{pattern}Register/"
                , new { controller = "Account", action = "Register" });
+
+            endpointRouteBuilder.MapControllerRoute("Checkout", $"Cart/Checkout",
+                new { controller = "ShoppingCartItem", action = "Checkout" });
+
+            endpointRouteBuilder.MapControllerRoute("UserAddressCreate", $"Cart/UserAddress/Create",
+                new { controller = "ShoppingCartItem", action = "UserAddressCreate" });
+
+            endpointRouteBuilder.MapControllerRoute("AddUserAddress", $"Cart/UserAddress/Create",
+                new { controller = "ShoppingCartItem", action = "UserAddressCreate" });
+
+            endpointRouteBuilder.MapControllerRoute("UserAddressEdit", "Cart/UserAddress/Edit/{Id:min(0)}",
+                new { controller = "ShoppingCartItem", action = "UserAddressEdit" });
+
+            endpointRouteBuilder.MapControllerRoute("UserAddressDelete", "Cart/UserAddress/Delete/{Id:min(0)}",
+                 new { controller = "ShoppingCartItem", action = "UserAddressDelete" });
         }
         #endregion
     }

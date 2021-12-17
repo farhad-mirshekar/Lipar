@@ -1,12 +1,15 @@
 ﻿using Lipar.Core;
 using Lipar.Core.Caching;
 using Lipar.Core.Common;
+using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Application.Contracts;
 using Lipar.Services.General.Contracts;
+using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Factories.Application;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Infrastructure;
 using Lipar.Web.Models;
+using Lipar.Web.Models.Organization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,7 +26,8 @@ namespace Lipar.Web.Controllers
                                         , IShoppingCartItemModelFactory shoppingCartItemModelFactory
                                         , IProductModelFactory productModelFactory
                                         , IShoppingCartItemService shoppingCartItemService
-                                        , IStaticCacheManager cacheManager)
+                                        , IStaticCacheManager cacheManager
+                                        , IUserAddressService userAddressService)
         {
             _productService = productService;
             _workContext = workContext;
@@ -32,6 +36,7 @@ namespace Lipar.Web.Controllers
             _productModelFactory = productModelFactory;
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
+            _userAddressService = userAddressService;
         }
         #endregion
 
@@ -43,6 +48,7 @@ namespace Lipar.Web.Controllers
         private readonly IProductModelFactory _productModelFactory;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IStaticCacheManager _cacheManager;
+        private readonly IUserAddressService _userAddressService;
         #endregion
 
         #region Shopping Cart Item
@@ -167,6 +173,184 @@ namespace Lipar.Web.Controllers
                 Html = RenderPartialViewToString("_Cart", model),
                 DivName = "#cart"
 
+            });
+        }
+        #endregion
+
+        #region Checkout Method
+        public IActionResult Checkout()
+        {
+            if (_workContext.CurrentUser == null)
+            {
+                return RedirectToRoute("Homepage");
+            }
+
+            if (_workContext.ShoppingCartItems == null)
+            {
+                return RedirectToRoute("Homepage");
+            }
+
+            var shoppingCartItem = _workContext.ShoppingCartItems.Value;
+            var model = _shoppingCartItemModelFactory.PrepareMiniShoppingCartItemModel(shoppingCartItem);
+
+            return View(model);
+        }
+        #endregion
+
+        #region User Address Method
+        public IActionResult UserAddressCreate()
+        {
+            if(_workContext.CurrentUser == null)
+            {
+                return null;
+            }
+            var userAddressModel = new UserAddressModel();
+            userAddressModel.UserId = _workContext.CurrentUser.Id;
+
+            return View(userAddressModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UserAddressCreate(UserAddressModel model)
+        {
+            if (_workContext.CurrentUser == null)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    Message = _localeStringResourceService.GetResource("Web.UserAddress.YouMustBeLoggedIn"),
+                    NotyType = "error"
+                });
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                _userAddressService.Add(new UserAddress
+                {
+                    UserId = model.UserId,
+                    Address = model.Address,
+                    PostalCode = model.PostalCode
+                });
+
+                return Json(new 
+                {
+                    Success = true,
+                    NotyType = "success",
+                    Message = "آدرس با موفقیت ایجاد شد",
+                    Html = RenderViewComponentToString("UserAddress"),
+                    DivName = "#user-address-box"
+                });
+            }
+            return Json(new ResultViewModel
+            {
+                Success = false,
+                Message = _localeStringResourceService.GetResource("Web.UserAddress.YouMustBeLoggedIn"),
+                NotyType = "error",
+            });
+        }
+
+        public IActionResult UserAddressEdit(int id)
+        {
+            if(id == 0)
+            {
+                return null;
+            }
+
+            var userAddress = _userAddressService.GetById(id);
+            if(userAddress == null)
+            {
+                return null;
+            }
+
+            var userAddressModel = new UserAddressModel
+            {
+                Id = userAddress.Id,
+                UserId = userAddress.UserId,
+                PostalCode = userAddress.PostalCode,
+                Address = userAddress.Address,
+            };
+
+            return View(userAddressModel);
+        }
+
+        [HttpPost]
+        public IActionResult UserAddressEdit(UserAddressModel model)
+        {
+            if (_workContext.CurrentUser == null)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    Message = _localeStringResourceService.GetResource("Web.UserAddress.YouMustBeLoggedIn"),
+                    NotyType = "error"
+                });
+            }
+
+            if (ModelState.IsValid)
+            {
+                var userAddress = _userAddressService.GetById(model.Id);
+                userAddress.Address = model.Address;
+                userAddress.PostalCode = model.PostalCode;
+
+                _userAddressService.Edit(userAddress);
+
+                return Json(new
+                {
+                    Success = true,
+                    NotyType = "success",
+                    Message = "",
+                    Html = RenderViewComponentToString("UserAddress"),
+                    DivName = "#user-address-box"
+                });
+            }
+            return Json(new ResultViewModel
+            {
+                Success = false,
+                Message = _localeStringResourceService.GetResource("Web.UserAddress.YouMustBeLoggedIn"),
+                NotyType = "error",
+            });
+        }
+
+        [HttpPost]
+        public IActionResult UserAddressDelete(int id)
+        {
+            if (_workContext.CurrentUser == null)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    Message = _localeStringResourceService.GetResource("Web.UserAddress.YouMustBeLoggedIn"),
+                    NotyType = "error"
+                });
+            }
+
+            var userAddressList = _userAddressService.List(new UserAddressListVM
+            {
+                UserId = _workContext.CurrentUser.Id
+            });
+
+            if(!userAddressList.Any(u=>u.Id == id))
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    Message ="شما قادر به حذف این آدرس نمی باشید",
+                    NotyType = "error"
+                });
+            }
+
+            var userAddress = _userAddressService.GetById(id);
+            _userAddressService.Delete(userAddress);
+
+            return Json(new
+            {
+                Success = true,
+                NotyType = "success",
+                Message = "",
+                Html = RenderViewComponentToString("UserAddress"),
+                DivName = "#user-address-box"
             });
         }
         #endregion

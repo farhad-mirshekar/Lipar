@@ -1,0 +1,14 @@
+﻿@model UserAddressModel
+
+<div class="row">
+    <div class="col-md-12">
+        <label asp-for="PostalCode">@T("UserAddress.Field.PostalCode")</label>
+        <input type="text" class="form-control" asp-for="PostalCode" />
+        <span class="text-danger" asp-validation-for="PostalCode"></span>
+    </div>
+    <div class="col-md-12">
+        <label asp-for="Address">@T("UserAddress.Field.Address")</label>
+        <textarea class="form-control" asp-for="Address"></textarea>
+        <span class="text-danger" asp-validation-for="Address"></span>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+﻿@model List<UserAddressModel>
+
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">آدرس ها</span>
+        <div class="float-right">
+            <a onclick="cart.prepareUserAddressAdd('@Url.RouteUrl("UserAddressCreate")');return false;"> <i class="fa fa-plus text-success" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row" id="user-address">
+            @if (Model != null && Model.Count > 0)
+            {
+                @foreach (var addressModel in Model)
+                {
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <input type="radio" name="UserAddressId" id="UserAddressId" value="@addressModel.Id" />
+                            </div>
+                            <div class="card-body">
+                                <label>@T("UserAddress.Field.PostalCode")</label>
+                                <label>@addressModel.PostalCode</label>
+                                <br />
+                                <label>@T("UserAddress.Field.Address")</label>
+                                <label>@addressModel.Address</label>
+                            </div>
+                            <div class="card-footer">
+                                <div class="float-right">
+                                    <a onclick="cart.prepareUserAddressEdit('@Url.RouteUrl("UserAddressEdit",new { id = addressModel.Id})'); return false;">
+                                        <i class="fa fa-edit text-info"></i>
+                                    </a>
+                                    <a onclick="cart.deleteUserAddress('@Url.RouteUrl("UserAddressDelete",new { id = addressModel.Id})','آیااز حذف مطمئن هستید؟'); return false;">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert">
+
+                </div>
+            }
+        </div>
+
+        <div id="js-user-address-create"></div>
+    </div>
+</section>

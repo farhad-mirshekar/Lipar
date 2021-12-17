@@ -31,5 +31,12 @@ namespace Lipar.Web.Factories.Application
         /// <param name="UserId">user id</param>
         /// <returns></returns>
         ShoppingCartItemListModel PrepareShoppingCartItemListModel(Guid shoppingCartItemId);
+
+        /// <summary>
+        /// prepare mini shopping cart item for checkout
+        /// </summary>
+        /// <param name="shoppingCartItemId">shopping cart item id</param>
+        /// <returns></returns>
+        MiniShoppingCartItemModel PrepareMiniShoppingCartItemModel(Guid shoppingCartItemId);
     }
 }

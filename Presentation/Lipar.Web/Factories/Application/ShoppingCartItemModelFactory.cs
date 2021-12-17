@@ -3,13 +3,16 @@ using Lipar.Core.Caching;
 using Lipar.Core.Common;
 using Lipar.Entities.Domain.Application;
 using Lipar.Entities.Domain.Application.Enums;
+using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Application;
 using Lipar.Services.Application.Contracts;
 using Lipar.Services.General.Contracts;
+using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Infrastructure;
 using Lipar.Web.Models;
 using Lipar.Web.Models.Application;
 using Lipar.Web.Models.General;
+using Lipar.Web.Models.Organization;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -26,7 +29,8 @@ namespace Lipar.Web.Factories.Application
                                           , ILocaleStringResourceService localeStringResourceService
                                           , IProductAttributeValueService productAttributeValueService
                                           , IProductMediaService productMediaService
-                                          , IMediaService mediaService)
+                                          , IMediaService mediaService
+                                          , IUserAddressService userAddressService)
         {
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
@@ -35,6 +39,7 @@ namespace Lipar.Web.Factories.Application
             _productAttributeValueService = productAttributeValueService;
             _productMediaService = productMediaService;
             _mediaService = mediaService;
+            _userAddressService = userAddressService;
         }
         #endregion
 
@@ -46,6 +51,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IProductAttributeValueService _productAttributeValueService;
         private readonly IProductMediaService _productMediaService;
         private readonly IMediaService _mediaService;
+        private readonly IUserAddressService _userAddressService;
         #endregion
 
         #region Methods
@@ -247,12 +253,85 @@ namespace Lipar.Web.Factories.Application
                 shoppingCartItemListModel.AvailableShoppingCartItemModels = shoppingCartItemModels;
 
                 var shippingCost = shoppingCartItemModels.Where(x => x.ShippingCost != null).OrderByDescending(x => x.ShippingCost.Priority).Select(x => x.ShippingCost).FirstOrDefault();
-                
+
                 shoppingCartItemListModel.CartAmount = CalculateShippingCost(shoppingCartItemListModel.CartAmount, shippingCost);
 
                 return shoppingCartItemListModel;
             });
 
+        }
+
+        public MiniShoppingCartItemModel PrepareMiniShoppingCartItemModel(Guid shoppingCartItemId)
+        {
+            var cacheKey = new CacheKey(LiparWebCacheKey.Mini_Shopping_Cart_List);
+
+            return _cacheManager.Get(cacheKey, () =>
+            {
+                var miniShoppingCartItemModel = new MiniShoppingCartItemModel();
+
+                var query = _shoppingCartItemService.GetShoppingCartItemQuery(shoppingCartItemId);
+                var shoppingCartItemModels = query.Select(x => new ShoppingCartItemModel
+                {
+                    Id = x.Id,
+                    Quantity = x.Quantity,
+                    ShoppingCartItemId = x.ShoppingCartItemId,
+                    ProductPrice = x.Product.Price,
+                    ProductDiscount = x.Product.Discount,
+                    ProductDiscountTypeId = x.Product.DiscountTypeId,
+                    DeliveryDate = x.Product.DeliveryDate != null ? new DeliveryDateModel
+                    {
+                        Id = x.Product.DeliveryDateId.Value,
+                        Name = x.Product.DeliveryDate.Name,
+                        Priority = x.Product.DeliveryDate.Priority,
+                        Description = x.Product.DeliveryDate.Description,
+                    }
+                    : null,
+                    ShippingCost = x.Product.ShippingCostId.HasValue ? new ShippingCostModel
+                    {
+                        Id = x.Product.ShippingCostId.Value,
+                        Price = x.Product.ShippingCost.Price,
+                        Name = x.Product.ShippingCost.Name,
+                        Priority = x.Product.ShippingCost.Priority
+                    }
+                    : null,
+                    ProductAttributeValues = CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
+                }).ToList();
+
+                miniShoppingCartItemModel.ShoppingCartItemId = shoppingCartItemId;
+                miniShoppingCartItemModel.AmountProducts = shoppingCartItemModels.Sum(x => x.Quantity * x.ProductPrice);
+
+                foreach (var shoppingCartItem in shoppingCartItemModels)
+                {
+                    miniShoppingCartItemModel.CartDiscountAmount += CalculateDiscount(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice);
+                }
+
+                miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.AmountProducts - (miniShoppingCartItemModel.CartDiscountAmount ?? 0);
+                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate.Priority).Select(cart=>cart.DeliveryDate).FirstOrDefault();
+                miniShoppingCartItemModel.ShippingCost = shoppingCartItemModels.Where(cart => cart.ShippingCost != null).OrderByDescending(cart => cart.ShippingCost.Priority).Select(cart => cart.ShippingCost).FirstOrDefault();
+
+                if(miniShoppingCartItemModel.ShippingCost != null)
+                {
+                    miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.CartAmount - miniShoppingCartItemModel.ShippingCost.Price;
+                }
+                var userAddressList = _userAddressService.List(new UserAddressListVM
+                {
+                    UserId = _workContext.CurrentUser.Id
+                });
+
+                foreach (var userAddress in userAddressList)
+                {
+                    miniShoppingCartItemModel.AvailableUserAddress.Add(new UserAddressModel
+                    {
+                        Address = userAddress.Address,
+                        Id = userAddress.Id,
+                        CreationDate = userAddress.CreationDate,
+                        PostalCode = userAddress.PostalCode,
+                        UserId = userAddress.UserId,
+                    });
+                }
+
+                return miniShoppingCartItemModel;
+            });
         }
         #endregion
 
@@ -318,11 +397,33 @@ namespace Lipar.Web.Factories.Application
         /// <param name="price"></param>
         /// <param name="shippingCost"></param>
         /// <returns></returns>
-        private decimal CalculateShippingCost(decimal price , ShippingCostModel shippingCost)
+        private decimal CalculateShippingCost(decimal price, ShippingCostModel shippingCost)
         {
-            if(shippingCost != null)
+            if (shippingCost != null)
             {
                 price = price - shippingCost.Price;
+            }
+
+            return price;
+        }
+
+        /// <summary>
+        /// calculate discount
+        /// </summary>
+        /// <param name="ProductDiscountTypeId"></param>
+        /// <param name="discount"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
+        private decimal CalculateDiscount(int? ProductDiscountTypeId, decimal? discount, decimal price)
+        {
+            switch (ProductDiscountTypeId)
+            {
+                case (int)DiscountTypeEnum.Amount:
+                    price = price - (discount ?? 0);
+                    break;
+                case (int)DiscountTypeEnum.Percentage:
+                    price = (price * (discount ?? 1)) / 100;
+                    break;
             }
 
             return price;

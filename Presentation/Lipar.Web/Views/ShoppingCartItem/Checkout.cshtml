@@ -1,0 +1,29 @@
+﻿@model MiniShoppingCartItemModel
+
+@section BodySection
+{
+    <section class="row">
+        <div class="col-md-7" id="user-address-box">
+            @await Component.InvokeAsync("UserAddress")
+        </div>
+        <div class="col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <label class="text-info">مبلغ کل محصولات</label>
+                    <label>@Model.AmountProducts</label>
+                </li>
+                <li class="list-group-item">
+                    <label class="text-info">مبلغ کل تخفیفات</label>
+                    <label>@Model.CartDiscountAmount</label>
+                </li>
+                <li class="list-group-item">
+                    <label class="text-info">مبلغ نهایی محصولات</label>
+                    <label>@Model.CartAmount</label>
+                </li>
+            </ul>
+        </div>
+    </section>
+}
+@section Scripts{ 
+    <script src="~/themes/js/cart.js"></script>
+}
