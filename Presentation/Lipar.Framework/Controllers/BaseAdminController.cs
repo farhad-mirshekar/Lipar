@@ -1,6 +1,6 @@
 ﻿using Lipar.Web.Framework.MVC.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Nop.Web.Framework.Models;
+using Lipar.Web.Framework.Models;
 
 namespace Lipar.Web.Framework.Controllers
 {

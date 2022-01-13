@@ -1,6 +1,8 @@
 ﻿using Lipar.Data;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Organization.Contracts;
+using System;
+using System.Collections.Generic;
 
 namespace Lipar.Services.Organization.Implementations
 {
@@ -20,6 +22,16 @@ namespace Lipar.Services.Organization.Implementations
         #region Methods
         public void Add(RolePermission rolePermission)
         => _repository.Insert(rolePermission);
+
+        public void Add(IEnumerable<RolePermission> rolePermissions)
+        {
+            if (rolePermissions == null)
+            {
+                throw new ArgumentNullException(nameof(rolePermissions));
+            }
+
+            _repository.Insert(rolePermissions);
+        }
 
         public void Delete(RolePermission rolePermission)
         => _repository.Delete(rolePermission);

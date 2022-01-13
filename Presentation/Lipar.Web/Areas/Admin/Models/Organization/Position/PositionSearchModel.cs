@@ -1,6 +1,6 @@
 ﻿using Lipar.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Nop.Web.Framework.Models;
+using Lipar.Web.Framework.Models;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Organization

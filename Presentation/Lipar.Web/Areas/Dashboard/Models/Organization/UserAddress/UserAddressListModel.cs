@@ -1,5 +1,5 @@
 ﻿using Lipar.Web.Framework.Models;
-using Nop.Web.Framework.Models;
+using Lipar.Web.Framework.Models;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Dashboard.Models.Organization

@@ -15,6 +15,7 @@ namespace Lipar.Data.Configuration.Financial
 
             builder.Property(bp => bp.Username).HasMaxLength(500);
             builder.Property(bp => bp.Password).HasColumnType("NVARCHAR(MAX)");
+            builder.Property(bp => bp.Name).HasMaxLength(500);
 
             builder.HasOne(bp => bp.EnabledType)
                 .WithMany(e => e.BankPorts)

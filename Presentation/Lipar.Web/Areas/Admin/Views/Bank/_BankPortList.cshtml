@@ -1,0 +1,57 @@
+﻿@model BankModel
+<div class="card">
+    <div class="card-header">
+        <span>@T("Admin.BankPort.List.Title")</span>
+    </div>
+    <div class="card-body">
+        @{
+            var gridModel = new DataTablesModel
+            {
+                Name = "bank-port-grid",
+                UrlRead = new DataUrl("BankPortList", "Bank", new RouteValueDictionary { [nameof(Model.BankPortSearchModel.BankId)] = Model.BankPortSearchModel.BankId }),
+                UrlDelete = new DataUrl("BankPortDelete", "Bank", null),
+                Length = Model.BankPortSearchModel.PageSize,
+                LengthMenu = Model.BankPortSearchModel.AvailablePageSizes,
+            };
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BankPortModel.Name))
+            {
+                Title = T("BankPort.Field.Name").Text,
+                Editable = true,
+                EditType = EditType.String
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BankPortModel.Id))
+            {
+                Title = T("Common.Edit.Button").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonEdit(new DataUrl("~/Admin/Bank/BankPortEdit"))
+            });
+
+            gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BankPortModel.Id))
+            {
+                Title = T("Common.Delete.Button").Text,
+                Width = "100",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonRemove(null)
+
+            });
+
+            @await Html.PartialAsync("Table", gridModel)
+        }
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="BankPortCreate" asp-route-bankId="@Model.Id" class="btn btn-primary pull-left">
+            <i class="fa fa-plus"></i>
+            @T("Common.Add.Button")
+        </a>
+    </div>
+</div>
+
+<script>
+    function renderFaqEdit(data, type, row, meta) {
+        return `<a href='/Admin/Bank/BankPortEdit?Id=${data}'><i class="fa fa-pencil"></i></a>`;
+    }
+</script>

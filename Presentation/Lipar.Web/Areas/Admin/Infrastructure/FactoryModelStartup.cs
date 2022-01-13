@@ -7,6 +7,7 @@ using Lipar.Web.Areas.Admin.Factories.General;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Lipar.Web.Areas.Admin.Factories.Financial;
 
 namespace Lipar.Web.Areas.Admin.Infrastructure
 {
@@ -30,6 +31,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
             PortalService(services);
 
             ApplicationService(services);
+
+            FinancialService(services);
         }
 
         protected void OrganizationService(IServiceCollection services)
@@ -68,6 +71,11 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
             services.AddTransient<App.IProductAttributeModelFactory, App.ProductAttributeModelFactory>();
             services.AddTransient<App.IProductCommentModelFactory, App.ProductCommentModelFactory>();
             services.AddTransient<App.IProductQuestionModelFactory, App.ProductQuestionModelFactory>();
+        }
+
+        protected void FinancialService(IServiceCollection services)
+        {
+            services.AddTransient<IBankModelFactory, BankModelFactory>();
         }
     }
 }

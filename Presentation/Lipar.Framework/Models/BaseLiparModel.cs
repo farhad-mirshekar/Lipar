@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Nop.Web.Framework.Models
+namespace Lipar.Web.Framework.Models
 {
     /// <summary>
     /// Represents base nopCommerce model

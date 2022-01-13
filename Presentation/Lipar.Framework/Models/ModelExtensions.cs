@@ -1,5 +1,4 @@
 ﻿using Lipar.Core;
-using Nop.Web.Framework.Models;
 using System;
 using System.Collections.Generic;
 

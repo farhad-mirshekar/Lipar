@@ -1,5 +1,5 @@
 ﻿using Lipar.Core.Common;
-using Nop.Web.Framework.Models;
+using Lipar.Web.Framework.Models;
 using System;
 
 namespace Lipar.Web.Areas.Admin.Models

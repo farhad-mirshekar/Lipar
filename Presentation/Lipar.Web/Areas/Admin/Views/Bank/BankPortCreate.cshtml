@@ -1,0 +1,31 @@
+﻿@model BankPortModel
+@{
+    Html.SetActiveMenuItemSystemName("Bank List");
+    ViewBag.PageTitle = T("Admin.BankPort.Add.Card.Title").Text;
+}
+
+<form asp-action="BankPortCreate" asp-controller="Bank" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.BankPort.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Common.Add.Button")
+                </button>
+                <a asp-action="Edit" asp-route-id="@Model.BankId" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Common.Back.Button")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate.BankPort", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>

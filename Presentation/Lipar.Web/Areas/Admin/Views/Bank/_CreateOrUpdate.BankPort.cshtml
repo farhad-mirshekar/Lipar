@@ -1,0 +1,39 @@
+﻿@model BankPortModel
+
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="BankId" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">@T("BankPort.Field.Name")</label>
+    <input type="text" class="form-control" asp-for="Name" required>
+    <span class="text-danger" asp-validation-for="Name" />
+</div>
+<div class="form-group">
+    <label asp-for="MerchantId" class="control-label">MerchantId</label>
+    <input type="text" class="form-control" asp-for="MerchantId" required>
+    <span class="text-danger" asp-validation-for="MerchantId" />
+</div>
+<div class="form-group">
+    <label asp-for="MerchantKey" class="control-label">MerchantKey</label>
+    <input type="text" class="form-control" asp-for="MerchantKey">
+    <span class="text-danger" asp-validation-for="MerchantKey" />
+</div>
+<div class="form-group">
+    <label asp-for="Username" class="control-label">@T("BankPort.Field.Username")</label>
+    <input type="text" class="form-control" asp-for="Username">
+    <span class="text-danger" asp-validation-for="Username" />
+</div>
+<div class="form-group">
+    <label asp-for="Password" class="control-label">@T("BankPort.Field.Password")</label>
+    <input type="number" class="form-control" asp-for="Password">
+    <span class="text-danger" asp-validation-for="Password" />
+</div>
+<div class="form-group">
+    <label asp-for="TerminalId" class="control-label">@T("BankPort.Field.TerminalId")</label>
+    <input type="number" class="form-control" asp-for="TerminalId">
+    <span class="text-danger" asp-validation-for="TerminalId" />
+</div>
+<div class="form-group">
+    <label asp-for="EnabledTypeId" class="control-label">@T("BankPort.Field.EnabledType")</label>
+    <lipar-select asp-for="EnabledTypeId" asp-items="@Model.AvailableEnableTypes" asp-required="true" />
+</div>

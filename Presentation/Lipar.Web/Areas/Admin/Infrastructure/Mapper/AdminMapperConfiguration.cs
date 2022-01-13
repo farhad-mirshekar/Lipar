@@ -12,6 +12,8 @@ using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Entities.Domain.Application;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Services.Security;
+using Lipar.Entities.Domain.Financial;
+using Lipar.Web.Areas.Admin.Models.Financial;
 
 namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
 {
@@ -27,6 +29,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
             PortalMapper();
 
             ApplicationMapper();
+
+            FinancialMapper();
         }
         #endregion
         public int Order => 0;
@@ -308,6 +312,28 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
                  .ForMember(model => model.AvailableViewStatus, option => option.Ignore());
 
             CreateMap<ProductAnswersModel, ProductAnswers>();
+        }
+        #endregion
+
+        #region Financial
+        protected void FinancialMapper()
+        {
+            CreateBankMapper();
+        }
+
+        private void CreateBankMapper()
+        {
+            CreateMap<Bank, BankModel>()
+               .ForMember(model => model.AvailableEnableTypes, option => option.Ignore())
+               .ForMember(model => model.EnableTypeTitle, option => option.MapFrom(f => f.EnabledType.Title));
+
+            CreateMap<BankModel, Bank>();
+
+            CreateMap<BankPort, BankPortModel>()
+               .ForMember(model => model.AvailableEnableTypes, option => option.Ignore())
+               .ForMember(model => model.EnableTypeTitle, option => option.MapFrom(f => f.EnabledType.Title));
+
+            CreateMap<BankPortModel, BankPort>();
         }
         #endregion
     }

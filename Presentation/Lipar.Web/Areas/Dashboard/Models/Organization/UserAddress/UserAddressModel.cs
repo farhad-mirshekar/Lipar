@@ -1,6 +1,4 @@
-﻿using Lipar.Web.Framework.Models;
-
-namespace Lipar.Web.Areas.Dashboard.Models.Organization
+﻿namespace Lipar.Web.Areas.Dashboard.Models.Organization
 {
     public class UserAddressModel : BaseEntityModel
     {

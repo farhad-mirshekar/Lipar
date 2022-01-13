@@ -17,6 +17,12 @@ namespace Lipar.Entities.Domain.Financial
         /// gets or sets merchant id
         /// </summary>
         public string MerchantId { get; set; }
+
+        /// <summary>
+        /// gets or sets name
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// gets or sets the merchant key
         /// </summary>

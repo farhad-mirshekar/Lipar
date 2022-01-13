@@ -119,6 +119,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             if (commands == null)
                 return RedirectToAction("List");
 
+            var rolePermissions = new List<RolePermission>();
             foreach (var command in commands)
             {
                 var formKey = $"allowed_{command.Id}";
@@ -137,8 +138,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
                     {
                         //insert role permission
                         var rolePermission = new RolePermission { RoleId = role.Id, CommandId = command.Id  };
-                        _rolePermissionService.Add(rolePermission);
-                        rolePermission.Command = command;
+                        rolePermissions.Add(rolePermission);
+                        //_rolePermissionService.Add(rolePermission);
+                        //rolePermission.Command = command;
                     }
                 }
                 else
@@ -149,6 +151,11 @@ namespace Lipar.Web.Areas.Admin.Controllers
                         _rolePermissionService.Delete(role.RolePermissions.First(rp => rp.Command.SystemName.Contains(command.SystemName)));
                     }
                 }
+            }
+
+            if (rolePermissions.Any())
+            {
+                _rolePermissionService.Add(rolePermissions);
             }
 
             // add activity log for edit role

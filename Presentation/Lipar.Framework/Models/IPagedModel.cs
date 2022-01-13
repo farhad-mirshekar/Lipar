@@ -1,5 +1,5 @@
 ﻿
-namespace Nop.Web.Framework.Models
+namespace Lipar.Web.Framework.Models
 {
     /// <summary>
     /// Represents a paged model

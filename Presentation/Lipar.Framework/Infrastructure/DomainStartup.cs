@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Lipar.Services.Core.Contracts;
 using Lipar.Services.Core.Implementations;
+using Lipar.Services.Financial.Contracts;
+using Lipar.Services.Financial.Implementations;
 
 namespace Lipar.Web.Framework.Infrastructure
 {
@@ -50,6 +52,9 @@ namespace Lipar.Web.Framework.Infrastructure
 
             //add core service
             CoreService(services, configuration);
+
+            //add financial service
+            FinancialService(services, configuration);
 
             services.AddTransient<IEncryptionService, EncryptionService>();
             services.AddSingleton<IPageHeadBuilder, PageHeadBuilder>();
@@ -132,6 +137,12 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<ICommentStatusService, CommentStatusService>();
             services.AddTransient<IViewStatusService, ViewStatusService>();
             services.AddTransient<IEnabledTypeService, EnabledTypeService>();
+        }
+
+        protected void FinancialService(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<IBankService, BankService>();
+            services.AddTransient<IBankPortService, BankPortService>();
         }
     }
 }

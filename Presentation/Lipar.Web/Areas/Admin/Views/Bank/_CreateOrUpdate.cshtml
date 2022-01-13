@@ -1,0 +1,38 @@
+﻿@model BankModel
+
+<input type="hidden" asp-for="Id" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">@T("Bank.Field.Name")</label>
+    <input type="text" class="form-control" asp-for="Name" required>
+    <span class="text-danger" asp-validation-for="Name" />
+</div>
+<div class="form-group">
+    <label asp-for="PaymentUri" class="control-label">@T("Bank.Field.PaymentUri")</label>
+    <input type="text" class="form-control" asp-for="PaymentUri" required>
+    <span class="text-danger" asp-validation-for="PaymentUri" />
+</div>
+<div class="form-group">
+    <label asp-for="ServiceUri" class="control-label">@T("Bank.Field.ServiceUri")</label>
+    <input type="text" class="form-control" asp-for="ServiceUri">
+    <span class="text-danger" asp-validation-for="ServiceUri" />
+</div>
+<div class="form-group">
+    <label asp-for="RedirectUri" class="control-label">@T("Bank.Field.RedirectUri")</label>
+    <input type="text" class="form-control" asp-for="RedirectUri">
+    <span class="text-danger" asp-validation-for="RedirectUri" />
+</div>
+<div class="form-group">
+    <label asp-for="TransactionCost" class="control-label">@T("Bank.Field.TransactionCost")</label>
+    <input type="number" class="form-control" asp-for="TransactionCost">
+    <span class="text-danger" asp-validation-for="TransactionCost" />
+</div>
+<div class="form-group">
+    <label asp-for="EnabledTypeId" class="control-label">@T("Bank.Field.EnabledType")</label>
+    <lipar-select asp-for="EnabledTypeId" asp-items="@Model.AvailableEnableTypes" asp-required="true" />
+</div>
+
+@if (Model.Id > 0)
+{
+    @await Html.PartialAsync("_BankPortList", Model)
+}

@@ -404,7 +404,7 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 12, 17, 15, 43, 3, 430, DateTimeKind.Local).AddTicks(9514));
+                        .HasDefaultValue(new DateTime(2022, 1, 13, 19, 36, 5, 764, DateTimeKind.Local).AddTicks(7914));
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -736,6 +736,10 @@ namespace Lipar.Data.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Password")
                         .HasColumnType("NVARCHAR(MAX)");

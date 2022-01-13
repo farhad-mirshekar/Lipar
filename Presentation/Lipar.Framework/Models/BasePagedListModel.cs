@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nop.Web.Framework.Models
+namespace Lipar.Web.Framework.Models
 {
     /// <summary>
     /// Represents the base paged list model (implementation for DataTables grids)
