@@ -65,7 +65,7 @@ namespace Lipar.Web.Framework.Models
         /// </summary>
         public void SetPopupGridPageSize()
         {
-            SetGridPageSize(5, "0");
+            SetGridPageSize(5, "10,20,50,100");
         }
 
         /// <summary>

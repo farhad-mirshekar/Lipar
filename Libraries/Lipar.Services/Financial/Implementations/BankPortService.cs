@@ -3,6 +3,7 @@ using Lipar.Core.Common;
 using Lipar.Data;
 using Lipar.Entities.Domain.Financial;
 using Lipar.Services.Financial.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -76,7 +77,7 @@ namespace Lipar.Services.Financial.Implementations
 
         public IPagedList<BankPort> List(BankPortListVM listVM)
         {
-            var query = _repository.TableNoTracking;
+            var query = _repository.TableNoTracking.Include(x=>x.EnabledType).AsQueryable();
 
             if(listVM.BankId.HasValue && listVM.BankId.Value > 0)
             {

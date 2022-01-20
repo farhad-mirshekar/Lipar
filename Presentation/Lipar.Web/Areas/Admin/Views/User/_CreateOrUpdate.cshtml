@@ -1,9 +1,10 @@
 ﻿@model UserModel
+@using Lipar.Entities.Domain.Organization.Enums
 <!--render user information-->
 @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
 
 <!--render all role-->
-@if (Model.AvailableRoles != null)
+@if (Model.AvailableRoles != null && Model.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
 {
     @await Html.PartialAsync("_CreateOrUpdate.Roles", Model)
 }

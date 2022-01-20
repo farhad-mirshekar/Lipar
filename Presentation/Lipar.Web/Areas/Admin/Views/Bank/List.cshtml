@@ -42,6 +42,7 @@
                     UrlRead = new DataUrl("List", "Bank", null),
                     Length = Model.PageSize,
                     LengthMenu = Model.AvailablePageSizes,
+                    RefreshButton = true,
                     Filters = new List<FilterParameter>()
                         {
                         new FilterParameter(nameof(Model.Name))
@@ -55,8 +56,7 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(BankModel.EnableTypeTitle))
                 {
-                    Title = T("Bank.Field.EnabledTypeId").Text,
-                    Render = new RenderCustom("")
+                    Title = T("Bank.Field.EnabledType").Text,
                 });
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ShippingCostModel.Id))

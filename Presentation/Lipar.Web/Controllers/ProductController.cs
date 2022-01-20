@@ -62,9 +62,6 @@ namespace Lipar.Web.Controllers
 
             var model = _productModelFactory.PrepareProductModel(new ProductModel(), product, true);
 
-            //create shopping cart item cookie
-            SetCookie(CookieDefaults.ShoppingCartItems);
-
             return View(model);
         }
         #endregion
@@ -316,23 +313,6 @@ namespace Lipar.Web.Controllers
         }
         #endregion
 
-        #region Utilities
-        private void SetCookie(string cookieName)
-        {
-            cookieName = $"{CookieDefaults.Prefix}{cookieName}";
-            if (_httpContextAccessor.HttpContext.Request.Cookies[cookieName] == null)
-            {
-                _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName);
-                var cookieOptions = new CookieOptions
-                {
-                    Expires = DateTime.Now.AddHours(24),
-                    HttpOnly = true,
-                    Secure = true
-                };
 
-                _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, "b75fd233-5194-4321-b4dd-b69e3648063f", cookieOptions);
-            }
-        }
-        #endregion
     }
 }
