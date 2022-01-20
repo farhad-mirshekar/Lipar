@@ -1,0 +1,23 @@
+﻿@model List<BankModel>
+
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">درگاه های پرداخت</span>
+    </div>
+    <div class="card-body">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row">
+                @foreach (var bank in Model)
+                {
+                    <div class="col-md-4">
+                        <input type="radio" name="BankPortId" id="BankPortId" value="@bank.Id" />
+                        @bank.Name
+                    </div>
+                }
+            </div>
+            <br />
+            <button class="btn btn-success btn-block">پرداخت</button>
+        }
+    </div>
+</section>

@@ -1,6 +1,7 @@
 ﻿using Lipar.Entities.Domain.Application;
 using Lipar.Web.Models;
 using Lipar.Web.Models.Application;
+using Lipar.Web.Models.Financial;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -38,5 +39,11 @@ namespace Lipar.Web.Factories.Application
         /// <param name="shoppingCartItemId">shopping cart item id</param>
         /// <returns></returns>
         MiniShoppingCartItemModel PrepareMiniShoppingCartItemModel(Guid shoppingCartItemId);
+
+        /// <summary>
+        /// prepare bank list
+        /// </summary>
+        /// <returns></returns>
+        IList<BankModel> PrepareBankList();
     }
 }

@@ -136,6 +136,23 @@ var cart = {
 
         }
     },
+
+    payment: function (url) {
+        var userAddressId = $('#userAddressId').val();
+        var bankId = $('#bankId').val();
+
+        if (userAddressId == null || userAddressId.length == 0) {
+            new Noty({
+                text: 'آدرس مورد نظر را انتخاب نمایید',
+                theme: 'bootstrap-v4',
+                timeout: 3500,
+                layout: 'topCenter',
+                progressBar: true,
+                type: response.NotyType
+
+            }).show();
+        }
+    }
 };
 
 $(document).on('click', '.quantity > i', function (e) {

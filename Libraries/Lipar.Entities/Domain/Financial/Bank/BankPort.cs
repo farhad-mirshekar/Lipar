@@ -1,5 +1,7 @@
-﻿using Lipar.Entities.Domain.Core;
+﻿using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Core;
 using System;
+using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Financial
 {
@@ -8,6 +10,13 @@ namespace Lipar.Entities.Domain.Financial
     /// </summary>
    public class BankPort :BaseEntity
     {
+        #region Ctor
+        public BankPort()
+        {
+            Orders = new HashSet<Order>();
+        }
+        #endregion
+
         #region Fields
         /// <summary>
         /// gets or sets bank id
@@ -56,6 +65,7 @@ namespace Lipar.Entities.Domain.Financial
         #region Navigations
         public Bank Bank { get; set; }
         public EnabledType EnabledType { get; set; }
+        public ICollection<Order> Orders { get; set; }
         #endregion
     }
 }

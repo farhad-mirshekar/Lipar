@@ -6,11 +6,13 @@ using Lipar.Entities.Domain.Application.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Application;
 using Lipar.Services.Application.Contracts;
+using Lipar.Services.Financial.Contracts;
 using Lipar.Services.General.Contracts;
 using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Infrastructure;
 using Lipar.Web.Models;
 using Lipar.Web.Models.Application;
+using Lipar.Web.Models.Financial;
 using Lipar.Web.Models.General;
 using Lipar.Web.Models.Organization;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +32,8 @@ namespace Lipar.Web.Factories.Application
                                           , IProductAttributeValueService productAttributeValueService
                                           , IProductMediaService productMediaService
                                           , IMediaService mediaService
-                                          , IUserAddressService userAddressService)
+                                          , IUserAddressService userAddressService
+                                          , IBankPortService bankPortService)
         {
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
@@ -40,6 +43,7 @@ namespace Lipar.Web.Factories.Application
             _productMediaService = productMediaService;
             _mediaService = mediaService;
             _userAddressService = userAddressService;
+            _bankPortService = bankPortService;
         }
         #endregion
 
@@ -52,6 +56,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IProductMediaService _productMediaService;
         private readonly IMediaService _mediaService;
         private readonly IUserAddressService _userAddressService;
+        private readonly IBankPortService _bankPortService;
         #endregion
 
         #region Methods
@@ -332,6 +337,34 @@ namespace Lipar.Web.Factories.Application
 
                 return miniShoppingCartItemModel;
             });
+        }
+
+        public IList<BankModel> PrepareBankList()
+        {
+            var bankPorts = _bankPortService.GetBankPorts();
+
+            var result = bankPorts.Select(bankPort => new BankModel
+            {
+                Id = bankPort.Id,
+                Name = bankPort.Bank.Name,
+                CreationDate = bankPort.CreationDate,
+                PaymentUri = bankPort.Bank.PaymentUri,
+                RedirectUri = bankPort.Bank.RedirectUri,
+                BankPort = new BankPortModel
+                {
+                    BankId = bankPort.BankId,
+                    Id = bankPort.Id,
+                    CreationDate = bankPort.CreationDate,
+                    MerchantId = bankPort.MerchantId,
+                    MerchantKey = bankPort.MerchantKey,
+                    Name = bankPort.Name,
+                    Password = bankPort.Password,
+                    TerminalId = bankPort.TerminalId,
+                    Username = bankPort.Username,
+                }
+            }).ToList();
+
+            return result;
         }
         #endregion
 

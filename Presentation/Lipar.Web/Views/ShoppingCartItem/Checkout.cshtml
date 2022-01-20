@@ -21,6 +21,8 @@
                     <label>@Model.CartAmount</label>
                 </li>
             </ul>
+
+            @await Component.InvokeAsync("Bank")
         </div>
     </section>
 }

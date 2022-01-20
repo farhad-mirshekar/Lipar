@@ -1,6 +1,7 @@
 ﻿using Lipar.Core;
 using Lipar.Core.Common;
 using Lipar.Data;
+using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Financial;
 using Lipar.Services.Financial.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -87,6 +88,14 @@ namespace Lipar.Services.Financial.Implementations
             var models = new PagedList<BankPort>(query, listVM.PageIndex, listVM.PageSize);
 
             return models;
+        }
+
+        public IQueryable<BankPort> GetBankPorts()
+        {
+            var query = _repository.TableNoTracking;
+
+            query = query.Where(bp => bp.IsDefault == true && bp.EnabledTypeId == (int)EnabledTypeEnum.Active);
+            return query;
         }
         #endregion
     }
