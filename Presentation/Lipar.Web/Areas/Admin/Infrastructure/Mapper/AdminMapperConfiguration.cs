@@ -105,6 +105,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
             CreateFaqGroupMap();
             CreateSettingMap();
             CreateContactUsMap();
+            CreateEmailAccountMap();
+            CreateMessageTemplateMap();
         }
         protected void CreateLanguageMap()
         {
@@ -168,6 +170,17 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
             CreateMap<ContactUsModel, ContactUs>();
         }
 
+        protected void CreateEmailAccountMap()
+        {
+            CreateMap<EmailAccount, EmailAccountModel>();
+            CreateMap<EmailAccountModel, EmailAccount>();
+        }
+
+        protected void CreateMessageTemplateMap()
+        {
+            CreateMap<MessageTemplate, MessageTemplateModel>();
+            CreateMap<MessageTemplateModel, MessageTemplate>();
+        }
         #endregion
 
         #region Portal

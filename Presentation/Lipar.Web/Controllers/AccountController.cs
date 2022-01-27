@@ -9,6 +9,11 @@ using Lipar.Core.Common;
 using Microsoft.AspNetCore.Http;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.Core.Enums;
+using Lipar.Web.Factories.Organization;
+using System;
+using Lipar.Services.Organization;
+using Lipar.Services.Messages;
+using Lipar.Core;
 
 namespace Lipar.Web.Controllers
 {
@@ -23,6 +28,10 @@ namespace Lipar.Web.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISettingService _settingService;
         private readonly IUserPasswordService _passwordService;
+        private readonly IUserModelFactory _userModelFactory;
+        private readonly IGenericAttributeService _genericAttributeService;
+        private readonly IWorkflowMessageService _workflowMessageService;
+        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
@@ -32,7 +41,11 @@ namespace Lipar.Web.Controllers
                                , ILocaleStringResourceService localeStringResourceService
                                , IHttpContextAccessor httpContextAccessor
                                , ISettingService settingService
-                               , IUserPasswordService passwordService)
+                               , IUserPasswordService passwordService
+                               , IUserModelFactory userModelFactory
+                               , IGenericAttributeService genericAttributeService
+                               , IWorkflowMessageService workflowMessageService
+                               , IWorkContext workContext)
         {
             _userService = userService;
             _authenticationService = authenticationService;
@@ -41,6 +54,10 @@ namespace Lipar.Web.Controllers
             _httpContextAccessor = httpContextAccessor;
             _settingService = settingService;
             _passwordService = passwordService;
+            _userModelFactory = userModelFactory;
+            _genericAttributeService = genericAttributeService;
+            _workflowMessageService = workflowMessageService;
+            _workContext = workContext;
         }
         #endregion
 
@@ -199,6 +216,63 @@ namespace Lipar.Web.Controllers
                 return Json(_localeStringResourceService.GetResource("Web.Register.DuplicateUserName"));
             }
             return Json(true);
+        }
+        #endregion
+
+        #region Password Recovery
+        public IActionResult PasswordRecovery()
+        {
+            var model = new PasswordRecoveryModel();
+            model = _userModelFactory.PreparePasswordRecoveryModel(model);
+
+            return View(model);
+        }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult PasswordRecovery(PasswordRecoveryModel model)
+        {
+            var condination = new PasswordRecoveryModel();
+            condination = _userModelFactory.PreparePasswordRecoveryModel(condination);
+
+            if (condination.ShowCaptcha && condination.ShowCaptchaInPasswordRecoveryPage)
+            {
+                var cookieName = $"{CookieDefaults.Prefix}.PasswordRecovery{CookieDefaults.Captcha}";
+                var cookieValue = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
+
+                if (string.IsNullOrEmpty(cookieValue))
+                {
+                    ModelState.AddModelError("Captcha", _localeStringResourceService.GetResource("Account.Login.CaptchaInvalid"));
+                }
+
+                if (cookieValue != model.Captcha)
+                {
+                    ModelState.AddModelError("Captcha", _localeStringResourceService.GetResource("Account.Login.CaptchaInvalid"));
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = _userService.GetUserByEmail(model.Email);
+                if (user != null && user.EnabledTypeId == (int)EnabledTypeEnum.Active)
+                {
+                    var passwordRecoveryToken = Guid.NewGuid();
+                    _genericAttributeService.SaveAttribute(user, LiparOrganizationDefaults.PasswordRecoveryTokenAttribute, passwordRecoveryToken.ToString());
+
+                    var passwordRecoveryTokenExpire = CommonHelper.GetCurrentDateTime().AddHours(5);
+                    _genericAttributeService.SaveAttribute(user, LiparOrganizationDefaults.PasswordRecoveryTokenDateGeneratedAttribute, passwordRecoveryTokenExpire.ToString());
+
+                    _workflowMessageService.SendPasswordRecoveryMessage(user, _workContext.WorkingLanguage.Id);
+                }
+                else
+                {
+                    model.Result = _localeStringResourceService.GetResource("Account.PasswordRecovery.EmailNotFound");
+                }
+            }
+
+            model = _userModelFactory.PreparePasswordRecoveryModel(model);
+
+            return View(model);
         }
         #endregion
 

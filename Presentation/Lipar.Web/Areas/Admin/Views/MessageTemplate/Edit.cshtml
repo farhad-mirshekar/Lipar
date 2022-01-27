@@ -1,0 +1,37 @@
+﻿@model MessageTemplateModel
+@{
+    Html.SetActiveMenuItemSystemName("Message-Template-List");
+    ViewBag.PageTitle = T("Admin.MessageTemplate.Edit.Card.Title").Text;
+}
+
+<form asp-action="Edit" asp-controller="MessageTemplate" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.MessageTemplate.Edit.Card.Title") - @Model.Name</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Common.Edit.Button")
+                </button>
+                <span id="message-template-delete" class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                    @T("Common.Delete.Button")
+                </span>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Common.Back.Button")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>
+
+<lipar-delete-confirmation asp-button-id="message-template-delete" asp-model-id="@Model.Id" />

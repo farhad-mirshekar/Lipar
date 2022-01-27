@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20220120173629_implementEmailAccountAndMessageTemplateTables")]
+    partial class implementEmailAccountAndMessageTemplateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -468,7 +470,7 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 1, 27, 12, 6, 23, 197, DateTimeKind.Local).AddTicks(5629));
+                        .HasDefaultValue(new DateTime(2022, 1, 20, 21, 6, 28, 613, DateTimeKind.Local).AddTicks(5703));
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -1056,35 +1058,6 @@ namespace Lipar.Data.Migrations
                     b.ToTable("FaqGroups", "General");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.GenericAttribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Key")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("KeyGroup")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GenericAttributes", "General");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.General.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -1353,55 +1326,6 @@ namespace Lipar.Data.Migrations
                     b.ToTable("MessageTemplates", "General");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.QueuedEmail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmailAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("From")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("FromName")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("PriorityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime?>("TimeSend")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("To")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ToName")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmailAccountId");
-
-                    b.ToTable("QueuedEmails", "General");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.General.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -1486,9 +1410,6 @@ namespace Lipar.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -3040,17 +2961,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("EmailAccount");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.QueuedEmail", b =>
-                {
-                    b.HasOne("Lipar.Entities.Domain.General.EmailAccount", "EmailAccount")
-                        .WithMany("QueuedEmails")
-                        .HasForeignKey("EmailAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EmailAccount");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.General.UrlRecord", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Core.EnabledType", "EnabledType")
@@ -3747,8 +3657,6 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.General.EmailAccount", b =>
                 {
                     b.Navigation("MessageTemplates");
-
-                    b.Navigation("QueuedEmails");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.FaqGroup", b =>

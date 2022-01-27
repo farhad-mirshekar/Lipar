@@ -26,7 +26,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
 
             OrganizationService(services);
 
-            PublicService(services);
+            GeneralService(services);
 
             PortalService(services);
 
@@ -42,7 +42,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
             services.AddTransient<ICommandModelFactory, CommandModelFactory>();
             services.AddTransient<IPositionModelFactory, PositionModelFactory>();
         }
-        protected void PublicService(IServiceCollection services)
+        protected void GeneralService(IServiceCollection services)
         {
             services.AddTransient<ILanguageModelFactory, LanguageModelFactory>();
             services.AddTransient<IMediaModelFactory, MediaModelFactory>();
@@ -51,6 +51,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
             services.AddTransient<IFaqGroupModelFactory, FaqGroupModelFactory>();
             services.AddTransient<ISettingModelFactory, SettingModelFactory>();
             services.AddTransient<IContactUsModelFactory, ContactUsModelFactory>();
+            services.AddTransient<IEmailAccountModelFactory, EmailAccountModelFactory>();
+            services.AddTransient<IMessageTemplateModelFactory, MessageTemplateModelFactory>();
         }
 
         protected void PortalService(IServiceCollection services)

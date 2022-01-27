@@ -19,6 +19,7 @@ namespace Lipar.Entities.Domain.Organization
         public string Name { get; set; }
         public string Comment { get; set; }
         public int EnabledTypeId { get; set; }
+        public string Url { get; set; }
         #endregion
 
         #region Navigations

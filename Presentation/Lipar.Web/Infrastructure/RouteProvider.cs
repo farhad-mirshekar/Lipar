@@ -82,6 +82,12 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("UserAddressDelete", "Cart/UserAddress/Delete/{Id:min(0)}",
                  new { controller = "ShoppingCartItem", action = "UserAddressDelete" });
+
+            endpointRouteBuilder.MapControllerRoute("PasswordRecovery", "Password-Recovery",
+                new { controller = "Account", action = "PasswordRecovery" });
+
+            endpointRouteBuilder.MapControllerRoute("PasswordRecoveryConfirm", "Password-Recovery-Confirm",
+                new {controller="Account" , action= "PasswordRecoveryConfirm" });
         }
         #endregion
     }

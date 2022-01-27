@@ -21,6 +21,7 @@ using Lipar.Services.Core.Contracts;
 using Lipar.Services.Core.Implementations;
 using Lipar.Services.Financial.Contracts;
 using Lipar.Services.Financial.Implementations;
+using Lipar.Services.Messages;
 
 namespace Lipar.Web.Framework.Infrastructure
 {
@@ -96,6 +97,11 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<IContactUsService, ContactUsService>();
             services.AddTransient<IContactUsTypeService, ContactUsTypeService>();
             services.AddTransient<ILanguageCultureService, LanguageCultureService>();
+            services.AddTransient<IEmailAccountService, EmailAccountService>();
+            services.AddTransient<IMessageTemplateService, MessageTemplateService>();
+            services.AddTransient<IGenericAttributeService, GenericAttributeService>();
+            services.AddTransient<IQueuedEmailService, QueuedEmailService>();
+            services.AddTransient<IWorkflowMessageService, WorkflowMessageService>();
         }
 
         protected void PortalService(IServiceCollection services, IConfiguration configuration)
@@ -113,7 +119,7 @@ namespace Lipar.Web.Framework.Infrastructure
 
         protected void ApplicationService(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<AppContract.IDeliveryDateService,AppImplement.DeliveryDateService>();
+            services.AddTransient<AppContract.IDeliveryDateService, AppImplement.DeliveryDateService>();
             services.AddTransient<AppContract.IShippingCostService, AppImplement.ShippingCostService>();
             services.AddTransient<AppContract.ICategoryService, AppImplement.CategoryService>();
             services.AddTransient<AppContract.IProductService, AppImplement.ProductService>();
@@ -132,7 +138,7 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<AppContract.IOrderService, AppImplement.OrderService>();
         }
 
-        protected void CoreService(IServiceCollection services,IConfiguration configuration)
+        protected void CoreService(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ICommentStatusService, CommentStatusService>();
             services.AddTransient<IViewStatusService, ViewStatusService>();

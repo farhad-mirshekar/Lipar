@@ -1,0 +1,37 @@
+﻿@model EmailAccountModel
+
+<input type="hidden" asp-for="Id" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">@T("EmailAccount.Field.Name")</label>
+    <input type="text" class="form-control" asp-for="Name" required>
+    <span class="text-danger" asp-validation-for="Name" />
+</div>
+<div class="form-group">
+    <label asp-for="Email" class="control-label">@T("EmailAccount.Field.Email")</label>
+    <input type="text" class="form-control" asp-for="Email" required>
+    <span class="text-danger" asp-validation-for="Email" />
+</div>
+<div class="form-group">
+    <label asp-for="Host" class="control-label">@T("EmailAccount.Field.Host")</label>
+    <input type="text" class="form-control" asp-for="Host" required />
+    <span class="text-danger" asp-validation-for="Host" />
+</div>
+<div class="form-group">
+    <label asp-for="Username" class="control-label">@T("EmailAccount.Field.Username")</label>
+    <input type="text" class="form-control" asp-for="Username" required />
+    <span class="text-danger" asp-validation-for="Username" />
+</div>
+<div class="form-group">
+    <label asp-for="Password" class="control-label">@T("EmailAccount.Field.Password")</label>
+    <input type="number" class="form-control" asp-for="Password">
+    <span class="text-danger" asp-validation-for="Password" />
+</div>
+<div class="form-group">
+    <label asp-for="Port" class="control-label">@T("EmailAccount.Field.Port")</label>
+    <input type="number" class="form-control" asp-for="Port" required/>
+</div>
+<div class="form-group row">
+    <label asp-for="EnableSsl" class="col-md-4 control-label">@T("EmailAccount.Field.EnableSsl")</label>
+    <input type="checkbox" class="col-md-1 form-control" asp-for="EnableSsl" />
+</div>

@@ -1,0 +1,83 @@
+﻿@model EmailAccountSearchModel
+
+
+@{
+    Html.SetActiveMenuItemSystemName("Email-Account-List");
+    ViewBag.PageTitle = T("Admin.EmailAccount.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="EmailAccount" method="post">
+    <section class="card">
+        <div class="card-header">
+            <div class="pull-left" title="@T("Common.Search.Text")">
+                <i class="fa fa-search" aria-hidden="true" data-toggle="collapse" href="#email-account-list-search"></i>
+                <a asp-action="Create"> <i class="fa fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse" id="email-account-list-search">
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-4">
+                    <label asp-for="Name" class="control-label">@T("EmailAccount.Field.Name")</label>
+                    <input type="text" class="form-control" asp-for="Name">
+                </div>
+            </div>
+
+            <div class="btn-group-justified float-right">
+                <button id="search-email-account-list" type="button" class="btn btn-primary">@T("Common.Search.Text")</button>
+                <button id="search-clear-list" type="button" class="btn btn-secondary">@T("Common.Search.Clear")</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.EmailAccount.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+                {
+                    Name = "email-account-grid",
+                    SearchButtonId = "search-email-account-list",
+                    UrlRead = new DataUrl("List", "EmailAccount", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    RefreshButton = true,
+                    Filters = new List<FilterParameter>()
+                            {
+                        new FilterParameter(nameof(Model.Name))
+                    }
+                };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(EmailAccountModel.Name))
+                {
+                    Title = T("EmailAccount.Field.Name").Text
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(EmailAccountModel.Email))
+                {
+                    Title = T("EmailAccount.Field.Email").Text,
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(EmailAccountModel.Id))
+                {
+                    Title = "",
+                    Width = "10",
+                    ClassName = LiparColumnClassDefaults.Button,
+                    Render = new RenderButtonEdit(new DataUrl("Edit"))
+                });
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(document).ready(() => {
+        $('#search-clear-list').click((e) => {
+            $('#@Html.IdFor(c=>c.Name)').val('');
+            $('#search-email-account-list').click();
+        });
+    })
+</script>

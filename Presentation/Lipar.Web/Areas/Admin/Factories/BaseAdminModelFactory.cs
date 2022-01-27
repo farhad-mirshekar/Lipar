@@ -40,7 +40,8 @@ namespace Lipar.Web.Areas.Admin.Factories
                                    , App.IDiscountTypeService discountTypeService
                                    , ILanguageCultureService languageCultureService
                                    , IPositionTypeService positionTypeService
-                                   , IPasswordFormatTypeService passwordFormatTypeService)
+                                   , IPasswordFormatTypeService passwordFormatTypeService
+                                   , IEmailAccountService emailAccountService)
         {
             _categoryPortalService = categoryPortalService;
             _cacheKeyService = cacheKeyService;
@@ -64,6 +65,7 @@ namespace Lipar.Web.Areas.Admin.Factories
             _languageCultureService = languageCultureService;
             _positionTypeService = positionTypeService;
             _passwordFormatTypeService = passwordFormatTypeService;
+            _emailAccountService = emailAccountService;
         }
         #endregion
 
@@ -90,6 +92,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         private readonly ILanguageCultureService _languageCultureService;
         private readonly IPositionTypeService _positionTypeService;
         private readonly IPasswordFormatTypeService _passwordFormatTypeService;
+        private readonly IEmailAccountService _emailAccountService;
         #endregion
         public void PrepareAllLanguage(IList<SelectListItem> items, string defaultItemText = null)
         {
@@ -381,6 +384,18 @@ namespace Lipar.Web.Areas.Admin.Factories
             foreach (var passwordFormatType in passwordFormatTypes)
             {
                 items.Add(new SelectListItem { Text = passwordFormatType.Title.Trim(), Value = passwordFormatType.Id.ToString() });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
+        public void PrepareEmailAccounts(IList<SelectListItem> items, string defaultItemText = null)
+        {
+            var emailAccounts = _emailAccountService.List(new EmailAccountListVM { });
+
+            foreach (var emailAccount in emailAccounts)
+            {
+                items.Add(new SelectListItem { Text = emailAccount.Name.Trim(), Value = emailAccount.Id.ToString() });
             }
 
             PrepareDefaultItem(items, defaultItemText);

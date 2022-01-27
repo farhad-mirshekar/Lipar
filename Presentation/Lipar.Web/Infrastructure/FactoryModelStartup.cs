@@ -1,5 +1,6 @@
 ﻿using Lipar.Core.Infrastructure;
 using Lipar.Web.Factories;
+using Lipar.Web.Factories.Organization;
 using Lipar.Web.Factories.Portal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,8 @@ namespace Lipar.Web.Infrastructure
             PortalConfigureServices(services);
 
             ApplicationConfigureService(services);
+
+            OrganizationConfigureService(services);
         }
 
         public void PortalConfigureServices(IServiceCollection services)
@@ -37,6 +40,11 @@ namespace Lipar.Web.Infrastructure
         {
             services.AddTransient<App.IProductModelFactory, App.ProductModelFactory>();
             services.AddTransient<App.IShoppingCartItemModelFactory, App.ShoppingCartItemModelFactory>();
+        }
+
+        public void OrganizationConfigureService(IServiceCollection services)
+        {
+            services.AddTransient<IUserModelFactory, UserModelFactory>();
         }
     }
 }
