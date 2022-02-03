@@ -1,0 +1,30 @@
+﻿@model ProductAnswersModel
+@{
+    Layout = null;
+}
+
+<form method="post" asp-action="ProductAnswerAdd" id="product-answer-form" class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ProductQuestionId" />
+            <div class="row">
+                <div class="col-md-12">
+                    <label asp-for="AnswerText">@T("ProductAnswer.Field.AnswerText")</label>
+                    <textarea class="form-control" asp-for="AnswerText"></textarea>
+                    <span class="text-danger" asp-validation-for="AnswerText"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="btn-product-answer-create" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</form>

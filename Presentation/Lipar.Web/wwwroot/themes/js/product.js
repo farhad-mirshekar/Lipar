@@ -79,6 +79,38 @@
         })
     },
 
+    preapreProductAnswerAdd: function (url , questionId) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { questionId: questionId },
+            success: function (result) {
+                $('#js-product-answer-create').html(result);
+
+                $('#js-product-answer-create').modal('show');
+            }
+        })
+    },
+
+    addProductAnswer(url) {
+        var $form = $('#product-answer-form');
+        $.validator.unobtrusive.parse($form);
+        if ($form.valid()) {
+            $.ajax({
+                cache: false,
+                url: url,
+                type: "POST",
+                data: $form.serialize(),
+                success: function (response) {
+                    product.success_process(response);
+
+                    $('#js-product-answer-create').modal('hide');
+                },
+                error: this.ajaxFailure
+            })
+        }
+    },
+
     success_process: function (response) {
 
         new Noty({
@@ -104,8 +136,16 @@
         }
         return false;
     },
-    ajaxFailure: function () {
-        alert('Failed to add the product to the cart. Please refresh the page and try one more time.');
+    ajaxFailure: function (response) {
+        new Noty({
+            text: response.Message,
+            theme: 'bootstrap-v4',
+            timeout: 3500,
+            layout: 'topCenter',
+            progressBar: true,
+            type: response.NotyType
+
+        }).show();
     }
 }
 

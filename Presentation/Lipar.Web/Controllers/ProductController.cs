@@ -26,7 +26,8 @@ namespace Lipar.Web.Controllers
                                , IProductCommentService productCommentService
                                , IWorkContext workContext
                                , IProductQuestionService productQuestionService
-                               , IHttpContextAccessor httpContextAccessor)
+                               , IHttpContextAccessor httpContextAccessor
+                               , IProductAnswersService productAnswersService)
         {
             _productModelFactory = productModelFactory;
             _productService = productService;
@@ -36,6 +37,7 @@ namespace Lipar.Web.Controllers
             _workContext = workContext;
             _productQuestionService = productQuestionService;
             _httpContextAccessor = httpContextAccessor;
+            _productAnswersService = productAnswersService;
         }
         #endregion
 
@@ -48,6 +50,7 @@ namespace Lipar.Web.Controllers
         private readonly IWorkContext _workContext;
         private readonly IProductQuestionService _productQuestionService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IProductAnswersService _productAnswersService;
         #endregion
 
         #region Product Methods
@@ -91,7 +94,8 @@ namespace Lipar.Web.Controllers
             return Json(new
             {
                 success = true,
-                message = string.Format(_localeStringResourceService.GetResource("Products.ProductHasBeenAddedToCompareList.Link"), Url.RouteUrl("CompareProducts"))
+                Message = string.Format(_localeStringResourceService.GetResource("Products.ProductHasBeenAddedToCompareList.Link"), Url.RouteUrl("CompareProducts")),
+                NotyType = "Info"
             });
         }
 
@@ -229,7 +233,7 @@ namespace Lipar.Web.Controllers
         }
         #endregion
 
-        #region Product Question
+        #region Product Question-Answer
         public IActionResult ProductQuestionAdd(int productId)
         {
             var product = _productService.GetById(productId, true);
@@ -301,6 +305,96 @@ namespace Lipar.Web.Controllers
                     NotyType = "success",
                     Clear = true,
                     DivName = "#js-product-question-create"
+                });
+            }
+
+            return Json(new ResultViewModel
+            {
+                Success = false,
+                Message = _localeStringResourceService.GetResource("Web.ProductQuestion.YouMustBeLoggedIn"),
+                NotyType = "error",
+            });
+        }
+
+        public IActionResult ProductAnswerAdd(int questionId)
+        {
+            if(questionId == 0)
+            {
+                return NotFound();
+            }
+
+            var question = _productQuestionService.GetById(questionId, true);
+
+            if(question == null)
+            {
+                return NotFound();
+            }
+
+            var model = _productModelFactory.PrepareProductAnswersModel(new ProductAnswersModel(), question);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProductAnswerAdd(ProductAnswersModel model)
+        {
+            if (_workContext.CurrentUser == null)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    Message = _localeStringResourceService.GetResource("Web.ProductQuestion.YouMustBeLoggedIn"),
+                    NotyType = "error"
+                });
+            }
+
+            if (ModelState.IsValid)
+            {
+                var question = _productQuestionService.GetById(model.ProductQuestionId, true);
+
+                if (question == null)
+                {
+                    return Json(new ResultViewModel
+                    {
+                        Success = false,
+                        Message = _localeStringResourceService.GetResource("Web.Product.Notfound"),
+                        NotyType = "error"
+                    });
+                }
+
+                var productAnswers = _productAnswersService.List(new ProductAnswersListVM
+                {
+                    ProductQuestionId = model.ProductQuestionId,
+                    UserId = _workContext.CurrentUser.Id,
+                    ViewStatusId = (int)ViewStatusEnum.InActive,
+                });
+
+                if (productAnswers.Count > 0)
+                {
+                    return Json(new ResultViewModel
+                    {
+                        Success = false,
+                        Message = _localeStringResourceService.GetResource("Web.ProductQuestion.Error.UserHasADisabledComment"),
+                        NotyType = "error"
+                    });
+                }
+
+                var productAnswer = new ProductAnswers();
+                productAnswer.ProductQuestionId = model.ProductQuestionId;
+                productAnswer.UserId = _workContext.CurrentUser.Id;
+                productAnswer.AnswerText = model.AnswerText;
+                productAnswer.ViewStatusId = (int)ViewStatusEnum.InActive;
+
+                _productAnswersService.Add(productAnswer);
+
+                return Json(new ResultViewModel
+                {
+                    Success = true,
+                    Message = _localeStringResourceService.GetResource("Web.ProductQuestion.CreateQuestion"),
+                    NotyType = "success",
+                    Clear = true,
+                    DivName = "#js-product-answer-create"
                 });
             }
 

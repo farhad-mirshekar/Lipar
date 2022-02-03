@@ -11,7 +11,7 @@
         <span>@T("Web.Comment.Title")</span>
     </div>
     <div class="card-body">
-        <ul style="list-style:none">
+        <ul>
             @foreach (var productComment in Model.ProductComments)
             {
                 <li class="mb-3">
@@ -48,11 +48,29 @@
                 </li>
             }
         </ul>
+
+        @if (_workContext.CurrentUser == null && Model.AllowCustomerReviews)
+        {
+            <div class="row">
+                <div class="col-md-12 alert alert-info">
+                    <p class="text-center">@T("Web.Comment.YouMustBeLoggedIn").Text</p>
+                </div>
+            </div>
+        }
+
+        @if (!Model.AllowCustomerReviews)
+        {
+            <div class="row">
+                <div class="col-md-12 alert alert-danger">
+                    <p class="text-center">@T("Web.Comment.CommentStatusType.CommentsAreClosed").Text</p>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 <!--user is login-->
-@if (_workContext.CurrentUser != null)
+@if (_workContext.CurrentUser != null && Model.AllowCustomerReviews)
 {
     @await Html.PartialAsync("_CreateOrUpdate.Comment", Model.ProductCommentModel)
 }

@@ -1,10 +1,14 @@
-﻿@section BodySection{ 
+﻿@section BodySection{
     <div class="row">
         <div class="col-md-9">
-            @await Component.InvokeAsync("LatestProducts")
+            <!--lates product list-->
+            @await Component.InvokeAsync("ProductList",new ProductFilterModel { ShowOnHomePage = true, SpecialOffer = false, Title = "آخرین محصولات" })
+
+            <!--special offer product list-->
+            @await Component.InvokeAsync("ProductList", new ProductFilterModel { ShowOnHomePage = true, SpecialOffer = true, Title = "محصولات ویژه" })
         </div>
         <div class="col-md-3">
-           @await Component.InvokeAsync("BlogSide")
+            @await Component.InvokeAsync("BlogSide")
         </div>
     </div>
 }

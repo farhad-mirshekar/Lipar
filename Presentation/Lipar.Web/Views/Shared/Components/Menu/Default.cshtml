@@ -1,4 +1,5 @@
 ﻿@model Lipar.Web.Models.General.MenuModel
+@using Lipar.Entities.Domain.Organization.Enums
 @using Lipar.Core.ReadingTime
 
 <div class="header-upper">
@@ -10,7 +11,12 @@
             <ul>
                 @if (Model.UserHeaderLink.IsAuthenticated)
                 {
-                    <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+                    switch (Model.UserHeaderLink.UserTypeId)
+                    {
+                        case (int)UserTypeEnum.Users_With_In_The_Organization:
+                            <li><a href="@Url.Action("Index","Home",new {Area="Admin" })" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+                            break;
+                    }
                     <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
                 }
                 else
@@ -24,7 +30,7 @@
                 }
             </ul>
         </div>
-        
+
     </div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

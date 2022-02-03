@@ -41,5 +41,21 @@ namespace Lipar.Web.Factories.Application
         /// <param name="product">product</param>
         /// <returns></returns>
         ProductQuestionModel PrepareProductQuestionModel(ProductQuestionModel model,Product product);
+
+        /// <summary>
+        /// special offer products list
+        /// </summary>
+        /// <param name="PageIndex">page index</param>
+        /// <param name="PageSize">page size</param>
+        /// <returns></returns>
+        ProductListModel SpecialOfferProducts(int PageIndex = 0, int PageSize = 5);
+
+        /// <summary>
+        /// prepare product answers model
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="productQuestion"></param>
+        /// <returns></returns>
+        ProductAnswersModel PrepareProductAnswersModel(ProductAnswersModel model, ProductQuestion productQuestion);
     }
 }

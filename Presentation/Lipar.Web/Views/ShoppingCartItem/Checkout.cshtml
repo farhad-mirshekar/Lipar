@@ -10,15 +10,15 @@
             <ul class="list-group">
                 <li class="list-group-item">
                     <label class="text-info">مبلغ کل محصولات</label>
-                    <label>@Model.AmountProducts</label>
+                    <label>@string.Format("{0:#,0} {1}", Model.AmountProducts,T("Web.Currency").Text)</label>
                 </li>
                 <li class="list-group-item">
                     <label class="text-info">مبلغ کل تخفیفات</label>
-                    <label>@Model.CartDiscountAmount</label>
+                    <label>@string.Format("{0:#,0} {1}", Model.CartDiscountAmount,T("Web.Currency").Text)</label>
                 </li>
                 <li class="list-group-item">
                     <label class="text-info">مبلغ نهایی محصولات</label>
-                    <label>@Model.CartAmount</label>
+                    <label>@string.Format("{0:#,0} {1}", Model.CartAmount, T("Web.Currency").Text)</label>
                 </li>
             </ul>
 

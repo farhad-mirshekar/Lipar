@@ -1,6 +1,5 @@
 ﻿@model ProductModel
 @using Lipar.Entities.Domain.Application.Enums
-using Lipar.Services.Application
 @{
     decimal temp1 = 0;
     decimal temp2 = 0;
@@ -14,7 +13,7 @@ using Lipar.Services.Application
         {
             <div class="col-md-12 text-center">
                 <label class="text-info">@T("Product.Field.Price")</label>
-                <label class="text-danger">@string.Format("{0:C0} تومان", Model.Price).Replace("$", "")</label>
+                <label class="text-danger">@string.Format("{0:#,0} {1}", Model.Price, T("Web.Currency").Text)</label><br />
                 @{
                     switch (Model.DiscountTypeId)
                     {
@@ -24,7 +23,7 @@ using Lipar.Services.Application
                                 @T("Product.Field.Discount")
                             </label>
                             <label class="control-label text-danger">
-                                @string.Format("{0:C0} تخفیف", Model.Discount).Replace("$", "")
+                                @string.Format("{0:#,0} {1}", Model.Discount, T("Web.Currency").Text)
                             </label>
                             break;
                         case (int)DiscountTypeEnum.Percentage:
@@ -33,7 +32,7 @@ using Lipar.Services.Application
                                 @T("Product.Field.Discount")
                             </label>
                             <label class="control-label text-danger">
-                                @string.Format("{0:C0} درصد", Model.Discount).Replace("$", "")
+                                @string.Format("{0} درصد", Model.Discount)
                             </label>
                             break;
                     }
@@ -41,7 +40,7 @@ using Lipar.Services.Application
 
                 <hr />
                 <label class="text-info">@T("Product.Field.Sum")</label>
-                <label class="text-danger">@string.Format("{0:C0} تومان", (Model.Price - (temp1 + temp2))).Replace("$", "")</label>
+                <label class="text-danger">@string.Format("{0:#,0} {1}", (Model.Price - (temp1 + temp2)), T("Web.Currency").Text)</label>
             </div>
             if (Model.ProductAttributes.Count > 0)
             {

@@ -101,6 +101,16 @@ namespace Lipar.Services.Application.Implementations
                 query = query.Where(p => p.Name.Contains(listVM.Name.Trim()));
             }
 
+            if (listVM.SpecialOffer.HasValue)
+            {
+                query = query.Where(p => p.SpecialOffer == listVM.SpecialOffer);
+            }
+
+            if (listVM.ShowOnHomePage.HasValue)
+            {
+                query = query.Where(p => p.ShowOnHomePage == listVM.ShowOnHomePage);
+            }
+
             //switch (listVM.ProductSortingType)
             //{
             //    case Entities.ProductSortingType.CreationDateAsc:

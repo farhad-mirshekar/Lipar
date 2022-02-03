@@ -33,7 +33,8 @@ namespace Lipar.Web.Factories.Application
                                           , IProductMediaService productMediaService
                                           , IMediaService mediaService
                                           , IUserAddressService userAddressService
-                                          , IBankPortService bankPortService)
+                                          , IBankPortService bankPortService
+                                          , IOrderService orderService)
         {
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
@@ -44,6 +45,7 @@ namespace Lipar.Web.Factories.Application
             _mediaService = mediaService;
             _userAddressService = userAddressService;
             _bankPortService = bankPortService;
+            _orderService = orderService;
         }
         #endregion
 
@@ -57,6 +59,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IMediaService _mediaService;
         private readonly IUserAddressService _userAddressService;
         private readonly IBankPortService _bankPortService;
+        private readonly IOrderService _orderService;
         #endregion
 
         #region Methods
@@ -307,16 +310,17 @@ namespace Lipar.Web.Factories.Application
 
                 foreach (var shoppingCartItem in shoppingCartItemModels)
                 {
-                    miniShoppingCartItemModel.CartDiscountAmount += CalculateDiscount(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice);
+                    var discount = CalculateDiscount(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice);
+                    miniShoppingCartItemModel.CartDiscountAmount = miniShoppingCartItemModel.CartDiscountAmount.GetValueOrDefault(0) + discount;
                 }
 
                 miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.AmountProducts - (miniShoppingCartItemModel.CartDiscountAmount ?? 0);
-                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate.Priority).Select(cart=>cart.DeliveryDate).FirstOrDefault();
+                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate.Priority).Select(cart => cart.DeliveryDate).FirstOrDefault();
                 miniShoppingCartItemModel.ShippingCost = shoppingCartItemModels.Where(cart => cart.ShippingCost != null).OrderByDescending(cart => cart.ShippingCost.Priority).Select(cart => cart.ShippingCost).FirstOrDefault();
 
-                if(miniShoppingCartItemModel.ShippingCost != null)
+                if (miniShoppingCartItemModel.ShippingCost != null)
                 {
-                    miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.CartAmount - miniShoppingCartItemModel.ShippingCost.Price;
+                    miniShoppingCartItemModel.CartAmount += miniShoppingCartItemModel.ShippingCost.Price;
                 }
                 var userAddressList = _userAddressService.List(new UserAddressListVM
                 {
@@ -434,7 +438,15 @@ namespace Lipar.Web.Factories.Application
         {
             if (shippingCost != null)
             {
-                price = price - shippingCost.Price;
+                price = price + shippingCost.Price;
+            }
+            else
+            {
+                var orderSettings = _orderService.OrderSettings();
+                if(price < orderSettings.ShoppingCartRate)
+                {
+                    price = price + (orderSettings.ShoppingCartRate ?? 0);
+                }
             }
 
             return price;
@@ -449,17 +461,18 @@ namespace Lipar.Web.Factories.Application
         /// <returns></returns>
         private decimal CalculateDiscount(int? ProductDiscountTypeId, decimal? discount, decimal price)
         {
+            decimal discountPrice = 0;
             switch (ProductDiscountTypeId)
             {
                 case (int)DiscountTypeEnum.Amount:
-                    price = price - (discount ?? 0);
+                    discountPrice = discount.Value;
                     break;
                 case (int)DiscountTypeEnum.Percentage:
-                    price = (price * (discount ?? 1)) / 100;
+                    discountPrice = (price * (discount ?? 1)) / 100;
                     break;
             }
 
-            return price;
+            return discountPrice;
         }
         #endregion
     }

@@ -148,6 +148,7 @@ namespace Lipar.Web.Factories
             {
                 model.UserInfo = $"{user.FirstName} {user.LastName}";
                 model.IsAuthenticated = true;
+                model.UserTypeId = user.UserTypeId;
             }
 
             return model;

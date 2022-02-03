@@ -22,6 +22,8 @@ namespace Lipar.Web.Components
 
             var productQuestions = _productModelFactory.PrepareProductQuestionListModel(product);
 
+            ViewBag.AllowCustomerReviews = product.AllowCustomerReviews;
+
             return View(productQuestions);
         }
     }

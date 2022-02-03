@@ -4,5 +4,6 @@
     {
         public bool IsAuthenticated { get; set; }
         public string UserInfo { get; set; }
+        public int UserTypeId { get; set; }
     }
 }

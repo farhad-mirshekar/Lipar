@@ -97,11 +97,14 @@
             <label asp-for="DiscountTypeId">@T("Product.Field.DiscountType")</label>
             <lipar-select asp-for="DiscountTypeId" asp-items="@Model.AvailableDiscountType" />
         </div>
-        <div class="col-md-6" hidden>
-            <label asp-for="Discount">@T("Product.Field.Discount")</label>
-            <input type="number" class="form-control" asp-for="Discount">
-            <span asp-validation-for="Discount"></span>
-        </div>
+        @if (Model.DiscountTypeId > 0)
+        {
+            <div class="col-md-6">
+                <label asp-for="Discount">@T("Product.Field.Discount")</label>
+                <input type="number" class="form-control" asp-for="Discount">
+                <span asp-validation-for="Discount"></span>
+            </div>
+        }
     </div>
 </div>
 

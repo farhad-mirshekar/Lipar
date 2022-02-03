@@ -88,6 +88,9 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("PasswordRecoveryConfirm", "Password-Recovery-Confirm",
                 new {controller="Account" , action= "PasswordRecoveryConfirm" });
+
+            endpointRouteBuilder.MapControllerRoute("AddProductAnswers", "Product/CreateProductAnswers",
+                new { controller = "Product", action = "ProductAnswerAdd" });
         }
         #endregion
     }

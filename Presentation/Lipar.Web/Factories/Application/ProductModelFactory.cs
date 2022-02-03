@@ -62,6 +62,8 @@ namespace Lipar.Web.Factories.Application
             {
                 PageIndex = PageIndex,
                 PageSize = PageSize,
+                SpecialOffer = false,
+                ShowOnHomePage = true,
                 //ProductSortingType = ProductSortingType.CreationDateDesc,
             });
 
@@ -81,6 +83,7 @@ namespace Lipar.Web.Factories.Application
                 productModel.Price = product.Price;
                 productModel.CallForPrice = product.CallForPrice;
                 productModel.DiscountTypeId = product.DiscountTypeId;
+                productModel.Discount = product.Discount;
 
                 var productMedias = _productMediaService.List(new ProductMediaListVM
                 {
@@ -137,7 +140,7 @@ namespace Lipar.Web.Factories.Application
             #region mapping
             model.Id = product.Id;
             model.Name = product.Name;
-            model.AllowCustomerReviews = model.AllowCustomerReviews;
+            model.AllowCustomerReviews = product.AllowCustomerReviews;
             model.CallForPrice = product.CallForPrice;
             model.CreationDate = product.CreationDate;
             model.Discount = product.Discount;
@@ -237,11 +240,13 @@ namespace Lipar.Web.Factories.Application
                 throw new ArgumentNullException(nameof(product));
             }
 
-            var productQuestions = new List<ProductQuestionModel>();
+            var productQuestionListModel = new List<ProductQuestionModel>();
 
-            if (product.ProductQuestions.Count() > 0)
+            var productQuestions = product.ProductQuestions.Where(x => x.ViewStatusId == (int)ViewStatusEnum.Active)
+                                                           .OrderByDescending(pq=>pq.CreationDate).ToList();
+            if (productQuestions.Count > 0)
             {
-                foreach (var productQuestion in product.ProductQuestions.OrderByDescending(pq=>pq.CreationDate))
+                foreach (var productQuestion in productQuestions)
                 {
                     var productQuestionModel = new ProductQuestionModel();
                     productQuestionModel.Id = productQuestion.Id;
@@ -250,14 +255,18 @@ namespace Lipar.Web.Factories.Application
                     productQuestionModel.FullName = $"{productQuestion.User.FirstName} {productQuestion.User.LastName}";
                     productQuestionModel.CreationDate = productQuestion.CreationDate;
 
-                    productQuestionModel.ProductAnswers = PrepareProductAnswersListModel(productQuestion.ProductAnswers.ToList());
+                    var productAnswers = productQuestion.ProductAnswers.Where(pa => pa.ViewStatusId == (int)ViewStatusEnum.Active)
+                                                                       .OrderByDescending(pa=>pa.CreationDate)
+                                                                       .ToList();
+
+                    productQuestionModel.ProductAnswers = PrepareProductAnswersListModel(productAnswers);
 
                     //add to list
-                    productQuestions.Add(productQuestionModel);
+                    productQuestionListModel.Add(productQuestionModel);
                 }
             }
 
-            return productQuestions;
+            return productQuestionListModel;
         }
 
         public ProductQuestionModel PrepareProductQuestionModel(ProductQuestionModel model,Product product)
@@ -268,6 +277,91 @@ namespace Lipar.Web.Factories.Application
             }
 
             model.ProductId = product.Id;
+
+            return model;
+        }
+
+        public ProductListModel SpecialOfferProducts(int PageIndex = 0, int PageSize = 5)
+        {
+            var products = _productService.List(new ProductListVM
+            {
+                PageIndex = PageIndex,
+                PageSize = PageSize,
+                SpecialOffer = true,
+                ShowOnHomePage = true
+                //ProductSortingType = ProductSortingType.CreationDateDesc,
+            });
+
+            if (products == null)
+            {
+                return null;
+            }
+
+            var productListModel = new ProductListModel();
+
+            var productsModel = products.Select(product =>
+            {
+                var productModel = new ProductModel();
+                productModel.Id = product.Id;
+
+                productModel.Name = product.Name;
+                productModel.Price = product.Price;
+                productModel.CallForPrice = product.CallForPrice;
+                productModel.DiscountTypeId = product.DiscountTypeId;
+                productModel.Discount = product.Discount;
+
+                var productMedias = _productMediaService.List(new ProductMediaListVM
+                {
+                    ProductId = product.Id
+                });
+
+                //if (productMedias != null)
+                //{
+                foreach (var productMedia in productMedias)
+                {
+                    var mediaModel = new MediaModel
+                    {
+                        Id = productMedia.Id,
+                        Priority = productMedia.Priority,
+                        MediaId = productMedia.MediaId,
+                    };
+
+                    var media = _mediaService.GetById(productMedia.MediaId);
+
+                    mediaModel.Name = media.Name;
+                    mediaModel.AltAttribute = media.AltAttribute;
+                    mediaModel.MimeType = media.MimeType;
+
+                    productModel.Pictures.AvailableMedia.Add(mediaModel);
+                }
+                //}
+                return productModel;
+            });
+
+            //all product
+            productListModel.AvailableProducts = productsModel;
+
+            //pagging
+            productListModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = PageIndex == 0 ? 1 : PageIndex,
+                TotalItems = products.TotalCount,
+                ItemsPerPage = 2,
+                Route = "Product",
+            };
+
+
+            return productListModel;
+        }
+
+        public ProductAnswersModel PrepareProductAnswersModel(ProductAnswersModel model, ProductQuestion productQuestion)
+        {
+            if (productQuestion is null)
+            {
+                throw new ArgumentNullException(nameof(productQuestion));
+            }
+
+            model.ProductQuestionId = productQuestion.Id;
 
             return model;
         }
@@ -566,7 +660,7 @@ namespace Lipar.Web.Factories.Application
         protected IList<ProductAnswersModel> PrepareProductAnswersListModel(IList<ProductAnswers> productAnswers)
         {
             var productAnswersModel = new List<ProductAnswersModel>();
-            foreach (var productAnswer in productAnswers.OrderByDescending(pa => pa.CreationDate))
+            foreach (var productAnswer in productAnswers)
             {
                 var productAnswerModel = new ProductAnswersModel();
                 productAnswerModel.Id = productAnswer.Id;

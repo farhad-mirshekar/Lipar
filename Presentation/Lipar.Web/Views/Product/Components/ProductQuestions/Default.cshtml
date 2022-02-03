@@ -3,10 +3,19 @@
 @using Lipar.Core.Common;
 @{
     var commonHelper = new CommonHelper();
+    var allowCustomerReviews = ViewBag.AllowCustomerReviews ?? false;
 }
 <div class="row">
     <div class="col-md-3">
-        @if (_workContext.CurrentUser != null)
+        @if (_workContext.CurrentUser == null && allowCustomerReviews)
+        {
+            <div class="row">
+                <div class="col-md-12 alert alert-info">
+                    <p class="text-center">@T("Web.ProductQuestion.YouMustBeLoggedIn").Text</p>
+                </div>
+            </div>
+        }
+        @if (_workContext.CurrentUser != null && allowCustomerReviews)
         {
             <span>@T("Product.Page.ProductQuestion.CreateQuestionInfo")</span>
             <button class="btn-outline-danger btn-lg btn-block mt-1" onclick="product.preapreProductQuestionAdd('@Url.Action("ProductQuestionAdd","Product")'); return false;">@T("Product.Page.ProductQuestion.CreateQuestion")</button>
@@ -21,7 +30,7 @@
             <div class="card-body">
                 @if (Model.Count > 0)
                 {
-                    <ul style="list-style:none">
+                    <ul>
                         @foreach (var productQuestionModel in Model)
                         {
                             <li class="mb-3">
@@ -38,7 +47,7 @@
                                         @if (_workContext.CurrentUser != null)
                                         {
                                             <div class="float-right">
-                                                <button class="btn btn-outline-success product-comment-replay" data-id="@productQuestionModel.Id">@T("Web.Comment.Replay")</button>
+                                                <button class="btn btn-outline-success" onclick="product.preapreProductAnswerAdd('@Url.RouteUrl("AddProductAnswers")',@productQuestionModel.Id); return false;">@T("Web.Comment.Replay")</button>
                                             </div>
                                         }
                                     </div>
@@ -69,3 +78,5 @@
         <div id="js-product-question-create"></div>
     </div>
 </div>
+
+<div id="js-product-answer-create" class="modal" tabindex="-1" role="dialog"></div>

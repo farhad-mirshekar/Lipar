@@ -25,5 +25,11 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         /// <param name="productComment">product comment</param>
         /// <returns></returns>
         ProductCommentModel PrepareProductCommentModel(ProductCommentModel model, ProductComment productComment);
+
+        /// <summary>
+        /// prepare statistics product comments
+        /// </summary>
+        /// <returns></returns>
+        StatisticsProductComments PrepareStatisticsProductComments();
     }
 }

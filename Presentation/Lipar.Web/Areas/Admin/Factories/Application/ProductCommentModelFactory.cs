@@ -1,4 +1,6 @@
-﻿using Lipar.Entities.Domain.Application;
+﻿using Lipar.Core.Common;
+using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Services.Application.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
@@ -72,6 +74,21 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             _baseAdminModelFactory.PrepareCommentStatusType(productCommentSearchModel.AvailableCommentStatusType);
 
             return productCommentSearchModel;
+        }
+
+        public StatisticsProductComments PrepareStatisticsProductComments()
+        {
+            var statistics = new StatisticsProductComments();
+
+            var query = _productCommentService.ProductCommentQuery();
+
+            statistics.Total = query.Count();
+
+            statistics.TotalApprovedComments = query.Where(pc => pc.CommentStatusId == (int)CommentStatusEnum.Open).Count();
+
+            statistics.TotalNotApprovedComments = query.Where(pc => pc.CommentStatusId == (int)CommentStatusEnum.Close).Count();
+
+            return statistics;
         }
         #endregion
     }

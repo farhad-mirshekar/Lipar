@@ -59,5 +59,14 @@
         $('.dropdown-menu a').on('click', function () {
             $('.dropdown-toggle').html($(this).html() + '<span class="caret pull-left" style="margin-top: 8px;"></span>');
         })
+
+        $(document).off('#btn-product-answer-create');
+        $(document).on('click', '#btn-product-answer-create', function (e) {
+            e.preventDefault();
+
+            var url = '@Url.Action("ProductAnswerAdd","Product")';
+
+            product.addProductAnswer(url);
+        })
     </script>
 }

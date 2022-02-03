@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -37,6 +38,12 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="listVM">product comment list vm</param>
         /// <returns></returns>
         IPagedList<ProductComment> List(ProductCommentListVM listVM);
+
+        /// <summary>
+        /// query product comment
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<ProductComment> ProductCommentQuery(bool noTracking = false);
 
     }
 }

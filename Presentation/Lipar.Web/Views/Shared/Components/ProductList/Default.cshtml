@@ -1,11 +1,13 @@
 ﻿@model ProductListModel
 @using Lipar.Entities.Domain.Application.Enums;
 @using Lipar.Core.ReadingTime;
-
+@{ 
+    var title = ViewBag.Title;
+}
 <section class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <span class="card-title">@T("")</span>
+            <span class="card-title">@title</span>
         </div>
         <div class="card-body">
             <div class="container">
@@ -35,7 +37,7 @@
                                         else
                                         {
                                             <label class="control-label">
-                                                قیمت اصلی : @string.Format("{0:C0} تومان", item.Price).Replace("$", "")
+                                                قیمت اصلی : @string.Format("{0:#,0} تومان", item.Price)
                                             </label>
 
                                             if (item.DiscountTypeId.HasValue && item.DiscountTypeId.Value != 0)
@@ -44,14 +46,14 @@
                                                 {
                                                     temp1 = item.Discount;
                                                     <label class="control-label text-info">
-                                                        تخفیف محصول : @string.Format("{0:C0} تومان", item.Discount).Replace("$", "")
+                                                        تخفیف محصول : @string.Format("{0:#,0} تومان", item.Discount)
                                                     </label>
                                                 }
                                                 else if (item.DiscountTypeId == (int)DiscountTypeEnum.Percentage)
                                                 {
                                                     temp1 = (item.Price * item.Discount) / 100;
                                                     <label class="control-label text-info">
-                                                        تخفیف محصول : @string.Format("{0:C0} درصد", item.Discount).Replace("$", "")
+                                                        تخفیف محصول : @string.Format("{0:#,0} درصد", item.Discount)
                                                     </label>
                                                 }
                                             }
@@ -59,7 +61,7 @@
                                             {
                                                 var priceNew = item.Price - (temp1 + temp2);
                                                 <label class="control-label text-success">
-                                                    قیمت نهایی : @string.Format("{0:C0} تومان", priceNew).Replace("$", "")
+                                                    قیمت نهایی : @string.Format("{0:#,0} تومان", priceNew)
                                                 </label>
                                             }
                                         }

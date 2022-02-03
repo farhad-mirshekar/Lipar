@@ -219,3 +219,10 @@ ul{
     line-height: 45px;
     text-transform: none;
 }
+/*---------------------Product-------------------------*/
+#fullDesc {
+    font-family:'Vazir';
+}
+#product-description {
+    font-family: Vazir !important;
+}

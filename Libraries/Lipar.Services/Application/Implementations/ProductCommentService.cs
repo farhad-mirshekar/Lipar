@@ -104,6 +104,18 @@ namespace Lipar.Services.Application.Implementations
 
             return models;
         }
+
+        public IQueryable<ProductComment> ProductCommentQuery(bool noTracking = false)
+        {
+            var query = _repository.Table;
+
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking;
+            }
+
+            return query;
+        }
         #endregion
     }
 }
