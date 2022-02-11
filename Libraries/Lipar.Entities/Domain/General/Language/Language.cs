@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.General
 {
-    public class Language : BaseEntity
+    public class Language : BaseEntity<int>
     {
         #region Ctor
         public Language()
@@ -24,11 +24,9 @@ namespace Lipar.Entities.Domain.General
         public int LanguageCultureId { get; set; }
         public string UniqueSeoCode { get; set; }
         public int ViewStatusId { get; set; }
-        public int UserId { get; set; }
         #endregion
 
         #region navigations
-        public User User { get; set; }
         public ViewStatus ViewStatus { get; set; }
         public LanguageCulture LanguageCulture { get; set; }
         public ICollection<Menu> Menus { get; set; }

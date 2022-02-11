@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Lipar.Data
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : class
     {
         T GetById(object id);
         void Insert(T entity);

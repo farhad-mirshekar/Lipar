@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace Lipar.Web.Framework.MVC.Routing
@@ -25,7 +26,7 @@ namespace Lipar.Web.Framework.MVC.Routing
 
             var urlRecord = _urlRecordService.GetBySlug(slug.Trim());
 
-            if (urlRecord == null || urlRecord.Id == 0)
+            if (urlRecord == null || urlRecord.Id == Guid.Empty)
                 return new ValueTask<RouteValueDictionary>(values);
 
             switch (urlRecord.EntityName.ToLower())

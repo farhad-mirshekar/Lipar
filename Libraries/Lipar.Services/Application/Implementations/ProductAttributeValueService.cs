@@ -52,9 +52,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public ProductAttributeValue GetById(int Id, bool noTracking = false)
+        public ProductAttributeValue GetById(Guid Id, bool noTracking = false)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return null;
             }
@@ -75,7 +75,7 @@ namespace Lipar.Services.Application.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            if (listVM.ProductAttributeMappingId.HasValue && listVM.ProductAttributeMappingId.Value != 0)
+            if (listVM.ProductAttributeMappingId.HasValue && listVM.ProductAttributeMappingId.Value != Guid.Empty)
             {
                 query = query.Where(p => p.ProductAttributeMappingId == listVM.ProductAttributeMappingId);
             }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
-    public class BlogModel : BaseEntityModel
+    public class BlogModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public BlogModel()
@@ -26,8 +26,7 @@ namespace Lipar.Web.Areas.Admin.Models.Portal
         public int CommentStatusId { get; set; }
         public int VisitedCount { get; set; }
         public int ViewStatusId { get; set; }
-        public int CategoryId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid CategoryId { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public string ReadingTime { get; set; }
         public int? LanguageId { get; set; }

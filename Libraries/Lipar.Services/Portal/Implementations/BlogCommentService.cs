@@ -40,11 +40,7 @@ namespace Lipar.Services.Portal.Implementations
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
-            model.RemoverId = _workContext.CurrentUser.Id;
-            model.RemoveDate = CommonHelper.GetCurrentDateTime();
-            model.CommentStatusId = (int)CommentStatusEnum.Close;
-
-            Edit(model);
+            _repository.Delete(model);
         }
 
         public void Edit(BlogComment model)
@@ -55,7 +51,7 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public int GetBlogCommentsCount(int blogId, CommentStatusEnum commentStatus)
+        public int GetBlogCommentsCount(Guid blogId, CommentStatusEnum commentStatus)
         {
             var query = _repository.TableNoTracking.Where(bc => bc.BlogId == blogId);
             query = query.Where(bc => bc.CommentStatusId == (int)commentStatus);
@@ -63,9 +59,9 @@ namespace Lipar.Services.Portal.Implementations
             return query.Count();
         }
 
-        public BlogComment GetById(int Id)
+        public BlogComment GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 throw new ArgumentNullException("blog model");
 
             return _repository.GetById(Id);
@@ -75,19 +71,18 @@ namespace Lipar.Services.Portal.Implementations
         {
 
             var query = _repository.TableNoTracking;
-            query = query.Where(bc => bc.RemoverId == null);
 
-            if (listVM.BlogId.HasValue && listVM.BlogId.Value != 0)
+            if (listVM.BlogId.HasValue && listVM.BlogId.Value != Guid.Empty)
             {
                 query = query.Where(bc => bc.BlogId == listVM.BlogId);
             }
 
-            if (listVM.ParentId.HasValue && listVM.ParentId.Value != 0)
+            if (listVM.ParentId.HasValue && listVM.ParentId.Value != Guid.Empty)
             {
                 query = query.Where(bc => bc.ParentId == listVM.ParentId);
             }
 
-            if (listVM.UserId.HasValue && listVM.UserId.Value != 0)
+            if (listVM.UserId.HasValue && listVM.UserId.Value != Guid.Empty)
             {
                 query = query.Where(bc => bc.UserId == listVM.UserId);
             }

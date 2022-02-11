@@ -1,9 +1,10 @@
 ﻿using Lipar.Entities.Domain.Core;
 using Lipar.Entities.Domain.Organization;
+using System;
 
 namespace Lipar.Entities.Domain.Application
 {
-    public class ProductAnswers : BaseEntity
+    public class ProductAnswers : BaseEntity<Guid>
     {
         /// <summary>
         /// gets or sets the answer text 
@@ -12,7 +13,7 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the product question id
         /// </summary>
-        public int ProductQuestionId { get; set; }
+        public Guid ProductQuestionId { get; set; }
 
         /// <summary>
         /// gets or sets the view status type
@@ -21,7 +22,7 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the creator answer
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         #region Navigations
         public User User { get; set; }

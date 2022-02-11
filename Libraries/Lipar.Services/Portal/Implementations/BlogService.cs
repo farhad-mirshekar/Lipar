@@ -55,14 +55,14 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public Blog GetById(int Id)
+        public Blog GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return null;
 
             var blog = _repository.GetById(Id);
 
-            if (blog.RemoverId.HasValue && blog.RemoverId.Value != 0)
+            if (blog.RemoverId.HasValue && blog.RemoverId.Value != Guid.Empty)
                 return null;
 
             return blog;
@@ -76,7 +76,7 @@ namespace Lipar.Services.Portal.Implementations
             {
                 query = query.Where(b => b.Name.Contains(listVM.Name.Trim()));
             }
-            if(listVM.UserId.HasValue && listVM.UserId.Value != 0)
+            if(listVM.UserId.HasValue && listVM.UserId.Value != Guid.Empty)
             {
                 query = query.Where(b => b.UserId == listVM.UserId);
             }
@@ -89,9 +89,9 @@ namespace Lipar.Services.Portal.Implementations
         public BlogMedia GetPictureById(int Id)
         => _blogMediaRepository.GetById(Id);
 
-        public void DeletePicture(int MediaId)
+        public void DeletePicture(Guid MediaId)
         {
-            if (MediaId == 0)
+            if (MediaId == Guid.Empty)
                 throw new Exception("");
 
             var query = _blogMediaRepository.Table;

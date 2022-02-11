@@ -1,6 +1,7 @@
 ﻿using Lipar.Core.Caching;
 using Lipar.Core.Security;
 using Lipar.Entities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Lipar.Services.Caching
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        protected virtual string CreateIdsHash(IEnumerable<int> ids)
+        protected virtual string CreateIdsHash<T>(IEnumerable<T> ids)
         {
             var identifiers = ids.ToList();
 
@@ -38,14 +39,14 @@ namespace Lipar.Services.Caching
         /// </summary>
         /// <param name="parameter">Object to convert</param>
         /// <returns>Cache parameter</returns>
-        protected virtual object CreateCacheKeyParameters(object parameter)
+        protected virtual object CreateCacheKeyParameters<T>(object parameter)
         {
             return parameter switch
             {
                 null => "null",
-                IEnumerable<int> ids => CreateIdsHash(ids),
-                IEnumerable<BaseEntity> entities => CreateIdsHash(entities.Select(e => e.Id)),
-                BaseEntity entity => entity.Id,
+                IEnumerable<Guid> ids => CreateIdsHash(ids),
+                IEnumerable<BaseEntity<T>> entities => CreateIdsHash(entities.Select(e => e.Id)),
+                BaseEntity<T> entity => entity.Id,
                 decimal param => param.ToString(CultureInfo.InvariantCulture),
                 _ => parameter
             };
@@ -57,9 +58,9 @@ namespace Lipar.Services.Caching
         /// <param name="cacheKey">Initial cache key</param>
         /// <param name="keyObjects">Parameters to create cache key</param>
         /// <returns>Cache key</returns>
-        protected virtual CacheKey FillCacheKey(CacheKey cacheKey, params object[] keyObjects)
+        protected virtual CacheKey FillCacheKey<T>(CacheKey cacheKey, params object[] keyObjects)
         {
-            return new CacheKey(cacheKey, CreateCacheKeyParameters, keyObjects);
+            return new CacheKey(cacheKey, CreateCacheKeyParameters<T>, keyObjects);
         }
 
         #endregion
@@ -72,9 +73,9 @@ namespace Lipar.Services.Caching
         /// <param name="cacheKey">Initial cache key</param>
         /// <param name="keyObjects">Parameters to create cache key</param>
         /// <returns>Cache key</returns>
-        public virtual CacheKey PrepareKey(CacheKey cacheKey, params object[] keyObjects)
+        public virtual CacheKey PrepareKey<T>(CacheKey cacheKey, params object[] keyObjects)
         {
-            return FillCacheKey(cacheKey, keyObjects);
+            return FillCacheKey<T>(cacheKey, keyObjects);
         }
 
         /// <summary>
@@ -83,9 +84,9 @@ namespace Lipar.Services.Caching
         /// <param name="cacheKey">Initial cache key</param>
         /// <param name="keyObjects">Parameters to create cache key</param>
         /// <returns>Cache key</returns>
-        public virtual CacheKey PrepareKeyForDefaultCache(CacheKey cacheKey, params object[] keyObjects)
+        public virtual CacheKey PrepareKeyForDefaultCache<T>(CacheKey cacheKey, params object[] keyObjects)
         {
-            var key = FillCacheKey(cacheKey, keyObjects);
+            var key = FillCacheKey<T>(cacheKey, keyObjects);
 
             key.CacheTime = 30;
 
@@ -98,9 +99,9 @@ namespace Lipar.Services.Caching
         /// <param name="cacheKey">Initial cache key</param>
         /// <param name="keyObjects">Parameters to create cache key</param>
         /// <returns>Cache key</returns>
-        public virtual CacheKey PrepareKeyForShortTermCache(CacheKey cacheKey, params object[] keyObjects)
+        public virtual CacheKey PrepareKeyForShortTermCache<T>(CacheKey cacheKey, params object[] keyObjects)
         {
-            var key = FillCacheKey(cacheKey, keyObjects);
+            var key = FillCacheKey<T>(cacheKey, keyObjects);
 
             key.CacheTime = 30;
 
@@ -113,10 +114,10 @@ namespace Lipar.Services.Caching
         /// <param name="keyFormatter">Key prefix formatter string</param>
         /// <param name="keyObjects">Parameters to create cache key prefix</param>
         /// <returns>Cache key prefix</returns>
-        public virtual string PrepareKeyPrefix(string keyFormatter, params object[] keyObjects)
+        public virtual string PrepareKeyPrefix<T>(string keyFormatter, params object[] keyObjects)
         {
             return keyObjects?.Any() ?? false
-                ? string.Format(keyFormatter, keyObjects.Select(CreateCacheKeyParameters).ToArray())
+                ? string.Format(keyFormatter, keyObjects.Select(CreateCacheKeyParameters<T>).ToArray())
                 : keyFormatter;
         }
 

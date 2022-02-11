@@ -4,6 +4,7 @@ using Lipar.Data;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.Caching;
 using Lipar.Services.General.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,10 +34,9 @@ namespace Lipar.Services.General.Implementations
 
         public void Add(LocaleStringResource model)
         {
-            var key = _cacheKeyService.PrepareKey(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, model.LanguageId);
+            var key = _cacheKeyService.PrepareKey<Guid>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, model.LanguageId);
             _cacheManager.Remove(key);
 
-            model.UserId = _workContext.CurrentUser.Id;
             _repository.Insert(model);
         }
 
@@ -47,14 +47,13 @@ namespace Lipar.Services.General.Implementations
 
         public void Edit(LocaleStringResource model)
         {
-            var key = _cacheKeyService.PrepareKey(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, model.LanguageId);
+            var key = _cacheKeyService.PrepareKey<Guid>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, model.LanguageId);
             _cacheManager.Remove(key);
 
-            model.UserId = _workContext.CurrentUser.Id;
             _repository.Update(model);
         }
 
-        public LocaleStringResource GetById(int Id)
+        public LocaleStringResource GetById(Guid Id)
         => _repository.GetById(Id);
 
         public LocaleStringResource GetByResourceName(string ResourceName, int LanguageId)
@@ -97,9 +96,9 @@ namespace Lipar.Services.General.Implementations
             }
             return result;
         }
-        private Dictionary<string, KeyValuePair<int, string>> GetAllResourceValues(int LanguageId)
+        private Dictionary<string, KeyValuePair<Guid, string>> GetAllResourceValues(int LanguageId)
         {
-            var key = _cacheKeyService.PrepareKey(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, LanguageId);
+            var key = _cacheKeyService.PrepareKey<Guid>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, LanguageId);
 
             return _cacheManager.Get(key, () =>
             {
@@ -107,13 +106,13 @@ namespace Lipar.Services.General.Implementations
                 if (localeStringResources.Count() == 0)
                     return null;
 
-                var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
+                var dictionary = new Dictionary<string, KeyValuePair<Guid, string>>();
 
                 foreach (var locale in localeStringResources)
                 {
                     var resourceName = locale.ResourceName.ToLowerInvariant();
                     if (!dictionary.ContainsKey(resourceName))
-                        dictionary.Add(resourceName, new KeyValuePair<int, string>(locale.Id, locale.ResourceValue));
+                        dictionary.Add(resourceName, new KeyValuePair<Guid, string>(locale.Id, locale.ResourceValue));
                 }
 
                 return dictionary;

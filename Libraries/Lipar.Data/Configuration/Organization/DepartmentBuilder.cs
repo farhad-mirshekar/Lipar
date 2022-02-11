@@ -17,12 +17,12 @@ namespace Lipar.Data.Configuration.Organization
             builder.HasOne(d => d.Center)
                 .WithMany(c=>c.Departments)
                 .HasForeignKey(d=>d.CenterId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(d => d.Parent)
                .WithMany(d => d.Children)
-               .HasForeignKey(d => d.ParentId);
+               .HasForeignKey(d => d.ParentId)
+               .OnDelete(DeleteBehavior.NoAction);
 
 
             builder.HasOne(d => d.DepartmentType)

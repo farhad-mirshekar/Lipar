@@ -38,7 +38,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return galleries.Select(gallery =>
                 {
-                    var galleryModel = gallery.ToModel<GalleryModel>();
+                    var galleryModel = gallery.ToModel<GalleryModel, Guid>();
 
                     return galleryModel;
                 });
@@ -55,7 +55,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return galleryMedia.Select(bm =>
                 {
-                    var galleryMediaModel = bm.ToModel<GalleryMediaModel>();
+                    var galleryMediaModel = bm.ToModel<GalleryMediaModel, Guid>();
 
                     var mediaResult = _mediaService.GetById(galleryMediaModel.MediaId);
                     if (mediaResult == null)
@@ -76,7 +76,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         {
             if (gallery != null)
             {
-                model = gallery.ToModel<GalleryModel>();
+                model = gallery.ToModel<GalleryModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareViewStatusType(model.AvailableViewStatusType);

@@ -58,9 +58,9 @@ namespace Lipar.Services.Financial.Implementations
             _repository.Update(model);
         }
 
-        public BankPort GetById(int id, bool noTracking = false)
+        public BankPort GetById(Guid id, bool noTracking = false)
         {
-            if(id == 0)
+            if(id == Guid.Empty)
             {
                 return null;
             }
@@ -80,7 +80,7 @@ namespace Lipar.Services.Financial.Implementations
         {
             var query = _repository.TableNoTracking.Include(x=>x.EnabledType).AsQueryable();
 
-            if(listVM.BankId.HasValue && listVM.BankId.Value > 0)
+            if(listVM.BankId.HasValue && listVM.BankId.Value != Guid.Empty)
             {
                 query = query.Where(bp => bp.BankId == listVM.BankId.Value);
             }

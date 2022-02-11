@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Portal
 {
-    public class DynamicPage : BaseEntity
+    public class DynamicPage : BaseEntity<Guid>
     {
         #region Ctor
         public DynamicPage()
@@ -20,8 +20,9 @@ namespace Lipar.Entities.Domain.Portal
         public string Description { get; set; }
         public bool IncludeInTopMenu { get; set; }
         public int ViewStatusId { get; set; }
-        public int UserId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid UserId { get; set; }
+        public int? LanguageId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 

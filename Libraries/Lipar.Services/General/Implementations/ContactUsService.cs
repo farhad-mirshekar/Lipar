@@ -5,7 +5,7 @@ using Lipar.Services.General.Contracts;
 using System;
 using System.Linq;
 
-namespace Lipar.Services.Portal.Implementations
+namespace Lipar.Services.General.Implementations
 {
     public class ContactUsService : IContactUsService
     {

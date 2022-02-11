@@ -1,6 +1,7 @@
 ﻿using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.General;
 using Lipar.Entities.Domain.General.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Data.Seeds.General
@@ -17,7 +18,6 @@ namespace Lipar.Data.Seeds.General
                     Name="پارسی" ,
                     UniqueSeoCode = "fa" ,
                     ViewStatusId = (int)ViewStatusEnum.Active,
-                    UserId = 1,
                     LanguageCultureId = (int)LanguageCultureEnum.Persian,
                 }
             };

@@ -1,12 +1,14 @@
 ﻿using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
 using Lipar.Services.Notification;
-using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Areas.Admin.Factories.General;
+using Lipar.Web.Areas.Admin.Helpers;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Controllers;
+using Lipar.Web.Framework.MVC.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -14,13 +16,11 @@ namespace Lipar.Web.Areas.Admin.Controllers
     {
         #region Ctor
         public MessageTemplateController(IMessageTemplateModelFactory messageTemplateModelFactory
-                                    , ICommandService commandService
                                     , ILocaleStringResourceService localeStringResourceService
                                     , INotificationService notificationService
                                     , IMessageTemplateService messageTemplateService)
         {
             _messageTemplateModelFactory = messageTemplateModelFactory;
-            _commandService = commandService;
             _localeStringResourceService = localeStringResourceService;
             _notificationService = notificationService;
             _messageTemplateService = messageTemplateService;
@@ -29,68 +29,49 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
         #region Fields
         private readonly IMessageTemplateModelFactory _messageTemplateModelFactory;
-        private readonly ICommandService _commandService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly INotificationService _notificationService;
         private readonly IMessageTemplateService _messageTemplateService;
         #endregion
 
         #region Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult List()
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var searchModel = new MessageTemplateSearchModel();
 
             return View(searchModel);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult List(MessageTemplateSearchModel searchModel)
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _messageTemplateModelFactory.PrepareMessageTemplateListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult Create()
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _messageTemplateModelFactory.PrepareMessageTemplateModel(new MessageTemplateModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult Create(MessageTemplateModel model)
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var messageTemplate = model.ToEntity<MessageTemplate>();
+                var messageTemplate = model.ToEntity<MessageTemplate, Guid>();
 
                 //add message template
                 _messageTemplateService.Add(messageTemplate);
@@ -106,15 +87,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
+        public IActionResult Edit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -131,17 +107,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
         public IActionResult Edit(MessageTemplateModel model)
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var messageTemplate = model.ToEntity<MessageTemplate>();
+                var messageTemplate = model.ToEntity<MessageTemplate,Guid>();
 
                 //edit message template
                 _messageTemplateService.Edit(messageTemplate);
@@ -158,15 +129,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageMessageTemplate)]
+        public IActionResult Delete(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageMessageTemplate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }

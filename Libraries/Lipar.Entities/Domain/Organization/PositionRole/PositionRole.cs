@@ -1,11 +1,13 @@
-﻿namespace Lipar.Entities.Domain.Organization
+﻿using System;
+
+namespace Lipar.Entities.Domain.Organization
 {
-    public class PositionRole : BaseEntity
+    public class PositionRole : BaseEntity<Guid>
     {
         public Position Position { get; set; }
-        public int PositionId { get; set; }
+        public Guid PositionId { get; set; }
 
         public Role Role { get; set; }
-        public int RoleId { get; set; }
+        public Guid RoleId { get; set; }
     }
 }

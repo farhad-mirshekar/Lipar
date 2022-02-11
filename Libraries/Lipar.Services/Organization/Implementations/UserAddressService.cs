@@ -58,9 +58,9 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(model);
         }
 
-        public UserAddress GetById(int Id,bool noTracking = false)
+        public UserAddress GetById(Guid Id,bool noTracking = false)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return null;
             }

@@ -8,6 +8,8 @@ using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -37,9 +39,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Language Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Index()
         => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult List()
         {
             var model = new LanguageSearchModel();
@@ -47,34 +52,31 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult List(LanguageSearchModel searchModel)
         {
             var languageList = _languageModelFactory.PrepareLanguageListModel(searchModel);
             return Json(languageList);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageLanguage"))
-                return AccessDeniedView();
-
             var model = _languageModelFactory.PrepareLanguageModel(new LanguageModel(), null);
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Create(LanguageModel model)
         {
-            if (!_commandService.CheckPermission("ManageLanguage"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var language = model.ToEntity<Language>();
+                var language = model.ToEntity<Language, int>();
                 _languageService.Add(language);
 
                 // add activity log for create language
-                _activityLogService.Add("Admin.Language.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Language.Create"), language);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Language.Create"), language);
 
                 return RedirectToAction("List");
             }
@@ -82,11 +84,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Edit(int Id)
         {
-            if (!_commandService.CheckPermission("ManageLanguage"))
-                return AccessDeniedView();
-
             var language = _languageService.GetById(Id);
             if (language == null)
                 return RedirectToAction("List");
@@ -96,18 +96,16 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Edit(LanguageModel model)
         {
-            if (!_commandService.CheckPermission("ManageLanguage"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var language = model.ToEntity<Language>();
+                var language = model.ToEntity<Language,int>();
                 _languageService.Edit(language);
 
                 // add activity log for edit language
-                _activityLogService.Add("Admin.Language.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Language.Edit"), language);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Language.Edit"), language);
 
                 return RedirectToAction("Edit",new { Id = language.Id});
             }
@@ -117,7 +115,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Resources
+
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult Resources(LocaleStringResourceSearchModel searchModel)
         {
             //prepare model
@@ -127,6 +127,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult ResourceAdd(int LanguageId, LocaleStringResourceModel model)
         {
             if (!string.IsNullOrEmpty(model.ResourceName))
@@ -139,14 +140,14 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
             if (resourceName == null)
             {
-                var localeStringResource = model.ToEntity<LocaleStringResource>();
+                var localeStringResource = model.ToEntity<LocaleStringResource, Guid>();
 
                 localeStringResource.LanguageId = LanguageId;
 
                 _localeStringResourceService.Add(localeStringResource);
 
                 // add activity log for add local string resource
-                _activityLogService.Add("Admin.LocaleStringResource.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.LocaleStringResource.Create"), localeStringResource);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.LocaleStringResource.Create"), localeStringResource);
             }
             else
                 return ErrorJson(string.Format("exists"));
@@ -155,7 +156,8 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResourceDelete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
+        public IActionResult ResourceDelete(Guid Id)
         {
             var localStringResource = _localeStringResourceService.GetById(Id);
             if(localStringResource == null)
@@ -164,12 +166,13 @@ namespace Lipar.Web.Areas.Admin.Controllers
            _localeStringResourceService.Delete(localStringResource);
 
             // add activity log for delete local string resource
-            _activityLogService.Add("Admin.LocaleStringResource.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.LocaleStringResource.Delete"), localStringResource);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.LocaleStringResource.Delete"), localStringResource);
 
             return new NullJsonResult();
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageLanguage)]
         public IActionResult ResourceEdit(LocaleStringResourceModel model)
         {
 

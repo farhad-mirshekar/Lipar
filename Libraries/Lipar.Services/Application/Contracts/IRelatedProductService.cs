@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Services.Application.Contracts
@@ -26,7 +27,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Id">id</param>
         /// <returns></returns>
-        RelatedProduct GetById(int Id);
+        RelatedProduct GetById(Guid Id);
         /// <summary>
         /// list related product method
         /// </summary>
@@ -38,7 +39,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="ProductId1">product id 1</param>
         /// <returns></returns>
-        IEnumerable<RelatedProduct> GetRelatedProductsByProductId1(int productId1);
+        IEnumerable<RelatedProduct> GetRelatedProductsByProductId1(Guid productId1);
         /// <summary>
         /// find related product
         /// </summary>
@@ -46,6 +47,6 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="productId1">product 1</param>
         /// <param name="productId2">product 2</param>
         /// <returns></returns>
-        RelatedProduct FindRelatedProduct(IEnumerable<RelatedProduct> source, int productId1, int productId2);
+        RelatedProduct FindRelatedProduct(IEnumerable<RelatedProduct> source, Guid productId1, Guid productId2);
     }
 }

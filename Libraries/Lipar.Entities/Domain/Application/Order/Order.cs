@@ -1,4 +1,6 @@
 ﻿using Lipar.Entities.Domain.Financial;
+using Lipar.Entities.Domain.Organization;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
@@ -6,7 +8,7 @@ namespace Lipar.Entities.Domain.Application
     /// <summary>
     /// order
     /// </summary>
-    public class Order : BaseEntity
+    public class Order : BaseEntity<Guid>
     {
         #region Ctor
         public Order()
@@ -19,15 +21,25 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the user id
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         /// <summary>
         /// gets or sets the user address id
         /// </summary>
-        public int UserAddressId { get; set; }
+        public Guid UserAddressId { get; set; }
+        /// <summary>
+        /// gets or sets the address
+        /// </summary>
+        public string Address { get; set; }
         /// <summary>
         /// gets or sets the bank port
         /// </summary>
-        public int BankPortId { get; set; }
+        public Guid BankPortId { get; set; }
+
+        /// <summary>
+        /// gets or sets the shipping cart rate
+        /// </summary>
+        public decimal? ShoppingCartRate { get; set; }
+
         /// <summary>
         /// gets or sets price
         /// </summary>
@@ -37,6 +49,8 @@ namespace Lipar.Entities.Domain.Application
         #region Navigations
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public BankPort BankPort { get; set; }
+        public User User { get; set; }
+        public UserAddress UserAddress { get; set; }
         #endregion
     }
 }

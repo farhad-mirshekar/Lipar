@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Application
 {
-    public class ProductQuestionModel : BaseEntityModel
+    public class ProductQuestionModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ProductQuestionModel()
@@ -14,7 +15,7 @@ namespace Lipar.Web.Models.Application
         #region Fields
         public string QuestionText { get; set; }
         public string FullName { get; set; }
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public IList<ProductAnswersModel> ProductAnswers { get; set; }
         #endregion
     }

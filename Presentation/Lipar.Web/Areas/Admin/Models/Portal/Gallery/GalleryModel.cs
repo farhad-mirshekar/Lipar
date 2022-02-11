@@ -1,11 +1,12 @@
 ﻿using Lipar.Entities;
 using Lipar.Web.Areas.Admin.Models.General;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
-    public class GalleryModel : BaseEntityModel
+    public class GalleryModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public GalleryModel()

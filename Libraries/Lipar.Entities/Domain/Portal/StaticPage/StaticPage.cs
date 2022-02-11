@@ -4,7 +4,7 @@ using System;
 
 namespace Lipar.Entities.Domain.Portal
 {
-   public class StaticPage : BaseEntity
+   public class StaticPage : BaseEntity<Guid>
     {
         public string Name { get; set; }
         public string Title { get; set; }
@@ -14,8 +14,9 @@ namespace Lipar.Entities.Domain.Portal
         public bool IncludeInTopMenu { get; set; }
         public int Priority { get; set; }
         public int ViewStatusId { get; set; }
-        public int UserId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid UserId { get; set; }
+        public int? LanguageId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
 
         #region Navigations

@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.General
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class EmailAccountModel : BaseEntityModel
+    public class EmailAccountModel : BaseEntityModel<Guid>
     {
         public string Name { get; set; }
         public string Email { get; set; }

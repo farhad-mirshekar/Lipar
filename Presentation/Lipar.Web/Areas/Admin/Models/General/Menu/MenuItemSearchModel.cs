@@ -1,4 +1,5 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
@@ -9,7 +10,7 @@ namespace Lipar.Web.Areas.Admin.Models.General
         //    AddMenuItem = new MenuItemModel();
         //}
         public string Name { get; set; }
-        public int MenuId { get; set; }
+        public Guid MenuId { get; set; }
 
         //public MenuItemModel AddMenuItem { get; set; }
     }

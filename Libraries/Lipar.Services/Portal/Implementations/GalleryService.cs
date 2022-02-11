@@ -3,6 +3,7 @@ using Lipar.Core.Common;
 using Lipar.Data;
 using Lipar.Entities.Domain.Portal;
 using Lipar.Services.Portal.Contracts;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Portal.Implementations
@@ -42,10 +43,10 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public Gallery GetById(int Id)
+        public Gallery GetById(Guid Id)
         { 
           var gallery = _repository.GetById(Id);
-            if (gallery.RemoverId.HasValue && gallery.RemoverId.Value != 0 && gallery.RemoveDate != null)
+            if (gallery.RemoverId.HasValue && gallery.RemoverId.Value != Guid.Empty && gallery.RemoveDate != null)
                 return null;
 
             return gallery;

@@ -17,14 +17,25 @@ namespace Lipar.Web.Factories.Organization
         #endregion
         public PasswordRecoveryModel PreparePasswordRecoveryModel(PasswordRecoveryModel model)
         {
-            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
-            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInPasswordRecoveryPage").Value, out bool showCaptchaInPasswordRecoveryPage);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha")?.Value, out bool showCaptcha);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInPasswordRecoveryPage")?.Value, out bool showCaptchaInPasswordRecoveryPage);
 
             model.ShowCaptcha = showCaptcha;
             model.ShowCaptchaInPasswordRecoveryPage = showCaptchaInPasswordRecoveryPage;
 
             return model;
 
+        }
+
+        public LoginModel PrepareLoginModel(LoginModel model)
+        {
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha")?.Value, out bool showCaptcha);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInLoginPage")?.Value, out bool ShowCaptchaInLoginPage);
+
+            model.ShowCaptcha = showCaptcha;
+            model.ShowCaptchaInLoginPage = ShowCaptchaInLoginPage;
+
+            return model;
         }
     }
 }

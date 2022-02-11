@@ -21,7 +21,7 @@ namespace Lipar.Data.Configuration.Application
             builder.HasOne(p => p.ProductAttribute)
                 .WithMany(pa => pa.ProductAttributeMappings)
                 .HasForeignKey(p => p.ProductAttributeId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(p => p.AttributeControlType)
                 .WithMany(a => a.ProductAttributeMappings)

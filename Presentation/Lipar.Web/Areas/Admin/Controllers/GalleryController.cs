@@ -1,6 +1,5 @@
 ﻿using Lipar.Entities.Domain.Portal;
 using Lipar.Entities.Domain.General;
-using Lipar.Services.Organization.Contracts;
 using Lipar.Services.Portal.Contracts;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Factories.Portal;
@@ -10,6 +9,8 @@ using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -20,7 +21,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IGalleryService _galleryService;
         private readonly IMediaService _mediaService;
         private readonly IGalleryMediaService _galleryMediaService;
-        private readonly ICommandService _commandService;
         private readonly IActivityLogService _activityLogService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         #endregion
@@ -30,7 +30,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
                                , IGalleryService galleryService
                                , IMediaService mediaService
                                , IGalleryMediaService galleryMediaService
-                               , ICommandService commandService
                                , IActivityLogService activityLogService
                                , ILocaleStringResourceService localeStringResourceService)
         {
@@ -38,54 +37,50 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _galleryService = galleryService;
             _mediaService = mediaService;
             _galleryMediaService = galleryMediaService;
-            _commandService = commandService;
             _activityLogService = activityLogService;
             _localeStringResourceService = localeStringResourceService;
         }
         #endregion
 
         #region Gallery Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult List()
             => View(new GallerySearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult List(GallerySearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageGallery"))
-                return AccessDeniedView();
-
             var model = _galleryModelFactory.PrepareGalleryListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageGallery"))
-                return AccessDeniedView();
-
             var model = _galleryModelFactory.PrepareGalleryModel(new GalleryModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult Create(GalleryModel model)
         {
-            if (!_commandService.CheckPermission("ManageGallery"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var gallery = model.ToEntity<Gallery>();
+                var gallery = model.ToEntity<Gallery, Guid>();
 
                 _galleryService.Add(gallery);
 
                 // add activity log for create gallery
-                _activityLogService.Add("Admin.Gallery.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Create"), gallery);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Create"), gallery);
 
                 //success add
                 return RedirectToAction("Edit", new { Id = gallery.Id });
@@ -95,11 +90,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageGallery"))
-                return AccessDeniedView();
-
             var gallery = _galleryService.GetById(Id);
             if (gallery == null)
                 return RedirectToAction("List");
@@ -110,19 +103,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
         public IActionResult Edit(GalleryModel model)
         {
-            if (!_commandService.CheckPermission("ManageGallery"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var gallery = model.ToEntity<Gallery>();
+                var gallery = model.ToEntity<Gallery, Guid>();
 
                 _galleryService.Edit(gallery);
 
                 // add activity log for edit gallery
-                _activityLogService.Add("Admin.Gallery.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Edit"), gallery);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Edit"), gallery);
 
                 //success add
                 return RedirectToAction("Edit", new { Id = gallery.Id });
@@ -133,7 +124,8 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageGallery)]
+        public IActionResult Delete(Guid Id)
         {
             var gallery = _galleryService.GetById(Id);
             if (gallery == null)
@@ -142,7 +134,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _galleryService.Delete(gallery);
 
             // add activity log for delete gallery
-            _activityLogService.Add("Admin.Gallery.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Delete"), gallery);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.Gallery.Delete"), gallery);
 
             return RedirectToAction("List");
         }

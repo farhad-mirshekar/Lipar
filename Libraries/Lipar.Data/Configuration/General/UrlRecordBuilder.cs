@@ -19,11 +19,6 @@ namespace Lipar.Data.Configuration.General
                 .WithMany(l => l.UrlRecords)
                 .HasForeignKey(u => u.LanguageId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(u => u.EnabledType)
-                .WithMany(e => e.UrlRecords)
-                .HasForeignKey(u => u.EnabledTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

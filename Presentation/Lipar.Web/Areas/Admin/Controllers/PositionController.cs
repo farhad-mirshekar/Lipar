@@ -15,6 +15,8 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -56,9 +58,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult List()
         {
             var model = _positionModelFactory.PreparePositionSearchModel();
@@ -66,21 +71,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult List(PositionSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManagePosition"))
-                return AccessDeniedView();
-
             var model = _positionModelFactory.PreparePositionListModel(searchModel);
 
             return Json(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManagePosition"))
-                return AccessDeniedView();
-
             var position = _positionService.GetById(Id);
             if (position == null)
                 return RedirectToAction("List");
@@ -91,11 +92,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult Edit(PositionModel model, IFormCollection form)
         {
-            if (!_commandService.CheckPermission("ManagePosition"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
                 var position = _positionService.GetById(model.Id);
@@ -139,7 +138,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 ModifyRoleSelected(position, form);
 
                 //add activity log for edit position
-                _activityLogService.Add("Admin.Position.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Position.Edit"), user);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Position.Edit"), user);
 
                 return RedirectToAction("Edit", new { Id = position.Id });
             }
@@ -148,22 +147,18 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManagePosition"))
-                return AccessDeniedView();
-
             var model = _positionModelFactory.PreparePositionModel(new PositionModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
         public IActionResult Create(PositionModel model, IFormCollection form)
         {
-            if (!_commandService.CheckPermission("ManagePosition"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
 
@@ -185,7 +180,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _userService.Add(user);
 
                 //add activity log for create user
-                _activityLogService.Add("Admin.User.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.User.Create"), user);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.User.Create"), user);
 
                 var password = new UserPassword
                 {
@@ -197,7 +192,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _passwordService.Add(password);
 
                 //add activity log for create password
-                _activityLogService.Add("Admin.UserPassword.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.UserPassword.Create"), password);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.UserPassword.Create"), password);
                 #endregion
 
                 #region Create Position
@@ -236,7 +231,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 #endregion
 
                 //add activity log for edit position
-                _activityLogService.Add("Admin.Position.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Position.Create"), user);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Position.Create"), user);
 
                 return RedirectToAction("Edit", new { Id = position.Id });
             }
@@ -246,7 +241,8 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManagePosition)]
+        public IActionResult Delete(Guid Id)
         {
             var position = _positionService.GetById(Id);
             if (position == null)
@@ -265,9 +261,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        public IActionResult ChangePosition(int Id)
+        public IActionResult ChangePosition(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToRoute("areaRoute", new { area = AreaNames.Admin, controller = "Home", action = "Index" });
             var _workContext = EngineContext.Current.Resolve<IWorkContext>();
             var positions = new List<Position>();

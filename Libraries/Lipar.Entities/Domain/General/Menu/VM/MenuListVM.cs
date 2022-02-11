@@ -1,8 +1,10 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
     public class MenuListVM : BaseListVM
     {
         public string Name { get; set; }
-        public int? LanguageId { get; set; }
+        public Guid? LanguageId { get; set; }
     }
 }

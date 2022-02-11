@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.Organization
 {
-   public class UserType : BaseEntity
+   public class UserType : BaseEntity<int>
     {
         #region Ctor
         public UserType()

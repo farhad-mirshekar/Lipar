@@ -13,13 +13,8 @@ namespace Lipar.Data.Configuration.General
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
-            builder.Property(a => a.SystemKeyword).HasMaxLength(200).IsRequired();
-            builder.Property(a => a.SystemKeyword).HasMaxLength(200).IsRequired();
-
-            builder.HasOne(a => a.ViewStatus)
-                .WithMany(v => v.ActivityLogTypes)
-                .HasForeignKey(a => a.ViewStatusId)
-                .OnDelete(DeleteBehavior.NoAction);
+            builder.Property(a => a.SystemKeyword).HasMaxLength(500).IsRequired();
+            builder.Property(a => a.SystemKeyword).HasMaxLength(500).IsRequired();
         }
     }
 }

@@ -64,9 +64,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public Product GetById(int Id, bool noTracking = false)
+        public Product GetById(Guid Id, bool noTracking = false)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return null;
             }
@@ -132,7 +132,7 @@ namespace Lipar.Services.Application.Implementations
             return models;
         }
 
-        public IEnumerable<Product> GetByIds(int[] Ids)
+        public IEnumerable<Product> GetByIds(Guid[] Ids)
         {
             if (Ids == null || Ids.Length == 0)
             {
@@ -157,9 +157,9 @@ namespace Lipar.Services.Application.Implementations
             return sortedProduct;
         }
 
-        public string GetProductName(int Id)
+        public string GetProductName(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return "";
             }

@@ -44,7 +44,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
                 {
                     var dynamicPageDetailModel = new DynamicPageDetailModel();
 
-                    dynamicPageDetailModel = dynamicPageDetail.ToModel<DynamicPageDetailModel>();
+                    dynamicPageDetailModel = dynamicPageDetail.ToModel<DynamicPageDetailModel, Guid>();
 
                     return dynamicPageDetailModel;
                 });
@@ -57,7 +57,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         {
             if(dynamicPageDetail != null)
             {
-                model = dynamicPageDetail.ToModel<DynamicPageDetailModel>();
+                model = dynamicPageDetail.ToModel<DynamicPageDetailModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareViewStatusType(model.AvailableViewStatusType);
@@ -97,7 +97,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
                 return dynamicPages.Select(dynamicPage =>
                 {
                     var dynamicPageModel = new DynamicPageModel();
-                    dynamicPageModel = dynamicPage.ToModel<DynamicPageModel>();
+                    dynamicPageModel = dynamicPage.ToModel<DynamicPageModel, Guid>();
 
                     dynamicPageModel.ApprovedDynamicPageDetail = _dynamicPageDetailService.GetDynamicPageDetailCount(dynamicPage.Id, ViewStatusEnum.Active);
                     dynamicPageModel.NotApprovedDynamicPageDetail = _dynamicPageDetailService.GetDynamicPageDetailCount(dynamicPage.Id, ViewStatusEnum.InActive);
@@ -113,7 +113,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         {
             if(dynamicPage != null)
             {
-                model = dynamicPage.ToModel<DynamicPageModel>();
+                model = dynamicPage.ToModel<DynamicPageModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareViewStatusType(model.AvailableViewStatusType);

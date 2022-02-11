@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities.Domain.Core;
 using Lipar.Entities.Domain.Organization;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
-    public class ProductComment : BaseEntity
+    public class ProductComment : BaseEntity<Guid>
     {
         #region Ctor
         public ProductComment()
@@ -29,15 +30,15 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the parent 
         /// </summary>
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         /// <summary>
         /// gets or sets the product
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         /// <summary>
         /// gets or sets the user creator
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         #endregion
 
         #region Navigations

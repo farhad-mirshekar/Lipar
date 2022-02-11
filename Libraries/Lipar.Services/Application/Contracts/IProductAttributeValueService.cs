@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -26,7 +27,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="Id"></param>
         /// <param name="noTracking">if this param True, model retrieve no tracking</param>
         /// <returns></returns>
-        ProductAttributeValue GetById(int Id,bool noTracking = false);
+        ProductAttributeValue GetById(Guid Id,bool noTracking = false);
         /// <summary>
         /// list product attribute value method
         /// </summary>

@@ -1,9 +1,11 @@
-﻿namespace Lipar.Web.Models.Portal
+﻿using System;
+
+namespace Lipar.Web.Models.Portal
 {
-    public class BlogCommentModel : BaseEntityModel
+    public class BlogCommentModel : BaseEntityModel<Guid>
     {
-        public int BlogId { get; set; }
-        public int? ParentId { get; set; }
+        public Guid BlogId { get; set; }
+        public Guid? ParentId { get; set; }
         public string Body { get; set; }
         public string Slug { get; set; }
     }

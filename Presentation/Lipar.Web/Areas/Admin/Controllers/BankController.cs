@@ -5,11 +5,14 @@ using Lipar.Services.General.Contracts;
 using Lipar.Services.Notification;
 using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Areas.Admin.Factories.Financial;
+using Lipar.Web.Areas.Admin.Helpers;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Financial;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
+using Lipar.Web.Framework.MVC.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -21,7 +24,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #region Ctor
         public BankController(IBankService bankService
                             , IBankModelFactory bankModelFactory
-                            , ICommandService commandService
                             , IActivityLogService activityLogService
                             , ILocaleStringResourceService localeStringResourceService
                             , INotificationService notificationService
@@ -30,7 +32,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         {
             _bankService = bankService;
             _bankModelFactory = bankModelFactory;
-            _commandService = commandService;
             _activityLogService = activityLogService;
             _localeStringResourceService = localeStringResourceService;
             _notificationService = notificationService;
@@ -42,7 +43,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #region Fields
         private readonly IBankService _bankService;
         private readonly IBankModelFactory _bankModelFactory;
-        private readonly ICommandService _commandService;
         private readonly IActivityLogService _activityLogService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly INotificationService _notificationService;
@@ -51,53 +51,40 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult List()
             => View(new BankSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult List(BankSearchModel searchModel)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _bankModelFactory.PrepareBankListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult Create()
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _bankModelFactory.PrepareBankModel(new BankModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult Create(BankModel model)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var bank = model.ToEntity<Bank>();
+                var bank = model.ToEntity<Bank,Guid>();
 
-                bank.UserId = _workContext.CurrentUser.Id;
                 //add bank
                 _bankService.Add(bank);
 
@@ -115,15 +102,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
+        public IActionResult Edit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -140,17 +122,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult Edit(BankModel model)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var bank = model.ToEntity<Bank>();
+                var bank = model.ToEntity<Bank,Guid>();
 
                 //edit bank
                 _bankService.Edit(bank);
@@ -170,15 +147,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
+        public IActionResult Delete(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -202,7 +174,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Bank Port Methods
+
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult BankPortList(BankPortSearchModel searchModel)
         {
             var model = _bankModelFactory.PrepareBankPortListModel(searchModel);
@@ -210,15 +184,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
-        public IActionResult BankPortCreate(int bankId)
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
+        public IActionResult BankPortCreate(Guid bankId)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (bankId == 0)
+            if (bankId == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -230,17 +199,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult BankPortCreate(BankPortModel model)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var bankPort = model.ToEntity<BankPort>();
+                var bankPort = model.ToEntity<BankPort,Guid>();
 
                 //add bank port
                 _bankPortService.Add(bankPort);
@@ -259,15 +223,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult BankPortEdit(int id)
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
+        public IActionResult BankPortEdit(Guid id)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -284,17 +243,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
         public IActionResult BankPortEdit(BankPortModel model)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var bankPort = model.ToEntity<BankPort>();
+                var bankPort = model.ToEntity<BankPort,Guid>();
 
                 //edit bank port
                 _bankPortService.Edit(bankPort);
@@ -314,15 +268,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult BankPortDelete(int id)
+        [CheckingPermissions(permissions: CommandNames.ManageBank)]
+        public IActionResult BankPortDelete(Guid id)
         {
-            var permission = _commandService.CheckPermission("ManageBank");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 return new NullJsonResult();
             }

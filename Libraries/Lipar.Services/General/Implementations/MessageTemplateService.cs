@@ -51,9 +51,9 @@ namespace Lipar.Services.General.Implementations
             _repository.Update(model);
         }
 
-        public MessageTemplate GetById(int id, bool noTracking = false)
+        public MessageTemplate GetById(Guid id, bool noTracking = false)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 return null;
             }

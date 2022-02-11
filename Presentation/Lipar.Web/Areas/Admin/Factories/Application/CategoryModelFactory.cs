@@ -43,7 +43,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return categories.Select(category =>
                 {
-                    var categoryModel = category.ToModel<CategoryModel>();
+                    var categoryModel = category.ToModel<CategoryModel, Guid>();
 
                     categoryModel.NameCrumb = _categoryService.GetFormattedBreadCrumb(category);
 
@@ -58,7 +58,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if(category != null)
             {
-                model = category.ToModel<CategoryModel>();
+                model = category.ToModel<CategoryModel, Guid>();
             }
 
             //fill all category for drop

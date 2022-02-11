@@ -35,12 +35,12 @@ namespace Lipar.Services.General.Implementations
         #endregion
 
         #region Methods
-        public void Add(string systemKeyword, string comment, BaseEntity entity = null)
+        public void Add<T>(string systemKeyword, string comment, BaseEntity<T> entity = null)
         {
-            Add(_workContext.CurrentUser, systemKeyword, comment, entity);
+            Add<T>(_workContext.CurrentUser, systemKeyword, comment, entity);
         }
 
-        public void Add(User user, string systemKeyword, string comment, BaseEntity entity = null)
+        public void Add<T>(User user, string systemKeyword, string comment, BaseEntity<T> entity = null)
         {
             if (user == null)
                 return;
@@ -52,7 +52,7 @@ namespace Lipar.Services.General.Implementations
                 ActivityLogTypeId = GetAllActivityLogTypeCached.Id,
                 Comment = comment,
                 UserId = user.Id,
-                EntityId = entity?.Id,
+                EntityId = entity?.Id.ToString(),
                 EntityName = entity?.GetType().Name
 
             };

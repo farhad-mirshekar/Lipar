@@ -2,6 +2,7 @@
 using Lipar.Data;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.General.Implementations
@@ -10,22 +11,18 @@ namespace Lipar.Services.General.Implementations
     {
         #region Fields
         private readonly IRepository<Menu> _repository;
-        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
-        public MenuService(IRepository<Menu> repository
-                         , IWorkContext workContext)
+        public MenuService(IRepository<Menu> repository)
         {
             _repository = repository;
-            _workContext = workContext;
         }
         #endregion
 
         #region Methods
         public void Add(Menu model)
         {
-            model.UserId = _workContext.CurrentUser.Id;
              _repository.Insert(model);
         }
 
@@ -34,23 +31,18 @@ namespace Lipar.Services.General.Implementations
 
         public void Edit(Menu model)
         {
-            model.UserId = _workContext.CurrentUser.Id;
              _repository.Update(model);
         }
 
-        public Menu GetById(int Id)
+        public Menu GetById(Guid Id)
         {
             var menu = _repository.GetById(Id);
-
-            if (menu.RemoverId.HasValue && menu.RemoverId.Value != 0)
-                return null;
 
             return menu;
         }
         public IPagedList<Menu> List(MenuListVM listVM)
         {
             var query = _repository.Table;
-            query = query.Where(m => m.RemoverId != 0);
 
             if (!string.IsNullOrEmpty(listVM.Name))
                 query = query.Where(l => l.Name.Contains(listVM.Name.Trim()));

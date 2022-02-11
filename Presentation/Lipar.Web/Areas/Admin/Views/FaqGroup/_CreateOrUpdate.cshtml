@@ -5,7 +5,7 @@
 <!--load info faq group-->
 @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
 
-@if (Model.Id > 0)
+@if (Model.Id != Guid.Empty)
 {
     <!--load list faq-->
     @await Html.PartialAsync("_CreateOrUpdate.FaqList", Model)

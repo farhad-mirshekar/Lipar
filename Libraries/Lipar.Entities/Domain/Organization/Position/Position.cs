@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Organization
 {
-    public class Position : BaseEntity
+    public class Position : BaseEntity<Guid>
     {
         /// <summary>
         /// gets or sets the position type
@@ -15,11 +15,11 @@ namespace Lipar.Entities.Domain.Organization
         /// </summary>
         public int EnabledTypeId { get; set; }
         public bool Default { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid DepartmentId { get; set; }
+        public Guid CenterId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
-        public int UserId { get; set; }
-        public int DepartmentId { get; set; }
-        public int CenterId { get; set; }
 
         //navigations
         public User User { get; set; }

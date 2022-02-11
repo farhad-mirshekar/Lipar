@@ -9,6 +9,7 @@ using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Models.Portal;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System;
 
 namespace Lipar.Web.Controllers
 {
@@ -44,8 +45,8 @@ namespace Lipar.Web.Controllers
             return View(model);
         }
 
-        [Route("Blog/{Id:int}")]
-        public IActionResult Detail(int Id)
+        [Route("Blog/{Id:guid}")]
+        public IActionResult Detail(Guid Id)
         {
             var blog = _blogService.GetById(Id);
             if (blog == null)

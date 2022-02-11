@@ -176,7 +176,7 @@ namespace Lipar.Services.Messages
 
         protected IList<Token> AddUserTokens(IList<Token> tokens, User user)
         {
-            var passwordRecoveryUrl = RouteUrl(routeName: "PasswordRecoveryConfirm", routeValues: new { token = _genericAttributeService.GetAttribute<string>(user, LiparMessageTemplateSystemNames.PasswordRecoveryToken), guid = user.UserGuid });
+            var passwordRecoveryUrl = RouteUrl(routeName: "PasswordRecoveryConfirm", routeValues: new { token = _genericAttributeService.GetAttribute<User,Guid>(user, LiparMessageTemplateSystemNames.PasswordRecoveryToken), guid = user.UserGuid });
 
             tokens.Add(new Token
             {

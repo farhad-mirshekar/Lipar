@@ -10,6 +10,9 @@ using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -20,7 +23,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IBlogService _blogService;
         private readonly IUrlRecordService _urlRecordService;
         private readonly IMediaService _mediaService;
-        private readonly ICommandService _commandService;
         private readonly IBlogMediaService _blogMediaService;
         private readonly IActivityLogService _activityLogService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
@@ -33,7 +35,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
                             , IBlogService blogService
                             , IUrlRecordService urlRecordService
                             , IMediaService mediaService
-                            , ICommandService commandService
                             , IBlogMediaService blogMediaService
                             , IActivityLogService activityLogService
                             , ILocaleStringResourceService localeStringResourceService
@@ -44,7 +45,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _blogService = blogService;
             _urlRecordService = urlRecordService;
             _mediaService = mediaService;
-            _commandService = commandService;
             _blogMediaService = blogMediaService;
             _activityLogService = activityLogService;
             _localeStringResourceService = localeStringResourceService;
@@ -54,50 +54,46 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
-        public IActionResult Index
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
+        public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult List()
             => View(new BlogSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult List(BlogSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             var model = _blogModelFactory.PrepareBlogListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             var model = _blogModelFactory.PrepareBlogModel(new BlogModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult Create(BlogModel model)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var blog = model.ToEntity<Blog>();
+                var blog = model.ToEntity<Blog,Guid>();
 
                 _blogService.Add(blog);
 
                 // url record add 
-                _urlRecordService.SaveSlug(blog, blog.Name, blog.LanguageId.Value);
+                _urlRecordService.SaveSlug<Blog, Guid>(blog, blog.Name, blog.LanguageId.Value);
 
                 // add activity log for create blog
-                _activityLogService.Add("Admin.blog.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.blog.Create"), blog);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.blog.Create"), blog);
 
                 //success add
                 return RedirectToAction("Edit", new { Id = blog.Id });
@@ -106,11 +102,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             model = _blogModelFactory.PrepareBlogModel(model, null);
             return View(model);
         }
-        public IActionResult Edit(int Id)
-        {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
 
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
+        public IActionResult Edit(Guid Id)
+        {
             var blog = _blogService.GetById(Id);
             if (blog == null)
                 return RedirectToAction("List");
@@ -121,22 +116,20 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult Edit(BlogModel model)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var blog = model.ToEntity<Blog>();
+                var blog = model.ToEntity<Blog, Guid>();
 
                 _blogService.Edit(blog);
 
                 // url record add 
-                _urlRecordService.SaveSlug(blog, blog.Name, blog.LanguageId.Value);
+                _urlRecordService.SaveSlug<Blog, Guid>(blog, blog.Name, blog.LanguageId.Value);
 
                 // add activity log for edit blog
-                _activityLogService.Add("Admin.blog.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.blog.Edit"), blog);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.blog.Edit"), blog);
 
                 //_notificationService.SusscessNotification("تغییرات با موفقیت ایجاد شد");
 
@@ -211,12 +204,11 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Blog-Comment
-        public IActionResult BlogComments(int? filterByBlogId)
-        {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
 
-            var blog = _blogService.GetById(filterByBlogId ?? 0);
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
+        public IActionResult BlogComments(Guid? filterByBlogId)
+        {
+            var blog = _blogService.GetById(filterByBlogId.Value);
 
             if (blog == null && filterByBlogId.HasValue)
                 return RedirectToAction("BlogComments");
@@ -228,20 +220,16 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult Comments(BlogCommentSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             var model = _blogModelFactory.PrepareBlogCommentListModel(searchModel);
             return Json(model);
         }
 
-        public IActionResult BlogCommentEdit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
+        public IActionResult BlogCommentEdit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             var blogComment = _blogCommentService.GetById(Id);
             if (blogComment == null)
                 return RedirectToAction("BlogComments");
@@ -251,11 +239,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
         public IActionResult BlogCommentEdit(BlogCommentModel model)
         {
-            if (!_commandService.CheckPermission("ManageBlog"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
                 var blogComment = _blogCommentService.GetById(model.Id);
@@ -273,9 +259,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlogCommentDelete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageBlog)]
+        public IActionResult BlogCommentDelete(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToAction("BlogComments");
 
             var blogComment = _blogCommentService.GetById(Id);

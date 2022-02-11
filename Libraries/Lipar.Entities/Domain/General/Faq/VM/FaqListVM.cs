@@ -1,7 +1,9 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
     public class FaqListVM : BaseListVM
     {
-        public int? FaqGroupId { get; set; }
+        public Guid? FaqGroupId { get; set; }
     }
 }

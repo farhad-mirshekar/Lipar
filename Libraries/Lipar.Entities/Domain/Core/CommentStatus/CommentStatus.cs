@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Core
 {
-    public class CommentStatus : BaseEntity
+    public class CommentStatus : BaseEntity<int>
     {
         #region Ctor
         public CommentStatus()

@@ -1,7 +1,7 @@
 ﻿@model MenuModel
 
 @{
-    if (Model.Id > 0)
+    if (Model.Id != Guid.Empty)
     {
 
         <div class="card">

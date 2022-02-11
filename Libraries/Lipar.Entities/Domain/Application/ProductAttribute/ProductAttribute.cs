@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
     /// <summary>
     /// product attribute
     /// </summary>
-   public class ProductAttribute : BaseEntity
+   public class ProductAttribute : BaseEntity<Guid>
     {
         #region Ctor
         public ProductAttribute()

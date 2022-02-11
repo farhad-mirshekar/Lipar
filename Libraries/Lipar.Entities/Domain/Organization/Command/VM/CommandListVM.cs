@@ -1,9 +1,11 @@
-﻿namespace Lipar.Entities.Domain.Organization
+﻿using System;
+
+namespace Lipar.Entities.Domain.Organization
 {
     public class CommandListVM : BaseListVM
     {
-        public int? RoleId { get; set; }
-        public int? ParentId { get; set; }
+        public Guid? RoleId { get; set; }
+        public Guid? ParentId { get; set; }
         public string Name { get; set; }
     }
 }

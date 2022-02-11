@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Organization
 {
-    public class UserModel : BaseEntityModel
+    public class UserModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public UserModel()

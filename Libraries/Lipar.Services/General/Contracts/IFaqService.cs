@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.General;
+using System;
 
 namespace Lipar.Services.General.Contracts
 {
@@ -8,7 +9,7 @@ namespace Lipar.Services.General.Contracts
         void Add(Faq model);
         void Edit(Faq model);
         void Delete(Faq model);
-        Faq GetById(int Id);
+        Faq GetById(Guid Id);
         IPagedList<Faq> List(FaqListVM listVM);
     }
 }

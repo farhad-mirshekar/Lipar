@@ -1,9 +1,10 @@
 ﻿using Lipar.Entities.Domain.Core;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Organization
 {
-    public class Center : BaseEntity
+    public class Center : BaseEntity<Guid>
     {
         #region Ctor
         public Center()

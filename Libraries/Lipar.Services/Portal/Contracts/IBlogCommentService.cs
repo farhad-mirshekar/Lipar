@@ -2,6 +2,7 @@
 using Lipar.Entities;
 using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Portal;
+using System;
 
 namespace Lipar.Services.Portal.Contracts
 {
@@ -11,7 +12,7 @@ namespace Lipar.Services.Portal.Contracts
         void Edit(BlogComment model);
         void Delete(BlogComment model);
         IPagedList<BlogComment> List(BlogCommentListVM listVM);
-        BlogComment GetById(int Id);
-        int GetBlogCommentsCount(int blogId, CommentStatusEnum commentStatus);
+        BlogComment GetById(Guid Id);
+        int GetBlogCommentsCount(Guid blogId, CommentStatusEnum commentStatus);
     }
 }

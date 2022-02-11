@@ -34,7 +34,7 @@ namespace Lipar.Services.Portal.Implementations
 
         }
 
-        public GalleryMedia GetById(int Id)
+        public GalleryMedia GetById(Guid Id)
         => _repository.GetById(Id);
 
         public IPagedList<GalleryMedia> List(GalleryMediaListVM listVM)
@@ -43,10 +43,10 @@ namespace Lipar.Services.Portal.Implementations
                         join b in _galleryRepository.Table on bm.GalleryId equals b.Id
                         select bm;
 
-            if (listVM.GalleryId.HasValue && listVM.GalleryId.Value > 0)
+            if (listVM.GalleryId.HasValue && listVM.GalleryId.Value != Guid.Empty)
                 query = query.Where(x => x.GalleryId == listVM.GalleryId.Value);
 
-            if (listVM.MediaId.HasValue && listVM.MediaId.Value > 0)
+            if (listVM.MediaId.HasValue && listVM.MediaId.Value != Guid.Empty)
                 query = query.Where(x => x.MediaId == listVM.MediaId.Value);
 
             var galleryMediaList = new PagedList<GalleryMedia>(query, listVM.PageIndex, listVM.PageSize);

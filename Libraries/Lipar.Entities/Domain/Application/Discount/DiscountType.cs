@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
-   public class DiscountType : BaseEntity
+   public class DiscountType:BaseEntity<int>
     {
         #region Ctor
         public DiscountType()

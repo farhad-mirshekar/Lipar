@@ -31,7 +31,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if (language != null)
             {
-                model ??= language.ToModel<LanguageModel>();
+                model ??= language.ToModel<LanguageModel, int>();
                 PrepareLocaleResourceSearchModel(model.LocaleResourceSearchModel, language);
             }
             _baseAdminModelFactory.PrepareLanguageCultureType(model.AvailableLanguageCultureType);
@@ -47,7 +47,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return languages.Select(language =>
                 {
-                    var languageModel = language.ToModel<LanguageModel>();
+                    var languageModel = language.ToModel<LanguageModel, int>();
 
                     return languageModel;
                 });
@@ -63,7 +63,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return localeStringResources.Select(localeStringResource =>
                 {
-                    var Resource = localeStringResource.ToModel<LocaleStringResourceModel>();
+                    var Resource = localeStringResource.ToModel<LocaleStringResourceModel, Guid>();
 
                     return Resource;
                 });

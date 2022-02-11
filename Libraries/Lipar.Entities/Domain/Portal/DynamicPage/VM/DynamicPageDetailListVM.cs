@@ -1,7 +1,9 @@
-﻿namespace Lipar.Entities.Domain.Portal
+﻿using System;
+
+namespace Lipar.Entities.Domain.Portal
 {
    public class DynamicPageDetailListVM : BaseListVM
     {
-        public int? DynamicPageId { get; set; }
+        public Guid? DynamicPageId { get; set; }
     }
 }

@@ -56,9 +56,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public ShoppingCartItem GetById(int Id, bool noTracking = false)
+        public ShoppingCartItem GetById(Guid Id, bool noTracking = false)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return null;
             }
@@ -75,13 +75,13 @@ namespace Lipar.Services.Application.Implementations
             return query.FirstOrDefault(s => s.Id == Id);
         }
 
-        public ShoppingCartItem Get(Guid shoppingCartItemId, int? productId)
+        public ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId)
         {
             var query = _repository.TableNoTracking;
 
             query = query.Where(s => s.ShoppingCartItemId == shoppingCartItemId);
 
-            if(productId.HasValue && productId.Value > 0)
+            if(productId.HasValue && productId.Value != Guid.Empty)
             {
                 query = query.Where(s => s.ProductId == productId);
             }

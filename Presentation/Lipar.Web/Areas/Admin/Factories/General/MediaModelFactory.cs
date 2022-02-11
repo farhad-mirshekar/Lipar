@@ -3,6 +3,7 @@ using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.General
@@ -27,7 +28,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return media.Select(m =>
                  {
-                     var mediaModel = m.ToModel<MediaModel>();
+                     var mediaModel = m.ToModel<MediaModel, Guid>();
 
                      return mediaModel;
                  });

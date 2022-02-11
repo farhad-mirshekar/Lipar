@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.Application
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ProductAttributeModel : BaseEntityModel
+    public class ProductAttributeModel : BaseEntityModel<Guid>
     {
         /// <summary>
         /// gets or sets the name attribute

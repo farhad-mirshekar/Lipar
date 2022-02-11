@@ -40,7 +40,7 @@ namespace Lipar.Services.Application.Implementations
                         join p in _productRepository.TableNoTracking on pm.ProductId equals p.Id
                         select pm;
 
-            if(listVM.ProductId.HasValue && listVM.ProductId.Value != 0)
+            if(listVM.ProductId.HasValue && listVM.ProductId.Value != Guid.Empty)
             {
                 query = query.Where(pm => pm.ProductId == listVM.ProductId);
             }
@@ -79,9 +79,9 @@ namespace Lipar.Services.Application.Implementations
         protected void Edit(ProductMedia model)
             => _repository.Update(model);
 
-        public ProductMedia GetById(int Id)
+        public ProductMedia GetById(Guid Id)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return null;
             }
@@ -89,9 +89,9 @@ namespace Lipar.Services.Application.Implementations
             return _repository.GetById(Id);
         }
 
-        public ProductMedia GetByMediaId(int mediaId)
+        public ProductMedia GetByMediaId(Guid mediaId)
         {
-            if (mediaId == 0)
+            if (mediaId == Guid.Empty)
             {
                 return null;
             }

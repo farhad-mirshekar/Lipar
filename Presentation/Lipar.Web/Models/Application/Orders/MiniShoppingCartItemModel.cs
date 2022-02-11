@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Application
 {
-    public class MiniShoppingCartItemModel : BaseEntityModel
+    public class MiniShoppingCartItemModel : BaseEntityModel<Guid>
     {
         public MiniShoppingCartItemModel()
         {

@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Models.Application
+﻿using System;
+
+namespace Lipar.Web.Models.Application
 {
-    public class ShippingCostModel : BaseEntityModel
+    public class ShippingCostModel : BaseEntityModel<Guid>
     {
         public string Name { get; set; }
         public string Description { get; set; }

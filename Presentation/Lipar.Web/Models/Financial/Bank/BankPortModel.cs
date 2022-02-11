@@ -1,8 +1,10 @@
-﻿namespace Lipar.Web.Models.Financial
+﻿using System;
+
+namespace Lipar.Web.Models.Financial
 {
-    public class BankPortModel : BaseEntityModel
+    public class BankPortModel : BaseEntityModel<Guid>
     {
-        public int BankId { get; set; }
+        public Guid BankId { get; set; }
         public string MerchantId { get; set; }
         public string Name { get; set; }
         public string MerchantKey { get; set; }

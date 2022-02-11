@@ -9,9 +9,10 @@ namespace Lipar.Web.Models.Organization
         [Required("Account.Login.Field.Password.ErrorMessage")]
         public string Password { get; set; }
         public bool RememberMe { get; set; }
-        public bool DisplayCaptcha { get; set; }
+        public bool ShowCaptcha { get; set; }
         public string Captcha { get; set; }
         public string CaptchaText { get; set; }
         public string ReturnUrl { get; set; }
+        public bool ShowCaptchaInLoginPage { get; set; }
     }
 }

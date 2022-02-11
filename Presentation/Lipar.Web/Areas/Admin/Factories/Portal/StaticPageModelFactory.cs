@@ -3,6 +3,7 @@ using Lipar.Services.Portal.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Portal
@@ -37,7 +38,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return staticPages.Select(staticPage =>
                 {
-                    var staticPageModel = staticPage.ToModel<StaticPageModel>();
+                    var staticPageModel = staticPage.ToModel<StaticPageModel, Guid>();
 
                     return staticPageModel;
                 });
@@ -50,7 +51,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         {
             if (staticPage != null)
             {
-                model = staticPage.ToModel<StaticPageModel>();
+                model = staticPage.ToModel<StaticPageModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareViewStatusType(model.AvailableViewStatusType);

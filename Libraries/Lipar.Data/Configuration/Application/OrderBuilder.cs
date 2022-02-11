@@ -12,6 +12,16 @@ namespace Lipar.Data.Configuration.Application
 
             builder.HasKey(o => o.Id);
             builder.Property(o => o.Id).ValueGeneratedOnAdd();
+
+            builder.HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(o => o.UserAddress)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(u => u.UserAddressId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

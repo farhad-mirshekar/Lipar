@@ -49,15 +49,15 @@ namespace Lipar.Services.Organization.Implementations
         public void Edit(UserPassword model)
         => _repository.Update(model);
 
-        public UserPassword GetCurrentPassword(int UserId)
+        public UserPassword GetCurrentPassword(Guid UserId)
         {
-            if (UserId == 0)
+            if (UserId == Guid.Empty)
                 return null;
 
             return GetCustomerPasswords(UserId, passwordsToReturn: 1).FirstOrDefault();
         }
 
-        public IEnumerable<UserPassword> GetCustomerPasswords(int? userId = null, PasswordFormatTypeEnum? passwordFormatType = null, int? passwordsToReturn = null)
+        public IEnumerable<UserPassword> GetCustomerPasswords(Guid? userId = null, PasswordFormatTypeEnum? passwordFormatType = null, int? passwordsToReturn = null)
         {
             var query = _repository.Table;
 

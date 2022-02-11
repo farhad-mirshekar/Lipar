@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ProductModel : BaseEntityModel
+    public class ProductModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ProductModel()
@@ -104,19 +105,19 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         /// <summary>
         /// gets or sets user
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         /// <summary>
         /// gets or sets category
         /// </summary>
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         /// <summary>
         /// gets or sets shipping cost
         /// </summary>
-        public int? ShippingCostId { get; set; }
+        public Guid? ShippingCostId { get; set; }
         /// <summary>
         /// gets or sets delivery date
         /// </summary>
-        public int? DeliveryDateId { get; set; }
+        public Guid? DeliveryDateId { get; set; }
 
         public ProductAttributeMappingSearchModel ProductAttributeMappingSearchModel { get; set; }
         public ProductMediaSearchModel ProductMediaSearchModel { get; set; }

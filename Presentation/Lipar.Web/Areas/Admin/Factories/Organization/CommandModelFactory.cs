@@ -3,6 +3,7 @@ using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Organization;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories
@@ -32,7 +33,7 @@ namespace Lipar.Web.Areas.Admin.Factories
             {
                 return commands.Select(command =>
                 {
-                    var commandModel = command.ToModel<CommandModel>();
+                    var commandModel = command.ToModel<CommandModel, Guid>();
 
                     commandModel.TitleCrumb = _commandService.GetFormattedBreadCrumb(command) ?? "";
                     return commandModel;
@@ -45,7 +46,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         public CommandModel PrepareCommandModel(CommandModel model, Command command)
         {
             if (command != null)
-                model = command.ToModel<CommandModel>();
+                model = command.ToModel<CommandModel, Guid>();
 
             _baseAdminModelFactory.PrepareCommandType(model.AvailableCommandType);
             model.AvailableCommands = _baseAdminModelFactory.PrepareCommand();

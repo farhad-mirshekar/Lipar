@@ -1,11 +1,12 @@
 ﻿using Lipar.Entities;
 using Lipar.Entities.Domain.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
-    public class DynamicPageModel : BaseEntityModel
+    public class DynamicPageModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public DynamicPageModel()

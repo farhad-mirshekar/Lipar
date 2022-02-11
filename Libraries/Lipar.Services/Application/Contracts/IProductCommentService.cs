@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
@@ -30,7 +31,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="Id">id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        ProductComment GetById(int Id , bool noTracking = false);
+        ProductComment GetById(Guid Id , bool noTracking = false);
 
         /// <summary>
         /// product comment list method

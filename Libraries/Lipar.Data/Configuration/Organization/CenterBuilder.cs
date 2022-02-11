@@ -20,8 +20,7 @@ namespace Lipar.Data.Configuration.Organization
 
             builder.HasOne(c => c.EnabledType)
                 .WithMany(e => e.Centers)
-                .HasForeignKey(e => e.EnabledTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(e => e.EnabledTypeId);
         }
     }
 }

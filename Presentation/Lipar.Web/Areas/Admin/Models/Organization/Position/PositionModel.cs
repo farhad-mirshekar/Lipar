@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities.Domain.Organization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Organization
 {
-    public class PositionModel : BaseEntityModel
+    public class PositionModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public PositionModel()
@@ -30,7 +31,7 @@ namespace Lipar.Web.Areas.Admin.Models.Organization
         public string CellPhone { get; set; }
         #endregion
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public IEnumerable<RoleModel> AvailableRoles { get; set; }
         public IEnumerable<PositionRoleModel> AvailablePositionRole { get; set; }

@@ -12,10 +12,14 @@ namespace Lipar.Data.Configuration.Application
 
             builder.HasKey(od => od.Id);
             builder.Property(od => od.Id).ValueGeneratedOnAdd();
+            builder.Property(od => od.ShippingCostName).HasMaxLength(3000);
+            builder.Property(od => od.DeliveryDateName).HasMaxLength(3000);
+            builder.Property(od => od.ProductCategoryName).HasMaxLength(3000);
 
             builder.HasOne(od => od.Order)
                 .WithMany(o => o.OrderDetails)
-                .HasForeignKey(od => od.OrderId);
+                .HasForeignKey(od => od.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

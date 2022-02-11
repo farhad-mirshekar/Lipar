@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Models.Portal
+﻿using System;
+
+namespace Lipar.Web.Models.Portal
 {
-    public class StaticPageModel : BaseEntityModel
+    public class StaticPageModel : BaseEntityModel<Guid>
     {
         public string Name { get; set; }
         public string Title { get; set; }

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Organization
 {
-    public class RoleModel : BaseEntityModel
+    public class RoleModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public RoleModel()

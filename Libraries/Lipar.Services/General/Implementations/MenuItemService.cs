@@ -2,6 +2,7 @@
 using Lipar.Data;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.General.Implementations
@@ -33,7 +34,7 @@ namespace Lipar.Services.General.Implementations
             _repository.Update(model);
         }
 
-        public MenuItem GetById(int Id)
+        public MenuItem GetById(Guid Id)
         => _repository.GetById(Id);
 
         public IPagedList<MenuItem> List(MenuItemListVM listVM)

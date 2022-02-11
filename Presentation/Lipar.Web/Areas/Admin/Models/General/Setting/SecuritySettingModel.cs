@@ -1,10 +1,11 @@
 ﻿using Lipar.Web.Framework.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class SecuritySettingModel : BaseEntityModel, ISettingsModel
+    public class SecuritySettingModel : BaseEntityModel<Guid>, ISettingsModel
     {
         public SecuritySettingModel()
         {

@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.Organization
 {
-    public class PasswordFormatType : BaseEntity
+    public class PasswordFormatType : BaseEntity<int>
     {
         #region Ctor
         public PasswordFormatType()

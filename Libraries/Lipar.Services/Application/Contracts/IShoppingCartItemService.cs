@@ -30,7 +30,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="Id">id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        ShoppingCartItem GetById(int Id, bool noTracking = false);
+        ShoppingCartItem GetById(Guid Id, bool noTracking = false);
 
         /// <summary>
         /// retrieve shopping cart item method
@@ -38,7 +38,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="shoppingCartItemId">shopping Cart Item Id</param>
         /// <param name="productId">product id</param>
         /// <returns></returns>
-        ShoppingCartItem Get(Guid shoppingCartItemId, int? productId);
+        ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId);
 
         /// <summary>
         /// get count shopping cart item method

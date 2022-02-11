@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Financial
 {
-    public class BankModel : BaseEntityModel
+    public class BankModel : BaseEntityModel<Guid>
     {
         public BankModel()
         {
@@ -19,7 +20,6 @@ namespace Lipar.Web.Areas.Admin.Models.Financial
         public int? TransactionCost { get; set; }
         public int EnabledTypeId { get; set; }
         public string EnableTypeTitle { get; set; }
-        public int UserId { get; set; }
         public BankPortSearchModel BankPortSearchModel { get; set; }
         #endregion
 

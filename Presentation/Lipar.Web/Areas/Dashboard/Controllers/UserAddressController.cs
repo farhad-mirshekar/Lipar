@@ -6,6 +6,7 @@ using Lipar.Web.Areas.Dashboard.Factories.Organization;
 using Lipar.Web.Areas.Dashboard.Models.Organization;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Areas.Dashboard.Controllers
 {
@@ -72,9 +73,9 @@ namespace Lipar.Web.Areas.Dashboard.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(Guid Id)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }

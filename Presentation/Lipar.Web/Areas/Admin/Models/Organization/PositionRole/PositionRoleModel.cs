@@ -1,8 +1,10 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.Organization
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.Organization
 {
-    public class PositionRoleModel : BaseEntityModel
+    public class PositionRoleModel : BaseEntityModel<Guid>
     {
-        public int RoleId { get; set; }
-        public int PositionId { get; set; }
+        public Guid RoleId { get; set; }
+        public Guid PositionId { get; set; }
     }
 }

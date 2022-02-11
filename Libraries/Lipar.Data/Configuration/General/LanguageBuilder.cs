@@ -15,11 +15,6 @@ namespace Lipar.Data.Configuration.General
 
             builder.Property(l => l.Name).HasMaxLength(1000).IsRequired();
 
-            builder.HasOne(l => l.User)
-                .WithMany(u=>u.Languages)
-                .HasForeignKey(l => l.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(l => l.ViewStatus)
                 .WithMany(v => v.Languages)
                 .HasForeignKey(l => l.ViewStatusId)

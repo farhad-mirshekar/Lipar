@@ -1,10 +1,12 @@
-﻿namespace Lipar.Web.Models.Application
+﻿using System;
+
+namespace Lipar.Web.Models.Application
 {
-    public class ProductCommentModel : BaseEntityModel
+    public class ProductCommentModel : BaseEntityModel<Guid>
     {
         public string CommentText { get; set; }
-        public int ProductId { get; set; }
-        public int? ParentId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid? ParentId { get; set; }
         public string Slug { get; set; }
     }
 }

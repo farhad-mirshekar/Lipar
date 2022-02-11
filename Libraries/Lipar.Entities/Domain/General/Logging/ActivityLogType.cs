@@ -1,15 +1,19 @@
 ﻿using Lipar.Entities.Domain.Core;
+using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.General
 {
-    public class ActivityLogType : BaseEntity
+    public class ActivityLogType : BaseEntity<int>
     {
+        public ActivityLogType()
+        {
+            ActivityLogs = new HashSet<ActivityLog>();
+        }
         public string SystemKeyword { get; set; }
         public string Name { get; set; }
-        public int ViewStatusId { get; set; }
 
         #region Navigations
-        public ViewStatus ViewStatus { get; set; }
+        public ICollection<ActivityLog> ActivityLogs { get; set; }
         #endregion
     }
 }

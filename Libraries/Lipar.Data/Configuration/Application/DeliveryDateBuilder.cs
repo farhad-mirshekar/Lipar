@@ -22,11 +22,6 @@ namespace Lipar.Data.Configuration.Application
                 .WithMany(e => e.DeliveryDates)
                 .HasForeignKey(d => d.EnabledTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(d => d.User)
-                .WithMany(u => u.DeliveryDates)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

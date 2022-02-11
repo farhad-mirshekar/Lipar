@@ -3,6 +3,7 @@ using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Organization;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Organization
@@ -32,7 +33,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
             {
                 return roles.Select(role =>
                 {
-                    var roleModel = role.ToModel<RoleModel>();
+                    var roleModel = role.ToModel<RoleModel, Guid>();
 
                     return roleModel;
                 });
@@ -48,9 +49,9 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
             {
                 var commands = _commandService.List(new CommandListVM { PageIndex = 0, PageSize = int.MaxValue });
 
-                roleModel ??= role.ToModel<RoleModel>();
+                roleModel ??= role.ToModel<RoleModel, Guid>();
 
-                roleModel.AvailableCommands = commands.Select(command => command.ToModel<CommandModel>());
+                roleModel.AvailableCommands = commands.Select(command => command.ToModel<CommandModel, Guid>());
                 roleModel.AvailableRolePermission = role.RolePermissions.Select(rp => new RolePermissionModel { RoleId = rp.RoleId, CommandId = rp.CommandId });
             }
 

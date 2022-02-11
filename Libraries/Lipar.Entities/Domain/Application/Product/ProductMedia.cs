@@ -1,21 +1,29 @@
-﻿namespace Lipar.Entities.Domain.Application
+﻿using Lipar.Entities.Domain.General;
+using System;
+
+namespace Lipar.Entities.Domain.Application
 {
     /// <summary>
     /// product_media_mapping
     /// </summary>
-   public class ProductMedia : BaseEntity
+   public class ProductMedia : BaseEntity<Guid>
     {
         /// <summary>
         /// gets or sets the product id
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         /// <summary>
         /// gets or sets the media id
         /// </summary>
-        public int MediaId { get; set; }
+        public Guid MediaId { get; set; }
         /// <summary>
         /// gets or sets the priority
         /// </summary>
         public int Priority { get; set; }
+
+        #region Navigations
+        public Product Product { get; set; }
+        public Media Media { get; set; }
+        #endregion
     }
 }

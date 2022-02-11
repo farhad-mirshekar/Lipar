@@ -77,11 +77,11 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(model);
         }
 
-        public Command GetById(int Id)
+        public Command GetById(Guid Id)
         {
             var command = _repository.GetById(Id);
 
-            if (command != null && (command.RemoverId.HasValue && command.RemoverId.Value != 0))
+            if (command != null && (command.RemoverId.HasValue && command.RemoverId.Value != Guid.Empty))
                 return null;
 
             return command;
@@ -95,14 +95,14 @@ namespace Lipar.Services.Organization.Implementations
 
             string result = string.Empty;
 
-            var alreadyProcessedCommandId = new List<int>();
-            while (command != null && command.Id != 0 && !alreadyProcessedCommandId.Contains(command.Id))
+            var alreadyProcessedCommandId = new List<Guid>();
+            while (command != null && command.Id != Guid.Empty && !alreadyProcessedCommandId.Contains(command.Id))
             {
                 result = string.IsNullOrEmpty(result) ? command.Name : $"{command.Name} {separator} {result}";
 
                 alreadyProcessedCommandId.Add(command.Id);
 
-                if (command.ParentId.HasValue && command.ParentId.Value != 0)
+                if (command.ParentId.HasValue && command.ParentId.Value != Guid.Empty)
                 {
                     command = GetById(command.ParentId.Value);
                 }
@@ -118,10 +118,10 @@ namespace Lipar.Services.Organization.Implementations
 
             query = query.Where(c => c.RemoveDate == null && c.RemoverId == null);
 
-            if (listVM.RoleId.HasValue && listVM.RoleId.Value != 0)
+            if (listVM.RoleId.HasValue && listVM.RoleId.Value != Guid.Empty)
                 query = query.Where(c => c.RolePermissions.Any(r => r.RoleId == listVM.RoleId));
 
-            if (listVM.ParentId.HasValue && listVM.ParentId.Value != 0)
+            if (listVM.ParentId.HasValue && listVM.ParentId.Value != Guid.Empty)
                 query = query.Where(c => c.ParentId == listVM.ParentId);
 
             if (!string.IsNullOrEmpty(listVM.Name))

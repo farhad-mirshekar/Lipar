@@ -6,6 +6,7 @@ using Lipar.Web.Areas.Admin.Infrastructure.Cache;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Organization;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,7 +61,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
             {
                 return positions.Select(position =>
                  {
-                     var positionModel = position.ToModel<PositionModel>();
+                     var positionModel = position.ToModel<PositionModel, Guid>();
 
                      return positionModel;
                  });
@@ -73,7 +74,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
         {
             if (position != null)
             {
-                model = position.ToModel<PositionModel>();
+                model = position.ToModel<PositionModel, Guid>();
 
                 //get selected roles by position
                 model.AvailablePositionRole = GetPositionRoles(position);
@@ -111,7 +112,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
 
             var model = roles.Select(role =>
             {
-                var rolesModel = role.ToModel<RoleModel>();
+                var rolesModel = role.ToModel<RoleModel, Guid>();
 
                 return rolesModel;
             });
@@ -129,7 +130,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
                 {
                     foreach (var positionRole in position.PositionRoles)
                     {
-                        positionRoleModel.Add(positionRole.ToModel<PositionRoleModel>());
+                        positionRoleModel.Add(positionRole.ToModel<PositionRoleModel, Guid>());
                     }
                 }
             }

@@ -1,11 +1,12 @@
 ﻿using Lipar.Entities;
 using Lipar.Entities.Domain.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class DeliveryDateModel : BaseEntityModel
+    public class DeliveryDateModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public DeliveryDateModel()

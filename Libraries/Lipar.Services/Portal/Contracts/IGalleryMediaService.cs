@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Portal;
+using System;
 
 namespace Lipar.Services.Portal.Contracts
 {
@@ -26,6 +27,6 @@ namespace Lipar.Services.Portal.Contracts
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        GalleryMedia GetById(int Id);
+        GalleryMedia GetById(Guid Id);
     }
 }

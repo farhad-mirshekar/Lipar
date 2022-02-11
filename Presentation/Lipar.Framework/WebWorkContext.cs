@@ -198,10 +198,10 @@ namespace Lipar.Web.Framework
             }
             set
             {
-                var languageId = value?.Id ?? 0;
+                var languageId = value.Id;
                 var language = _languageService.GetById(languageId, true);
 
-                if(language != null && language.Id> 0)
+                if(language != null && language.Id != 0)
                 {
                     _cachedLanguage = language;
                 }

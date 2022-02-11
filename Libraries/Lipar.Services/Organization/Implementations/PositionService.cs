@@ -72,7 +72,7 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(positions);
         }
 
-        public Position GetById(int Id)
+        public Position GetById(Guid Id)
         {
             var query = _repository.Table;
             query = query.Include(position => position.User);
@@ -110,7 +110,7 @@ namespace Lipar.Services.Organization.Implementations
             if (!string.IsNullOrEmpty(listVM.UserListVM.NationalCode))
                 query = query.Where(p => p.User.NationalCode.Contains(listVM.UserListVM.NationalCode.Trim()));
 
-            if (listVM.UserId.HasValue && listVM.UserId.Value != 0)
+            if (listVM.UserId.HasValue && listVM.UserId.Value != Guid.Empty)
                 query = query.Where(p => p.UserId == listVM.UserId.Value);
 
 

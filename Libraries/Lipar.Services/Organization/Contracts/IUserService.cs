@@ -1,12 +1,13 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.Organization.Enums;
+using System;
 
 namespace Lipar.Services.Organization.Contracts
 {
     public interface IUserService
     {
-        User GetById(int Id);
+        User GetById(Guid Id);
         void Add(User model);
         void Edit(User model);
         IPagedList<User> List(UserListVM listVM);

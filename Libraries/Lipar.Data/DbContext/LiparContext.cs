@@ -29,7 +29,7 @@ namespace Lipar.Data
         {
             optionsBuilder.UseSqlServer("Data Source=fm-pc;Integrated Security=true;Initial Catalog=LiparDb;Persist Security Info=True;;MultipleActiveResultSets=true;");
         }
-        DbSet<TEntity> IDbContext.Set<TEntity>()
+        DbSet<TEntity> IDbContext.Set<TEntity>() 
         {
             return base.Set<TEntity>();
         }

@@ -13,5 +13,12 @@ namespace Lipar.Web.Factories.Organization
         /// </summary>
         /// <returns></returns>
         PasswordRecoveryModel PreparePasswordRecoveryModel(PasswordRecoveryModel model);
+
+        /// <summary>
+        /// prepare login model
+        /// </summary>
+        /// <param name="model">login model</param>
+        /// <returns></returns>
+        LoginModel PrepareLoginModel(LoginModel model);
     }
 }

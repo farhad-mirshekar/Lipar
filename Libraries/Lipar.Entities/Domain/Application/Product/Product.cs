@@ -8,7 +8,7 @@ namespace Lipar.Entities.Domain.Application
     /// <summary>
     /// product class
     /// </summary>
-   public class Product : BaseEntity
+   public class Product : BaseEntity<Guid>
     {
         #region Ctor
         public Product()
@@ -23,6 +23,7 @@ namespace Lipar.Entities.Domain.Application
             ProductQuestions = new HashSet<ProductQuestion>();
             ProductAttributeMappings = new HashSet<ProductAttributeMapping>();
             ShoppingCartItems = new HashSet<ShoppingCartItem>();
+            ProductMedias = new HashSet<ProductMedia>();
         }
         #endregion
 
@@ -110,11 +111,11 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets user
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         /// <summary>
         /// gets or sets category
         /// </summary>
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         /// <summary>
         /// gets or sets update date product
         /// </summary>
@@ -122,12 +123,12 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets shipping cost
         /// </summary>
-        public int? ShippingCostId { get; set; }
+        public Guid? ShippingCostId { get; set; }
         /// <summary>
         /// gets or sets delivery date
         /// </summary>
-        public int? DeliveryDateId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid? DeliveryDateId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 
@@ -138,11 +139,11 @@ namespace Lipar.Entities.Domain.Application
         public ShippingCost ShippingCost { get; set; }
         public DiscountType DiscountType { get; set; }
         public User User { get; set; }
-        public User Remover { get; set; }
         public ICollection<ProductComment> ProductComments { get; set; }
         public ICollection<ProductQuestion> ProductQuestions { get; set; }
         public ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public ICollection<ProductMedia> ProductMedias { get; set; }
         #endregion
     }
 }

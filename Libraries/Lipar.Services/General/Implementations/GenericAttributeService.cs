@@ -23,7 +23,7 @@ namespace Lipar.Services.General.Implementations
         #endregion
 
         #region Methods
-        public T GetAttribute<T>(BaseEntity entity, string key, T defaultValue = default)
+        public T GetAttribute<T, TProperty>(BaseEntity<TProperty> entity, string key, T defaultValue = default)
         {
             if(entity == null)
             {
@@ -32,7 +32,7 @@ namespace Lipar.Services.General.Implementations
 
             var keyGroup = entity.GetType().Name;
 
-            var genericAttributes = GetAttributesForEntity(entity.Id, keyGroup);
+            var genericAttributes = GetAttributesForEntity(entity.Id.ToString(), keyGroup);
 
             if(genericAttributes == null)
             {
@@ -48,7 +48,7 @@ namespace Lipar.Services.General.Implementations
             return CommonHelper.To<T>(prop.Value);
         }
 
-        public void SaveAttribute<T>(BaseEntity entity, string key, T value)
+        public void SaveAttribute<T, TProperty>(BaseEntity<TProperty> entity, string key, T value)
         {
             if(entity == null)
             {
@@ -62,7 +62,7 @@ namespace Lipar.Services.General.Implementations
 
             var keyGroup = entity.GetType().Name;
 
-            var genericAttributes = GetAttributesForEntity(entity.Id, keyGroup);
+            var genericAttributes = GetAttributesForEntity(entity.Id.ToString(), keyGroup);
 
             var prop = genericAttributes.FirstOrDefault(ga =>
                                         ga.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
@@ -92,7 +92,7 @@ namespace Lipar.Services.General.Implementations
                 //insert
                 prop = new GenericAttribute
                 {
-                    EntityId = entity.Id,
+                    EntityId = entity.Id.ToString(),
                     Key = key,
                     KeyGroup = keyGroup,
                     Value = valueStr,
@@ -103,7 +103,7 @@ namespace Lipar.Services.General.Implementations
             }
         }
 
-        public IList<GenericAttribute> GetAttributesForEntity(int entityId , string keyGroup , bool noTracking = false)
+        public IList<GenericAttribute> GetAttributesForEntity(string entityId , string keyGroup , bool noTracking = false)
         {
             var query = _repository.Table;
 

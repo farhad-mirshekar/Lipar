@@ -4,6 +4,7 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Organization;
 using Lipar.Web.Areas.Admin.Models.Organization.User;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,7 +41,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
             {
                 return users.Select(user =>
                 {
-                    var userModel = user.ToModel<UserModel>();
+                    var userModel = user.ToModel<UserModel, Guid>();
                     return userModel;
                 });
             });
@@ -52,7 +53,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
         {
             if (user != null)
             {
-                model = user.ToModel<UserModel>();
+                model = user.ToModel<UserModel, Guid>();
             }
 
             //get all role
@@ -71,14 +72,14 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
 
             var model = roles.Select(role =>
             {
-                var rolesModel = role.ToModel<RolesModel>();
+                var rolesModel = role.ToModel<RolesModel, Guid>();
 
                 return rolesModel;
             });
 
             return model;
         }
-        private IEnumerable<PositionRoleModel> GetPositionRoles(int UserId)
+        private IEnumerable<PositionRoleModel> GetPositionRoles(Guid UserId)
         {
             var positionRoleModel = new List<PositionRoleModel>();
 
@@ -92,7 +93,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Organization
                     {
                         foreach (var positionRole in position.PositionRoles)
                         {
-                            positionRoleModel.Add(positionRole.ToModel<PositionRoleModel>());
+                            positionRoleModel.Add(positionRole.ToModel<PositionRoleModel, Guid>());
                         }
                     }
                 }

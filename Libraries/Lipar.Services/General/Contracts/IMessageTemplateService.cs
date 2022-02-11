@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.General;
+using System;
 
 namespace Lipar.Services.General.Contracts
 {
@@ -32,7 +33,7 @@ namespace Lipar.Services.General.Contracts
         /// <param name="id">message template id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        MessageTemplate GetById(int id, bool noTracking = false);
+        MessageTemplate GetById(Guid id, bool noTracking = false);
 
         /// <summary>
         /// list message template method

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
-   public class ShippingCost : BaseEntity
+   public class ShippingCost : BaseEntity<Guid>
     {
         #region Ctor
         public ShippingCost()
@@ -19,14 +19,12 @@ namespace Lipar.Entities.Domain.Application
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int EnabledTypeId { get; set; }
-        public int UserId { get; set; }
         public int Priority { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 
         #region Navigations
-        public User User { get; set; }
         public EnabledType EnabledType { get; set; }
         public ICollection<Product> Products { get; set; }
         #endregion

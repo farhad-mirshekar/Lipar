@@ -55,7 +55,7 @@ namespace Lipar.Web.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult ShoppingCartItemCreate(int productId, IFormCollection form)
+        public IActionResult ShoppingCartItemCreate(Guid productId, IFormCollection form)
         {
             if (_workContext.CurrentUser == null)
             {
@@ -110,7 +110,7 @@ namespace Lipar.Web.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult CartItemPlus(int id)
+        public IActionResult CartItemPlus(Guid id)
         {
             var shoppingCartItem = _shoppingCartItemService.GetById(id);
             if (shoppingCartItem == null)
@@ -144,7 +144,7 @@ namespace Lipar.Web.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult CartItemMinus(int id)
+        public IActionResult CartItemMinus(Guid id)
         {
             var shoppingCartItem = _shoppingCartItemService.GetById(id);
             if (shoppingCartItem == null)
@@ -251,9 +251,9 @@ namespace Lipar.Web.Controllers
             });
         }
 
-        public IActionResult UserAddressEdit(int id)
+        public IActionResult UserAddressEdit(Guid id)
         {
-            if(id == 0)
+            if(id == Guid.Empty)
             {
                 return null;
             }
@@ -314,7 +314,7 @@ namespace Lipar.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UserAddressDelete(int id)
+        public IActionResult UserAddressDelete(Guid id)
         {
             if (_workContext.CurrentUser == null)
             {

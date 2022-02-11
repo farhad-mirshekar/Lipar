@@ -1,7 +1,6 @@
 ﻿using Lipar.Core.ReadingTime;
 using Lipar.Data;
 using Lipar.Entities;
-using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
 using System;
@@ -33,15 +32,15 @@ namespace Lipar.Services.General.Implementations
             _repository.Update(model);
         }
 
-        public UrlRecord GetById(int Id)
+        public UrlRecord GetById(Guid Id)
         => _repository.GetById(Id);
 
-        public void SaveSlug<T>(T entity, string slug, int languageId) where T : BaseEntity
+        public void SaveSlug<T,TProperty>(T entity, string slug, int languageId) where T : BaseEntity<TProperty>
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            var entityId = entity.Id;
+            var entityId = entity.Id.ToString();
             var entityName = entity.GetType().Name;
 
             var query = _repository.TableNoTracking;
@@ -54,7 +53,6 @@ namespace Lipar.Services.General.Implementations
             {
                 Add(new UrlRecord
                 {
-                    EnabledTypeId = (int)EnabledTypeEnum.Active,
                     EntityId = entityId,
                     EntityName = entityName,
                     LanguageId = languageId,
@@ -65,7 +63,6 @@ namespace Lipar.Services.General.Implementations
             {
                 Edit(new UrlRecord
                 {
-                    EnabledTypeId = (int)EnabledTypeEnum.Active,
                     EntityId = entityId,
                     EntityName = entityName,
                     LanguageId = languageId,
@@ -82,7 +79,7 @@ namespace Lipar.Services.General.Implementations
 
             var query = _repository.Table;
 
-            var urlRecord = query.Where(u => u.Slug.Equals(slug) && u.EnabledTypeId == (int)EnabledTypeEnum.Active).FirstOrDefault();
+            var urlRecord = query.Where(u => u.Slug.Equals(slug)).FirstOrDefault();
 
             return urlRecord;
         }

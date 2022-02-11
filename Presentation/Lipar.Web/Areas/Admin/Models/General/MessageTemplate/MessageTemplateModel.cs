@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class MessageTemplateModel : BaseEntityModel
+    public class MessageTemplateModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public MessageTemplateModel()

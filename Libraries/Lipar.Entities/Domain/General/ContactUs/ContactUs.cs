@@ -1,9 +1,11 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
     /// <summary>
     /// contact us 
     /// </summary>
-   public class ContactUs : BaseEntity
+   public class ContactUs : BaseEntity<Guid>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

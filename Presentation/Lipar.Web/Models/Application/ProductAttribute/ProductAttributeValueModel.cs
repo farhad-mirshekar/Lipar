@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Models.Application
+﻿using System;
+
+namespace Lipar.Web.Models.Application
 {
-    public class ProductAttributeValueModel : BaseEntityModel
+    public class ProductAttributeValueModel : BaseEntityModel<Guid>
     {
         public string Name { get; set; }
         public decimal? Price { get; set; }

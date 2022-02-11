@@ -1,4 +1,5 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Financial
 {
@@ -8,7 +9,7 @@ namespace Lipar.Web.Areas.Admin.Models.Financial
         {
             AddBankPortModel = new BankPortModel();
         }
-        public int BankId { get; set; }
+        public Guid BankId { get; set; }
 
         public BankPortModel AddBankPortModel { get; set; }
     }

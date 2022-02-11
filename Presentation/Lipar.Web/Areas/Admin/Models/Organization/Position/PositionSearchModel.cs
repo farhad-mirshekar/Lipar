@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Lipar.Web.Framework.Models;
 using System.Collections.Generic;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Organization
 {
@@ -16,7 +17,7 @@ namespace Lipar.Web.Areas.Admin.Models.Organization
         #endregion
 
         #region Fields
-        public int? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalCode { get; set; }

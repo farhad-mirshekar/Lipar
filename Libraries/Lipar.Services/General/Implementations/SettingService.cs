@@ -42,9 +42,9 @@ namespace Lipar.Services.General.Implementations
             return query;
         }
 
-        public Setting GetById(int Id)
+        public Setting GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return null;
 
             return _repository.GetById(Id);

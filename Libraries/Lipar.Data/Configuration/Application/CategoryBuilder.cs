@@ -31,12 +31,6 @@ namespace Lipar.Data.Configuration.Application
             builder.HasOne(c => c.User)
                 .WithMany(u => u.ApplicationCategories)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
-
-            builder.HasOne(c => c.Remover)
-                .WithMany(u => u.ApplicationRemoverCategories)
-                .HasForeignKey(c => c.RemoverId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

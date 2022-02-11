@@ -47,7 +47,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productQuestions.Select(productQuestion =>
                 {
-                    var productQuestionModel = productQuestion.ToModel<ProductQuestionModel>();
+                    var productQuestionModel = productQuestion.ToModel<ProductQuestionModel, Guid>();
 
                     return productQuestionModel;
                 });
@@ -60,7 +60,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if (productQuestion != null)
             {
-                model = productQuestion.ToModel<ProductQuestionModel>();
+                model = productQuestion.ToModel<ProductQuestionModel, Guid>();
 
                 //prepare product answer search model
                 PrepareProductAnswersSearchModel(model.ProductAnswersSearchModel, productQuestion);
@@ -107,7 +107,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productAnswers.Select(productAnswer =>
                 {
-                    var productAnswerModel = productAnswer.ToModel<ProductAnswersModel>();
+                    var productAnswerModel = productAnswer.ToModel<ProductAnswersModel, Guid>();
 
                     return productAnswerModel;
                 });
@@ -120,7 +120,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if(productAnswers != null)
             {
-                model = productAnswers.ToModel<ProductAnswersModel>();
+                model = productAnswers.ToModel<ProductAnswersModel,Guid>();
             }
 
             //prepare view status

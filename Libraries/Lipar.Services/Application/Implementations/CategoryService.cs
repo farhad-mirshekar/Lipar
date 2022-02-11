@@ -69,9 +69,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public Category GetById(int Id)
+        public Category GetById(Guid Id)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(Id));
             }
@@ -102,9 +102,9 @@ namespace Lipar.Services.Application.Implementations
             }
 
             var breadCrumb = string.Empty;
-            var alreadyProcessedCategoryIds = new List<int>();
+            var alreadyProcessedCategoryIds = new List<Guid>();
 
-            while(category != null && category.Id != 0 &&
+            while(category != null && category.Id != Guid.Empty &&
                 !alreadyProcessedCategoryIds.Contains(category.Id))
             {
                 if (string.IsNullOrEmpty(breadCrumb))
@@ -118,7 +118,7 @@ namespace Lipar.Services.Application.Implementations
 
                 alreadyProcessedCategoryIds.Add(category.Id);
 
-                if(category.ParentId.HasValue && category.ParentId.Value != 0)
+                if(category.ParentId.HasValue && category.ParentId.Value != Guid.Empty)
                 {
                     category = GetById(category.ParentId.Value);
                 }

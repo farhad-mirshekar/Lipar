@@ -21,7 +21,8 @@ namespace Lipar.Data.Configuration.General
 
             builder.HasOne(q => q.EmailAccount)
                 .WithMany(e => e.QueuedEmails)
-                .HasForeignKey(q => q.EmailAccountId);
+                .HasForeignKey(q => q.EmailAccountId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

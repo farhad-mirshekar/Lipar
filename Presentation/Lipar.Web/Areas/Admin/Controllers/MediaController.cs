@@ -5,6 +5,7 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Controllers
@@ -69,10 +70,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int ParentId, MediaModel model)
+        public IActionResult Edit(Guid ParentId, MediaModel model)
         {
-            var media = model.ToEntity<Media>();
-            media.Id = model.MediaId != 0 ? model.MediaId : model.Id;
+            var media = model.ToEntity<Media, Guid>();
+            media.Id = model.MediaId != Guid.Empty ? model.MediaId : model.Id;
 
             media = _mediaService.EditPicture(media);
             if (media == null)

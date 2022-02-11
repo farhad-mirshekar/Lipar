@@ -77,9 +77,9 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public DynamicPage GetById(int Id)
+        public DynamicPage GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return null;
 
             return _repository.GetById(Id);

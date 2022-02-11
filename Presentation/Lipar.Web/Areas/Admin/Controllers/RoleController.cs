@@ -11,6 +11,8 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -43,46 +45,43 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
-        public IActionResult Index
+
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
+        public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
         public IActionResult List()
         => View(new RoleSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
         public IActionResult List(RoleSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageRole"))
-                return AccessDeniedView();
-
             var model = _roleModelFactory.PrepareRoleListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageRole"))
-                return AccessDeniedView();
-
             var model = _roleModelFactory.PrepareRoleModel(new RoleModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
         public IActionResult Create(RoleModel model)
         {
-            if (!_commandService.CheckPermission("ManageRole"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var role = model.ToEntity<Role>();
+                var role = model.ToEntity<Role, Guid>();
                 _roleService.Add(role);
 
                 // add activity log for create role
-                _activityLogService.Add("Admin.Role.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Role.Create"), role);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Role.Create"), role);
 
                 return RedirectToAction("Edit", new { Id = role.Id }); // redirect to edit page
             }
@@ -91,11 +90,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageRole"))
-                return AccessDeniedView();
-
             var role = _roleService.GetById(Id);
             if (role == null)
                 return RedirectToAction("List");
@@ -106,11 +103,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageRole)]
         public IActionResult Edit(RoleModel model, IFormCollection form)
         {
-            if (!_commandService.CheckPermission("ManageRole"))
-                return AccessDeniedView();
-
             var role = _roleService.GetById(model.Id);
             if (role == null)
                 return RedirectToAction("List");
@@ -159,7 +154,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             }
 
             // add activity log for edit role
-            _activityLogService.Add("Admin.Role.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Role.Edit"), role);
+            _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Role.Edit"), role);
 
             model = _roleModelFactory.PrepareRoleModel(null, role);
             return View(model);

@@ -1,10 +1,6 @@
 ﻿@model LoginModel
-@using Lipar.Services.General.Contracts
-@inject ISettingService _settingService
 @{
     ViewData["Title"] = "Login";
-    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
-    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInLoginPage").Value, out bool showCaptchaInLoginPage);
 }
 
 @section BodySection{
@@ -33,7 +29,7 @@
                                             <span class="text-danger" asp-validation-for="Password" />
                                         </div>
                                     </div>
-                                    @if (showCaptcha && showCaptchaInLoginPage)
+                                    @if (Model.ShowCaptcha && Model.ShowCaptchaInLoginPage)
                                     {
                                         <div class="form-group row">
                                             <label class="col-md-2 col-sm-2 col-form-label">

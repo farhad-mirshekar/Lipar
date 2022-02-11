@@ -5,7 +5,7 @@
 <nav>
     <div class="nav nav-tabs" id="blog-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-blog-info-tab" data-toggle="tab" href="#nav-blog-info" role="tab" aria-controls="nav-blog-info" aria-selected="true">@T("Admin.Blog.Tab.Info").Text</a>
-        @if (Model.Id != 0)
+        @if (Model.Id != Guid.Empty)
         {
             <a class="nav-item nav-link" id="nav-blog-attachment-tab" data-toggle="tab" href="#nav-blog-attachment" role="tab" aria-controls="nav-blog-attachment" aria-selected="false">@T("Admin.Blog.Tab.Attachment").Text</a>
         }
@@ -15,7 +15,7 @@
     <div class="tab-pane fade show active" id="nav-blog-info" role="tabpanel" aria-labelledby="nav-blog-info-tab">
         @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
     </div>
-    @if (Model.Id != 0)
+    @if (Model.Id != Guid.Empty)
     {
         <div class="tab-pane fade" id="nav-blog-attachment" role="tabpanel" aria-labelledby="nav-blog-attachment-tab">
             @await Html.PartialAsync("_CreateOrUpdate.Media",Model)

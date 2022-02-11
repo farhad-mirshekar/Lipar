@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.General
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class ActivityLogModel : BaseEntityModel
+    public class ActivityLogModel : BaseEntityModel<Guid>
     {
         #region Fields
         public string Comment { get; set; }

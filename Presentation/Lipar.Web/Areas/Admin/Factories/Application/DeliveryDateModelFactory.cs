@@ -3,6 +3,7 @@ using Lipar.Services.Application.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Application
@@ -37,7 +38,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return deliveryDates.Select(deliveryDate =>
                 {
-                    var deliveryDateModel = deliveryDate.ToModel<DeliveryDateModel>();
+                    var deliveryDateModel = deliveryDate.ToModel<DeliveryDateModel, Guid>();
 
                     return deliveryDateModel;
                 });
@@ -50,7 +51,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if(deliveryDate != null)
             {
-                model = deliveryDate.ToModel<DeliveryDateModel>();
+                model = deliveryDate.ToModel<DeliveryDateModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareEnabledType(model.AvailableEnabledType);

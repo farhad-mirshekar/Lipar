@@ -53,9 +53,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public ProductQuestion GetById(int Id, bool noTracking = false)
+        public ProductQuestion GetById(Guid Id, bool noTracking = false)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return null;
             }
@@ -83,12 +83,12 @@ namespace Lipar.Services.Application.Implementations
                                    .Include(pq => pq.Product)
                                    .Include(pq => pq.User).AsQueryable();
 
-            if(listVM.ProductId.HasValue && listVM.ProductId.Value != 0)
+            if(listVM.ProductId.HasValue && listVM.ProductId.Value != Guid.Empty)
             {
                 query = query.Where(pq => pq.ProductId == listVM.ProductId);
             }
 
-            if (listVM.UserId.HasValue && listVM.UserId.Value != 0)
+            if (listVM.UserId.HasValue && listVM.UserId.Value != Guid.Empty)
             {
                 query = query.Where(pq => pq.UserId == listVM.UserId);
             }

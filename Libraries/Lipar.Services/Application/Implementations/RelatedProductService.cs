@@ -55,9 +55,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public RelatedProduct GetById(int Id)
+        public RelatedProduct GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return null;
             }
@@ -69,7 +69,7 @@ namespace Lipar.Services.Application.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            if (listVM.ProductId1.HasValue && listVM.ProductId1.Value > 0)
+            if (listVM.ProductId1.HasValue && listVM.ProductId1.Value != Guid.Empty)
             {
                 query = query.Where(r => r.ProductId1 == listVM.ProductId1);
             }
@@ -79,7 +79,7 @@ namespace Lipar.Services.Application.Implementations
             return models;
         }
 
-        public IEnumerable<RelatedProduct> GetRelatedProductsByProductId1(int productId1)
+        public IEnumerable<RelatedProduct> GetRelatedProductsByProductId1(Guid productId1)
         {
             var query = from r in _repository.TableNoTracking
                         join p in _productRepository.TableNoTracking on r.ProductId1 equals p.Id
@@ -90,7 +90,7 @@ namespace Lipar.Services.Application.Implementations
             return query;
         }
 
-        public RelatedProduct FindRelatedProduct(IEnumerable<RelatedProduct> source, int productId1, int productId2)
+        public RelatedProduct FindRelatedProduct(IEnumerable<RelatedProduct> source, Guid productId1, Guid productId2)
         {
             foreach (var relatedProduct in source)
             {

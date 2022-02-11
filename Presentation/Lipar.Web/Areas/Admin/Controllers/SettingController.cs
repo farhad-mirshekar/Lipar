@@ -9,6 +9,7 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -42,7 +43,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult Blog(BlogSettingModel model)
         {
             var blogSetting = _settingService.LoadSettings<BlogSetting>();
-            blogSetting = model.ToSettings(blogSetting);
+            blogSetting = model.ToSettings<BlogSetting, BlogSettingModel, Guid>(blogSetting);
 
             _settingService.SaveSetting(blogSetting, x => x.BlogPageSize);
 
@@ -64,7 +65,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult Order(OrderSettingModel model)
         {
             var orderSetting = _settingService.LoadSettings<OrderSetting>();
-            orderSetting = model.ToSettings(orderSetting);
+            orderSetting = model.ToSettings<OrderSetting, OrderSettingModel, Guid>(orderSetting);
 
             _settingService.SaveSetting(orderSetting, x => x.ShoppingCartRate);
 
@@ -86,7 +87,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult Common(CommonSettingModel model)
         {
             var commonSetting = _settingService.LoadSettings<CommonSetting>();
-            commonSetting = model.ToSettings(commonSetting);
+            commonSetting = model.ToSettings<CommonSetting,CommonSettingModel,Guid>(commonSetting);
 
             _settingService.SaveSetting(commonSetting, x => x.ShowCaptcha);
             _settingService.SaveSetting(commonSetting, x => x.ShowCaptchaInLoginPage);
@@ -107,7 +108,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult Security(SecuritySettingModel model)
         {
             var securitySetting = _settingService.LoadSettings<SecuritySetting>();
-            securitySetting = model.ToSettings(securitySetting);
+            securitySetting = model.ToSettings<SecuritySetting, SecuritySettingModel, Guid>(securitySetting);
 
             _settingService.SaveSetting(securitySetting, x => x.EncryptionKey);
             _settingService.SaveSetting(securitySetting, x => x.PasswordFormatType);

@@ -8,7 +8,7 @@ namespace Lipar.Entities.Domain.Financial
     /// <summary>
     /// bank port
     /// </summary>
-   public class BankPort :BaseEntity
+   public class BankPort : BaseEntity<Guid>
     {
         #region Ctor
         public BankPort()
@@ -21,7 +21,7 @@ namespace Lipar.Entities.Domain.Financial
         /// <summary>
         /// gets or sets bank id
         /// </summary>
-        public int BankId { get; set; }
+        public Guid BankId { get; set; }
         /// <summary>
         /// gets or sets merchant id
         /// </summary>

@@ -1,4 +1,6 @@
-﻿namespace Lipar.Entities.Domain.Organization
+﻿using System;
+
+namespace Lipar.Entities.Domain.Organization
 {
     public class PositionListVM : BaseListVM
     {
@@ -9,8 +11,8 @@
         }
         #endregion
 
-        public int? UserId { get; set; }
-        public int? DepartmentId { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid? DepartmentId { get; set; }
         public int? EnabledTypeId { get; set; }
         public UserListVM UserListVM { get; set; }
     }

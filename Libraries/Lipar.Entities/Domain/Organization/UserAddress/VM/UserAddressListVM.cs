@@ -1,7 +1,9 @@
-﻿namespace Lipar.Entities.Domain.Organization
+﻿using System;
+
+namespace Lipar.Entities.Domain.Organization
 {
    public class UserAddressListVM : BaseListVM
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

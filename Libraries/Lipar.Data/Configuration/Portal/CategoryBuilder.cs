@@ -24,11 +24,6 @@ namespace Lipar.Data.Configuration.Portal
                 .WithMany(u => u.PortalCategories)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(c => c.Remover)
-                .WithMany(u => u.PortalRemoverCategories)
-                .HasForeignKey(c => c.RemoverId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.Organization.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Data.Seeds.Organization
@@ -13,9 +14,9 @@ namespace Lipar.Data.Seeds.Organization
             {
                 new Department()
                 {
-                    Id = 1,
+                    Id = Guid.Parse("97AA0260-4810-4356-9979-1515DBDFD5BB"),
                     Address="البرز",
-                    CenterId = 1,
+                    CenterId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     CodePhone="026",
                     DepartmentTypeId = (int)DepartmentTypeEnum.Main_Unit,
                     EnabledTypeId = (int)EnabledTypeEnum.Active,

@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -25,7 +26,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        ProductAttributeMapping GetById(int Id);
+        ProductAttributeMapping GetById(Guid Id);
         /// <summary>
         /// list product attribute mapping method
         /// </summary>

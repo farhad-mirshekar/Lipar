@@ -6,12 +6,13 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Portal
 {
-    public class News : BaseEntity
+    public class News : BaseEntity<Guid>
     {
         #region Ctor
         public News()
         {
             NewsComments = new HashSet<NewsComment>();
+            NewsMedias = new HashSet<NewsMedia>();
         }
         #endregion
 
@@ -25,21 +26,21 @@ namespace Lipar.Entities.Domain.Portal
         public int CommentStatusId { get; set; }
         public int VisitedCount { get; set; }
         public int ViewStatusId { get; set; }
-        public int CategoryId { get; set; }
-        public int UserId { get; set; }
+        public Guid CategoryId { get; set; }
+        public Guid UserId { get; set; }
         public int? LanguageId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 
         #region navigations
         public Category Category { get; set; }
         public User User { get; set; }
-        public User Remover { get; set; }
         public Language Language { get; set; }
         public CommentStatus CommentStatus { get; set; }
         public ViewStatus ViewStatus { get; set; }
         public ICollection<NewsComment> NewsComments { get; set; }
+        public ICollection<NewsMedia> NewsMedias { get; set; }
         #endregion
     }
 }

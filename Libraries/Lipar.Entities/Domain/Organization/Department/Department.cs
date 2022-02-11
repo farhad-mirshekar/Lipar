@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Organization
 {
-    public class Department : BaseEntity
+    public class Department : BaseEntity<Guid>
     {
         #region Ctor
         public Department()
@@ -38,11 +38,9 @@ namespace Lipar.Entities.Domain.Organization
         /// gets or the set enable type id
         /// </summary>
         public int EnabledTypeId { get; set; }
-        public int? RemoverID { get; set; }
-        public DateTime? RemoveDate { get; set; }
         public int DepartmentTypeId { get; set; }
-        public int CenterId { get; set; }
-        public int? ParentId { get; set; }
+        public Guid CenterId { get; set; }
+        public Guid? ParentId { get; set; }
         #endregion
 
         #region Navigations

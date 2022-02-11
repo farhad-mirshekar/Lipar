@@ -16,24 +16,22 @@ namespace Lipar.Data.Configuration.Organization
             builder.HasOne(p => p.User)
                 .WithMany(u => u.Positions)
                 .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(p => p.Center)
                 .WithMany(c => c.Positions)
                 .HasForeignKey(p => p.CenterId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(p => p.Department)
                .WithMany(d => d.Positions)
                .HasForeignKey(p => p.DepartmentId)
-               .OnDelete(DeleteBehavior.NoAction)
-               .IsRequired();
+               .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(p => p.PositionType)
                 .WithMany(pt => pt.Positions)
-                .HasForeignKey(p => p.PositionTypeId);
+                .HasForeignKey(p => p.PositionTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -51,9 +51,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Update(model);
         }
 
-        public ProductAttribute GetById(int Id)
+        public ProductAttribute GetById(Guid Id)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return null;
             }

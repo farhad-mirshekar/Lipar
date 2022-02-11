@@ -57,9 +57,9 @@ namespace Lipar.Services.Financial.Implementations
             _repository.Update(model);
         }
 
-        public Bank GetById(int id, bool noTracking = false)
+        public Bank GetById(Guid id, bool noTracking = false)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 return null;
             }

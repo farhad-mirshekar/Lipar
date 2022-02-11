@@ -14,7 +14,7 @@ namespace Lipar.Data.Seeds.Organization
             {
                 new User()
                 {
-                    Id = 1,
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     CellPhone="33309282",
                     CellPhoneVerified = true,
                     Email="a@a.com",

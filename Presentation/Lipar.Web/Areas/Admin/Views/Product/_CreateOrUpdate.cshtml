@@ -5,7 +5,7 @@
 <nav>
     <div class="nav nav-tabs" id="product-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-product-info-tab" data-toggle="tab" href="#nav-product-info" role="tab" aria-controls="nav-product-info" aria-selected="true">@T("Admin.Product.Tab.Info").Text</a>
-        @if (Model.Id > 0)
+        @if (Model.Id != Guid.Empty)
         {
             <a class="nav-item nav-link" id="nav-product-media-tab" data-toggle="tab" href="#nav-product-media" role="tab" aria-controls="nav-product-media-tab" aria-selected="true">@T("Admin.Product.Tab.Media").Text</a>
             <a class="nav-item nav-link" id="nav-related-product-tab" data-toggle="tab" href="#nav-related-product" role="tab" aria-controls="nav-related-product-tab" aria-selected="true">@T("Admin.Product.Tab.RelatedProduct").Text</a>
@@ -16,7 +16,7 @@
     <div class="tab-pane fade show active" id="nav-product-info" role="tabpanel" aria-labelledby="nav-product-info-tab">
         @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
     </div>
-    @if (Model.Id > 0)
+    @if (Model.Id != Guid.Empty)
     {
         <div class="tab-pane fade" id="nav-product-media" role="tabpanel" aria-labelledby="nav-product-media-tab">
             @await Html.PartialAsync("_CreateOrUpdate.Media", Model)

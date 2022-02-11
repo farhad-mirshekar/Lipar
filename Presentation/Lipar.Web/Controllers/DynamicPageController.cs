@@ -3,6 +3,7 @@ using Lipar.Services.Portal.Contracts;
 using Lipar.Web.Factories.Portal;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Controllers
 {
@@ -26,9 +27,9 @@ namespace Lipar.Web.Controllers
         #endregion
 
         #region Methods
-        public IActionResult Detail(int DynamicPageId)
+        public IActionResult Detail(Guid DynamicPageId)
         {
-            if (DynamicPageId == 0)
+            if (DynamicPageId == Guid.Empty)
                 return InvokeHttp404();
 
             var dynamicPage = _dynamicPageService.GetById(DynamicPageId);
@@ -37,7 +38,7 @@ namespace Lipar.Web.Controllers
                 return InvokeHttp404();
             }
 
-            if(dynamicPage.RemoverId.HasValue && dynamicPage.RemoverId.Value != 0)
+            if(dynamicPage.RemoverId.HasValue)
             {
                 return InvokeHttp404();
             }
@@ -46,9 +47,9 @@ namespace Lipar.Web.Controllers
             return View(model);
         }
 
-        public IActionResult DetailPage(int DynamicPageDetailId)
+        public IActionResult DetailPage(Guid DynamicPageDetailId)
         {
-            if (DynamicPageDetailId == 0)
+            if (DynamicPageDetailId == Guid.Empty)
                 return InvokeHttp404();
 
             var dynamicPageDetail = _dynamicPageDetailService.GetById(DynamicPageDetailId);

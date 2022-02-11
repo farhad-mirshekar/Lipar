@@ -58,7 +58,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return blogs.Select(blog =>
                  {
-                     var blogModel = blog.ToModel<BlogModel>();
+                     var blogModel = blog.ToModel<BlogModel, Guid>();
 
                      blogModel.ApprovedComments = _blogCommentService.GetBlogCommentsCount(blog.Id, CommentStatusEnum.Open);
                      blogModel.NotApprovedComments = _blogCommentService.GetBlogCommentsCount(blog.Id, CommentStatusEnum.Close);
@@ -78,7 +78,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return blogMedia.Select(bm =>
                  {
-                     var blogMedia = bm.ToModel<BlogMediaModel>();
+                     var blogMedia = bm.ToModel<BlogMediaModel, Guid>();
 
                      var mediaResult = _mediaService.GetById(blogMedia.MediaId);
                      if (mediaResult == null)
@@ -99,7 +99,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         {
             if (blog != null)
             {
-                model ??= blog.ToModel<BlogModel>();
+                model ??= blog.ToModel<BlogModel, Guid>();
                 PrepareBlogMediaSearchModel(model.BlogMediaSearchModel, blog);
             }
 
@@ -131,7 +131,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
             {
                 return blogComments.Select(blogComment =>
                 {
-                    var blogCommentModel = blogComment.ToModel<BlogCommentModel>();
+                    var blogCommentModel = blogComment.ToModel<BlogCommentModel, Guid>();
                     var user = _userService.GetById(blogComment.UserId);
 
                     blogCommentModel.CreatorFullName = $"{user.FirstName} {user.LastName}";
@@ -145,7 +145,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         public BlogCommentModel PrepareBlogCommentModel(BlogCommentModel model, BlogComment blogComment)
         {
             if (blogComment != null)
-                model = blogComment.ToModel<BlogCommentModel>();
+                model = blogComment.ToModel<BlogCommentModel, Guid>();
 
             _baseAdminModelFactory.PrepareCommentStatusType(model.AvailableCommentStatusType);
 

@@ -20,11 +20,6 @@ namespace Lipar.Data.Configuration.General
                 .WithMany(l => l.LocaleStringResources)
                 .HasForeignKey(l => l.LanguageId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(l => l.User)
-             .WithMany(u => u.LocaleStringResources)
-             .HasForeignKey(l => l.UserId)
-             .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

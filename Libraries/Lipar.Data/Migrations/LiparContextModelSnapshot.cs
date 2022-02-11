@@ -26,7 +26,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -41,12 +41,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -68,25 +67,23 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EnabledTypeId");
 
                     b.HasIndex("ParentId");
-
-                    b.HasIndex("RemoverId");
 
                     b.HasIndex("UserId");
 
@@ -95,12 +92,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.DeliveryDate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -121,17 +117,12 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EnabledTypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("DeliveryDates", "Application");
                 });
@@ -143,7 +134,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -158,60 +149,101 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BankPortId")
-                        .HasColumnType("int");
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<Guid>("BankPortId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserAddressId")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("ShoppingCartRate")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserAddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BankPortId");
+
+                    b.HasIndex("UserAddressId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders", "Application");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AttributeProductJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<Guid?>("DeliveryDateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DeliveryDateName")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int>("DeliveryDatePriority")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductJson")
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductAttributeJson")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductCategoryName")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<decimal?>("ProductDiscountPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("ProductDiscountTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShoppingCartItemJson")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("ShippingCostId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserJson")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ShippingCostName")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int>("ShippingCostPriority")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -222,10 +254,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("AllowCustomerReviews")
                         .HasColumnType("bit");
@@ -233,14 +264,14 @@ namespace Lipar.Data.Migrations
                     b.Property<bool>("CallForPrice")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DeliveryDateId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("DeliveryDateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("Discount")
                         .HasColumnType("DECIMAL(18,3)");
@@ -249,29 +280,31 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FullDescription")
-                        .HasColumnType("NVARCHAR(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Height")
-                        .HasColumnType("DECIMAL(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDownload")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Length")
-                        .HasColumnType("DECIMAL(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("MetaDescription")
-                        .HasColumnType("NVARCHAR(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MetaKeywords")
-                        .HasColumnType("NVARCHAR(1000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("MetaTitle")
-                        .HasColumnType("NVARCHAR(1000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(1000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("DECIMAL(18,3)");
@@ -282,14 +315,14 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ShippingCostId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ShippingCostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ShortDescription")
-                        .HasColumnType("NVARCHAR(MAX)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ShowOnHomePage")
                         .HasColumnType("bit");
@@ -303,14 +336,14 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Weight")
-                        .HasColumnType("DECIMAL(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Width")
-                        .HasColumnType("DECIMAL(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -319,8 +352,6 @@ namespace Lipar.Data.Migrations
                     b.HasIndex("DeliveryDateId");
 
                     b.HasIndex("DiscountTypeId");
-
-                    b.HasIndex("RemoverId");
 
                     b.HasIndex("ShippingCostId");
 
@@ -331,23 +362,22 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductAnswers", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AnswerText")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductQuestionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductQuestionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -365,12 +395,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductAttribute", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -387,25 +416,24 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductAttributeMapping", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AttributeControlTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ProductAttributeId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductAttributeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TextPrompt")
                         .HasColumnType("nvarchar(max)");
@@ -423,12 +451,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductAttributeValue", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsPreSelected")
@@ -441,8 +468,8 @@ namespace Lipar.Data.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("DECIMAL(18,3)");
 
-                    b.Property<int>("ProductAttributeMappingId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductAttributeMappingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -453,10 +480,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductComment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CommentStatusId")
                         .HasColumnType("int");
@@ -465,22 +491,20 @@ namespace Lipar.Data.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 1, 27, 12, 6, 23, 197, DateTimeKind.Local).AddTicks(5629));
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReplyText")
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -497,47 +521,49 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductMedia", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MediaId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Product_Media_Mapping", "Application");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductQuestion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -555,22 +581,21 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.RelatedProduct", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId1")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId1")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId2")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId2")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -579,12 +604,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ShippingCost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -608,39 +632,33 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EnabledTypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ShippingCosts", "Application");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ShoppingCartItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AttributeJson")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .ValueGeneratedOnAdd()
@@ -650,8 +668,8 @@ namespace Lipar.Data.Migrations
                     b.Property<Guid>("ShoppingCartItemId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -669,7 +687,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -689,7 +707,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
@@ -704,6 +722,26 @@ namespace Lipar.Data.Migrations
                     b.ToTable("EnabledTypes", "Core");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.Core.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders", "Core");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.Core.ViewStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -711,7 +749,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -726,12 +764,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Financial.Bank", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EnabledTypeId")
@@ -761,8 +798,8 @@ namespace Lipar.Data.Migrations
                     b.Property<int?>("TransactionCost")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -775,15 +812,14 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Financial.BankPort", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BankId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EnabledTypeId")
@@ -826,10 +862,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.ActivityLog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ActivityLogTypeId")
                         .HasColumnType("int");
@@ -837,11 +872,11 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<string>("EntityId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EntityName")
                         .HasColumnType("NVARCHAR(MAX)");
@@ -849,14 +884,12 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("IpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityLogTypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ActivityLogs", "General");
                 });
@@ -868,7 +901,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -876,25 +909,43 @@ namespace Lipar.Data.Migrations
 
                     b.Property<string>("SystemKeyword")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("ViewStatusId")
-                        .HasColumnType("int");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ViewStatusId");
 
                     b.ToTable("ActivityLogTypes", "General");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.ContactUs", b =>
+            modelBuilder.Entity("Lipar.Entities.Domain.General.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProvinceId");
+
+                    b.ToTable("Cities", "General");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.ContactUs", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -903,7 +954,7 @@ namespace Lipar.Data.Migrations
                     b.Property<int>("ContactUsTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -936,7 +987,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -949,14 +1000,32 @@ namespace Lipar.Data.Migrations
                     b.ToTable("ContactUsTypes", "General");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.EmailAccount", b =>
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries", "General");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.EmailAccount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -992,45 +1061,38 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.Faq", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Answer")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FaqGroupId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FaqGroupId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Question")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FaqGroupId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Faqs", "General");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.FaqGroup", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -1038,36 +1100,22 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RemoverId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FaqGroups", "General");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.GenericAttribute", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<string>("EntityId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Key")
                         .HasMaxLength(500)
@@ -1092,7 +1140,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LanguageCultureId")
@@ -1106,17 +1154,12 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("UniqueSeoCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageCultureId");
-
-                    b.HasIndex("UserId");
 
                     b.HasIndex("ViewStatusId");
 
@@ -1130,7 +1173,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Seo")
@@ -1148,12 +1191,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.LocaleStringResource", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LanguageId")
@@ -1165,34 +1207,23 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("ResourceValue")
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ViewStatusId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ViewStatusId");
 
                     b.ToTable("LocaleStringResources", "General");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AltAttribute")
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MimeType")
@@ -1209,20 +1240,19 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.MediaBinary", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("BinaryData")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1234,12 +1264,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.Menu", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LanguageId")
@@ -1250,39 +1279,27 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Menus", "General");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.MenuItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IconText")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MenuId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1292,16 +1309,10 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("Parameters")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverID")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -1321,16 +1332,15 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.MessageTemplate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmailAccountId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("EmailAccountId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -1353,21 +1363,44 @@ namespace Lipar.Data.Migrations
                     b.ToTable("MessageTemplates", "General");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.QueuedEmail", b =>
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Province", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Provinces", "General");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.QueuedEmail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmailAccountId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("EmailAccountId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("From")
                         .HasMaxLength(500)
@@ -1404,12 +1437,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.Setting", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -1428,19 +1460,18 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.UrlRecord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EnabledTypeId")
+                    b.Property<int?>("EnabledTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<string>("EntityId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EntityName")
                         .HasColumnType("nvarchar(max)");
@@ -1463,10 +1494,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Center", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -1476,7 +1506,7 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EnabledTypeId")
@@ -1499,15 +1529,14 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Command", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CommandTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -1515,14 +1544,14 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SystemName")
                         .IsRequired()
@@ -1545,7 +1574,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -1560,21 +1589,20 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Department", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CenterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CenterId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CodePhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DepartmentTypeId")
@@ -1588,20 +1616,14 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverID")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1623,7 +1645,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -1643,7 +1665,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -1658,22 +1680,21 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Position", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CenterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CenterId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Default")
                         .HasColumnType("bit");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("EnabledTypeId")
                         .HasColumnType("int");
@@ -1684,11 +1705,11 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1707,19 +1728,18 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.PositionRole", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PositionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1737,7 +1757,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -1752,15 +1772,14 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CenterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CenterId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -1771,8 +1790,8 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1783,19 +1802,18 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.RolePermission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CommandId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CommandId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1808,10 +1826,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CannotLoginUntilDate")
                         .HasColumnType("datetime2");
@@ -1822,7 +1839,7 @@ namespace Lipar.Data.Migrations
                     b.Property<bool>("CellPhoneVerified")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -1841,6 +1858,9 @@ namespace Lipar.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastIpAddress")
                         .HasColumnType("nvarchar(max)");
@@ -1861,8 +1881,8 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserGuid")
                         .HasColumnType("uniqueidentifier");
@@ -1879,6 +1899,8 @@ namespace Lipar.Data.Migrations
 
                     b.HasIndex("EnabledTypeId");
 
+                    b.HasIndex("GenderId");
+
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("Users", "Organization");
@@ -1886,16 +1908,21 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.UserAddress", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PostalCode")
@@ -1903,24 +1930,32 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("ProvinceId")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("ProvinceId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddress", "Organization");
+                    b.ToTable("UserAddresses", "Organization");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.UserPassword", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
@@ -1933,8 +1968,8 @@ namespace Lipar.Data.Migrations
                     b.Property<string>("PasswordSalt")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1952,7 +1987,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -1967,22 +2002,21 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Blog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CommentStatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -2008,11 +2042,11 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2030,8 +2064,6 @@ namespace Lipar.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("RemoverId");
-
                     b.HasIndex("UserId");
 
                     b.HasIndex("ViewStatusId");
@@ -2041,13 +2073,12 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.BlogComment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -2056,20 +2087,14 @@ namespace Lipar.Data.Migrations
                     b.Property<int>("CommentStatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -2079,8 +2104,6 @@ namespace Lipar.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.HasIndex("RemoverId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("BlogComments", "Portal");
@@ -2088,36 +2111,38 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.BlogMedia", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BlogId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("MediaId");
+
                     b.ToTable("Blog_Media_Mapping", "Portal");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -2125,25 +2150,22 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId")
                         .HasDatabaseName("IX_Categories_ParentId1");
-
-                    b.HasIndex("RemoverId")
-                        .HasDatabaseName("IX_Categories_RemoverId1");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("IX_Categories_UserId1");
@@ -2153,12 +2175,11 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.DynamicPage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -2169,6 +2190,9 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<int?>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
@@ -2176,15 +2200,15 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2202,24 +2226,23 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.DynamicPageDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("DynamicPageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DynamicPageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MetaDescription")
                         .HasColumnType("NVARCHAR(MAX)");
@@ -2237,15 +2260,15 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2253,8 +2276,6 @@ namespace Lipar.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DynamicPageId");
-
-                    b.HasIndex("RemoverId");
 
                     b.HasIndex("UserId");
 
@@ -2265,15 +2286,14 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Gallery", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MetaKeywords")
@@ -2287,11 +2307,11 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2303,8 +2323,6 @@ namespace Lipar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RemoverId");
-
                     b.HasIndex("UserId");
 
                     b.HasIndex("ViewStatusId");
@@ -2314,46 +2332,48 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.GalleryMedia", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GalleryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("GalleryId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GalleryId");
+
+                    b.HasIndex("MediaId");
+
                     b.ToTable("Gallery_Media_Mapping", "Portal");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.News", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CommentStatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -2379,11 +2399,11 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2401,8 +2421,6 @@ namespace Lipar.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("RemoverId");
-
                     b.HasIndex("UserId");
 
                     b.HasIndex("ViewStatusId");
@@ -2412,10 +2430,9 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.NewsComment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -2424,23 +2441,17 @@ namespace Lipar.Data.Migrations
                     b.Property<int>("CommentStatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NewsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("NewsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("RemoveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -2450,8 +2461,6 @@ namespace Lipar.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.HasIndex("RemoverId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("NewsComments", "Portal");
@@ -2459,37 +2468,51 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.NewsMedia", b =>
                 {
-                    b.Property<int>("NewsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("NewsId", "MediaId");
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MediaId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NewsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("MediaId");
+
+                    b.HasIndex("MediaId1");
 
                     b.ToTable("News_Media_Mapping", "Portal");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.StaticPage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IncludeInTopMenu")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int?>("LanguageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("MetaDescription")
                         .HasColumnType("NVARCHAR(MAX)");
@@ -2507,15 +2530,15 @@ namespace Lipar.Data.Migrations
                     b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RemoverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RemoverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ViewStatusId")
                         .HasColumnType("int");
@@ -2544,11 +2567,6 @@ namespace Lipar.Data.Migrations
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("ApplicationRemoverCategories")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("ApplicationCategories")
                         .HasForeignKey("UserId")
@@ -2558,8 +2576,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("EnabledType");
 
                     b.Navigation("Parent");
-
-                    b.Navigation("Remover");
 
                     b.Navigation("User");
                 });
@@ -2572,15 +2588,7 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("DeliveryDates")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("EnabledType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Order", b =>
@@ -2591,7 +2599,23 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Lipar.Entities.Domain.Organization.UserAddress", "UserAddress")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserAddressId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("BankPort");
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserAddress");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderDetail", b =>
@@ -2599,7 +2623,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Application.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -2623,11 +2647,6 @@ namespace Lipar.Data.Migrations
                         .HasForeignKey("DiscountTypeId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverProducts")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Application.ShippingCost", "ShippingCost")
                         .WithMany("Products")
                         .HasForeignKey("ShippingCostId")
@@ -2645,8 +2664,6 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("DiscountType");
 
-                    b.Navigation("Remover");
-
                     b.Navigation("ShippingCost");
 
                     b.Navigation("User");
@@ -2657,7 +2674,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Application.ProductQuestion", "ProductQuestion")
                         .WithMany("ProductAnswers")
                         .HasForeignKey("ProductQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -2690,7 +2707,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Application.ProductAttribute", "ProductAttribute")
                         .WithMany("ProductAttributeMappings")
                         .HasForeignKey("ProductAttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Application.Product", "Product")
@@ -2711,7 +2728,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Application.ProductAttributeMapping", "ProductAttributeMapping")
                         .WithMany("ProductAttributeValues")
                         .HasForeignKey("ProductAttributeMappingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ProductAttributeMapping");
@@ -2722,7 +2739,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Core.CommentStatus", "CommentStatus")
                         .WithMany("ProductComments")
                         .HasForeignKey("CommentStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Application.ProductComment", "Parent")
@@ -2733,7 +2750,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Application.Product", "Product")
                         .WithMany("ProductComments")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -2751,12 +2768,31 @@ namespace Lipar.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductMedia", b =>
+                {
+                    b.HasOne("Lipar.Entities.Domain.General.Media", "Media")
+                        .WithMany("ProductMedias")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.Application.Product", "Product")
+                        .WithMany("ProductMedias")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ProductQuestion", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Application.Product", "Product")
                         .WithMany("ProductQuestions")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -2786,15 +2822,7 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("shippingCosts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("EnabledType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ShoppingCartItem", b =>
@@ -2821,18 +2849,14 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Core.EnabledType", "EnabledType")
                         .WithMany("Banks")
                         .HasForeignKey("EnabledTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
+                    b.HasOne("Lipar.Entities.Domain.Organization.User", null)
                         .WithMany("Banks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("EnabledType");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Financial.BankPort", b =>
@@ -2840,13 +2864,13 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Financial.Bank", "Bank")
                         .WithMany("BankPorts")
                         .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Core.EnabledType", "EnabledType")
                         .WithMany("BankPorts")
                         .HasForeignKey("EnabledTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Bank");
@@ -2857,30 +2881,23 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.General.ActivityLog", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.General.ActivityLogType", "ActivityLogType")
-                        .WithMany()
+                        .WithMany("ActivityLogs")
                         .HasForeignKey("ActivityLogTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("ActivityLogType");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.General.ActivityLogType", b =>
+            modelBuilder.Entity("Lipar.Entities.Domain.General.City", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.Core.ViewStatus", "ViewStatus")
-                        .WithMany("ActivityLogTypes")
-                        .HasForeignKey("ViewStatusId")
+                    b.HasOne("Lipar.Entities.Domain.General.Province", "Province")
+                        .WithMany("Cities")
+                        .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ViewStatus");
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.ContactUs", b =>
@@ -2899,36 +2916,10 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.General.FaqGroup", "FaqGroup")
                         .WithMany("Faqs")
                         .HasForeignKey("FaqGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("Faqs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FaqGroup");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.General.FaqGroup", b =>
-                {
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverFaqGroups")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("FaqGroups")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Remover");
-
-                    b.Navigation("User");
+                    b.Navigation("FaqGroup");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.Language", b =>
@@ -2939,12 +2930,6 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("Languages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Lipar.Entities.Domain.Core.ViewStatus", "ViewStatus")
                         .WithMany("Languages")
                         .HasForeignKey("ViewStatusId")
@@ -2952,8 +2937,6 @@ namespace Lipar.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("LanguageCulture");
-
-                    b.Navigation("User");
 
                     b.Navigation("ViewStatus");
                 });
@@ -2966,19 +2949,7 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany("LocaleStringResources")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Lipar.Entities.Domain.Core.ViewStatus", null)
-                        .WithMany("LocaleStringResources")
-                        .HasForeignKey("ViewStatusId");
-
                     b.Navigation("Language");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.MediaBinary", b =>
@@ -3000,15 +2971,7 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Language");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.MenuItem", b =>
@@ -3034,10 +2997,21 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.General.EmailAccount", "EmailAccount")
                         .WithMany("MessageTemplates")
                         .HasForeignKey("EmailAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("EmailAccount");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Province", b =>
+                {
+                    b.HasOne("Lipar.Entities.Domain.General.Country", "Country")
+                        .WithMany("Provinces")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.QueuedEmail", b =>
@@ -3045,7 +3019,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.General.EmailAccount", "EmailAccount")
                         .WithMany("QueuedEmails")
                         .HasForeignKey("EmailAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("EmailAccount");
@@ -3053,19 +3027,15 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.UrlRecord", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.Core.EnabledType", "EnabledType")
+                    b.HasOne("Lipar.Entities.Domain.Core.EnabledType", null)
                         .WithMany("UrlRecords")
-                        .HasForeignKey("EnabledTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("EnabledTypeId");
 
                     b.HasOne("Lipar.Entities.Domain.General.Language", "Language")
                         .WithMany("UrlRecords")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("EnabledType");
 
                     b.Navigation("Language");
                 });
@@ -3075,7 +3045,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Core.EnabledType", "EnabledType")
                         .WithMany("Centers")
                         .HasForeignKey("EnabledTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("EnabledType");
@@ -3121,7 +3091,8 @@ namespace Lipar.Data.Migrations
 
                     b.HasOne("Lipar.Entities.Domain.Organization.Department", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Center");
 
@@ -3155,7 +3126,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Organization.PositionType", "PositionType")
                         .WithMany("Positions")
                         .HasForeignKey("PositionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -3232,6 +3203,12 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Lipar.Entities.Domain.Core.Gender", "Gender")
+                        .WithMany("Users")
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Lipar.Entities.Domain.Organization.UserType", "UserType")
                         .WithMany("Users")
                         .HasForeignKey("UserTypeId")
@@ -3240,16 +3217,42 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("EnabledType");
 
+                    b.Navigation("Gender");
+
                     b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.UserAddress", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Lipar.Entities.Domain.General.City", "City")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.General.Country", "Country")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.General.Province", "Province")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Province");
 
                     b.Navigation("User");
                 });
@@ -3265,7 +3268,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("UserPasswords")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("PasswordFormatType");
@@ -3278,7 +3281,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Portal.Category", "Category")
                         .WithMany("Blogs")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Core.CommentStatus", "CommentStatus")
@@ -3289,11 +3292,7 @@ namespace Lipar.Data.Migrations
 
                     b.HasOne("Lipar.Entities.Domain.General.Language", "Language")
                         .WithMany("Blogs")
-                        .HasForeignKey("LanguageId");
-
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverBlogs")
-                        .HasForeignKey("RemoverId")
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -3313,8 +3312,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("CommentStatus");
 
                     b.Navigation("Language");
-
-                    b.Navigation("Remover");
 
                     b.Navigation("User");
 
@@ -3340,11 +3337,6 @@ namespace Lipar.Data.Migrations
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverBlogComments")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("BlogComments")
                         .HasForeignKey("UserId")
@@ -3357,9 +3349,26 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("Parent");
 
-                    b.Navigation("Remover");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.Portal.BlogMedia", b =>
+                {
+                    b.HasOne("Lipar.Entities.Domain.Portal.Blog", "Blog")
+                        .WithMany("BlogMedias")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.General.Media", "Media")
+                        .WithMany("BlogMedias")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Category", b =>
@@ -3367,11 +3376,6 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Portal.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("PortalRemoverCategories")
-                        .HasForeignKey("RemoverId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -3382,17 +3386,14 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("Parent");
 
-                    b.Navigation("Remover");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.DynamicPage", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverDynamicPages")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .WithMany()
+                        .HasForeignKey("RemoverId");
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("DynamicPages")
@@ -3421,11 +3422,6 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverDynamicPageDetails")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("DynamicPageDetails")
                         .HasForeignKey("UserId")
@@ -3440,8 +3436,6 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("DynamicPage");
 
-                    b.Navigation("Remover");
-
                     b.Navigation("User");
 
                     b.Navigation("ViewStatus");
@@ -3449,11 +3443,6 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Gallery", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverGalleries")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("Galleries")
                         .HasForeignKey("UserId")
@@ -3466,11 +3455,28 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Remover");
-
                     b.Navigation("User");
 
                     b.Navigation("ViewStatus");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.Portal.GalleryMedia", b =>
+                {
+                    b.HasOne("Lipar.Entities.Domain.Portal.Gallery", "Gallery")
+                        .WithMany("GalleryMedias")
+                        .HasForeignKey("GalleryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Lipar.Entities.Domain.General.Media", "Media")
+                        .WithMany("GalleryMedias")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Gallery");
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.News", b =>
@@ -3478,7 +3484,7 @@ namespace Lipar.Data.Migrations
                     b.HasOne("Lipar.Entities.Domain.Portal.Category", "Category")
                         .WithMany("News")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Core.CommentStatus", "CommentStatus")
@@ -3489,11 +3495,7 @@ namespace Lipar.Data.Migrations
 
                     b.HasOne("Lipar.Entities.Domain.General.Language", "Language")
                         .WithMany("News")
-                        .HasForeignKey("LanguageId");
-
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverNews")
-                        .HasForeignKey("RemoverId")
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
@@ -3513,8 +3515,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("CommentStatus");
 
                     b.Navigation("Language");
-
-                    b.Navigation("Remover");
 
                     b.Navigation("User");
 
@@ -3540,11 +3540,6 @@ namespace Lipar.Data.Migrations
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverNewsComments")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("NewsComments")
                         .HasForeignKey("UserId")
@@ -3557,22 +3552,20 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("Parent");
 
-                    b.Navigation("Remover");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.NewsMedia", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.General.Media", "Media")
-                        .WithMany()
+                    b.HasOne("Lipar.Entities.Domain.Portal.News", "News")
+                        .WithMany("NewsMedias")
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Portal.News", "News")
-                        .WithMany()
-                        .HasForeignKey("NewsId")
+                    b.HasOne("Lipar.Entities.Domain.General.Media", "Media")
+                        .WithMany("NewsMedias")
+                        .HasForeignKey("MediaId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3584,9 +3577,8 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.StaticPage", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "Remover")
-                        .WithMany("RemoverStaticPages")
-                        .HasForeignKey("RemoverId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .WithMany()
+                        .HasForeignKey("RemoverId");
 
                     b.HasOne("Lipar.Entities.Domain.Organization.User", "User")
                         .WithMany("StaticPages")
@@ -3639,6 +3631,8 @@ namespace Lipar.Data.Migrations
                     b.Navigation("ProductAttributeMappings");
 
                     b.Navigation("ProductComments");
+
+                    b.Navigation("ProductMedias");
 
                     b.Navigation("ProductQuestions");
 
@@ -3704,10 +3698,13 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.Core.Gender", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.Core.ViewStatus", b =>
                 {
-                    b.Navigation("ActivityLogTypes");
-
                     b.Navigation("Blogs");
 
                     b.Navigation("DynamicPageDetails");
@@ -3717,8 +3714,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Galleries");
 
                     b.Navigation("Languages");
-
-                    b.Navigation("LocaleStringResources");
 
                     b.Navigation("News");
 
@@ -3739,9 +3734,26 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.General.ActivityLogType", b =>
+                {
+                    b.Navigation("ActivityLogs");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.City", b =>
+                {
+                    b.Navigation("UserAddresses");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.General.ContactUsType", b =>
                 {
                     b.Navigation("ContactUs");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Country", b =>
+                {
+                    b.Navigation("Provinces");
+
+                    b.Navigation("UserAddresses");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.General.EmailAccount", b =>
@@ -3774,6 +3786,17 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Languages");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Media", b =>
+                {
+                    b.Navigation("BlogMedias");
+
+                    b.Navigation("GalleryMedias");
+
+                    b.Navigation("NewsMedias");
+
+                    b.Navigation("ProductMedias");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.General.Menu", b =>
                 {
                     b.Navigation("MenuItems");
@@ -3782,6 +3805,13 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.General.MenuItem", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.General.Province", b =>
+                {
+                    b.Navigation("Cities");
+
+                    b.Navigation("UserAddresses");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.Center", b =>
@@ -3843,37 +3873,25 @@ namespace Lipar.Data.Migrations
                 {
                     b.Navigation("ApplicationCategories");
 
-                    b.Navigation("ApplicationRemoverCategories");
-
                     b.Navigation("Banks");
 
                     b.Navigation("BlogComments");
 
                     b.Navigation("Blogs");
 
-                    b.Navigation("DeliveryDates");
-
                     b.Navigation("DynamicPageDetails");
 
                     b.Navigation("DynamicPages");
 
-                    b.Navigation("FaqGroups");
-
-                    b.Navigation("Faqs");
-
                     b.Navigation("Galleries");
-
-                    b.Navigation("Languages");
-
-                    b.Navigation("LocaleStringResources");
 
                     b.Navigation("News");
 
                     b.Navigation("NewsComments");
 
-                    b.Navigation("PortalCategories");
+                    b.Navigation("Orders");
 
-                    b.Navigation("PortalRemoverCategories");
+                    b.Navigation("PortalCategories");
 
                     b.Navigation("Positions");
 
@@ -3885,33 +3903,18 @@ namespace Lipar.Data.Migrations
 
                     b.Navigation("Products");
 
-                    b.Navigation("RemoverBlogComments");
-
-                    b.Navigation("RemoverBlogs");
-
-                    b.Navigation("RemoverDynamicPageDetails");
-
-                    b.Navigation("RemoverDynamicPages");
-
-                    b.Navigation("RemoverFaqGroups");
-
-                    b.Navigation("RemoverGalleries");
-
-                    b.Navigation("RemoverNews");
-
-                    b.Navigation("RemoverNewsComments");
-
-                    b.Navigation("RemoverProducts");
-
-                    b.Navigation("RemoverStaticPages");
-
-                    b.Navigation("shippingCosts");
-
                     b.Navigation("ShoppingCartItems");
 
                     b.Navigation("StaticPages");
 
+                    b.Navigation("UserAddresses");
+
                     b.Navigation("UserPasswords");
+                });
+
+            modelBuilder.Entity("Lipar.Entities.Domain.Organization.UserAddress", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Organization.UserType", b =>
@@ -3922,6 +3925,8 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.Blog", b =>
                 {
                     b.Navigation("BlogComments");
+
+                    b.Navigation("BlogMedias");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.BlogComment", b =>
@@ -3943,9 +3948,16 @@ namespace Lipar.Data.Migrations
                     b.Navigation("DynamicPageDetails");
                 });
 
+            modelBuilder.Entity("Lipar.Entities.Domain.Portal.Gallery", b =>
+                {
+                    b.Navigation("GalleryMedias");
+                });
+
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.News", b =>
                 {
                     b.Navigation("NewsComments");
+
+                    b.Navigation("NewsMedias");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Portal.NewsComment", b =>

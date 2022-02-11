@@ -1,11 +1,12 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
     public class FaqSearchModel : BaseSearchModel
     {
         #region Fields
-        public int FaqGroupId { get; set; }
+        public Guid FaqGroupId { get; set; }
         #endregion
     }
 }

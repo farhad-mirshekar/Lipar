@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Portal
 {
-    public class BlogCommentListModel : BaseEntityModel
+    public class BlogCommentListModel : BaseEntityModel<Guid>
     {
-        public int BlogId { get; set; }
+        public Guid BlogId { get; set; }
         public string Body { get; set; }
         public string FullName { get; set; }
         public IList<BlogCommentListModel> Children { get; set; } = new List<BlogCommentListModel>();
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
     }
 }

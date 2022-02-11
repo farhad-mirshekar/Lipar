@@ -18,7 +18,8 @@ namespace Lipar.Data.Configuration.General
 
             builder.HasOne(m => m.EmailAccount)
                 .WithMany(e => e.MessageTemplates)
-                .HasForeignKey(m => m.EmailAccountId);
+                .HasForeignKey(m => m.EmailAccountId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

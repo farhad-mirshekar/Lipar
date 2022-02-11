@@ -11,15 +11,12 @@ namespace Lipar.Services.General.Implementations
     {
         #region Fields
         private readonly IRepository<FaqGroup> _repository;
-        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
-        public FaqGroupService(IRepository<FaqGroup> repository
-                             , IWorkContext workContext)
+        public FaqGroupService(IRepository<FaqGroup> repository)
         {
             _repository = repository;
-            _workContext = workContext;
         }
         #endregion
 
@@ -28,8 +25,6 @@ namespace Lipar.Services.General.Implementations
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-
-            model.UserId = _workContext.CurrentUser.Id;
 
             _repository.Insert(model);
         }
@@ -50,7 +45,7 @@ namespace Lipar.Services.General.Implementations
             _repository.Update(model);
         }
 
-        public FaqGroup GetById(int Id)
+        public FaqGroup GetById(Guid Id)
         => _repository.GetById(Id);
 
         public IPagedList<FaqGroup> List(FaqGroupListVM listVM)

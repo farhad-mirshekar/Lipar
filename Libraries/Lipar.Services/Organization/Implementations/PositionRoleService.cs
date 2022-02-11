@@ -2,6 +2,7 @@
 using Lipar.Data;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Organization.Contracts;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Organization.Implementations
@@ -24,10 +25,10 @@ namespace Lipar.Services.Organization.Implementations
         {
             var query = _repository.Table;
 
-            if (listVM.RoleId.HasValue && listVM.RoleId.Value != 0)
+            if (listVM.RoleId.HasValue && listVM.RoleId.Value != Guid.Empty)
                 query = query.Where(pr => pr.RoleId == listVM.RoleId);
 
-            if (listVM.PositionId.HasValue && listVM.PositionId.Value != 0)
+            if (listVM.PositionId.HasValue && listVM.PositionId.Value != Guid.Empty)
                 query = query.Where(pr => pr.PositionId == listVM.PositionId);
 
             var models = new PagedList<PositionRole>(query, listVM.PageIndex, listVM.PageSize);

@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -25,7 +26,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        Category GetById(int Id);
+        Category GetById(Guid Id);
         /// <summary>
         /// list category product method
         /// </summary>

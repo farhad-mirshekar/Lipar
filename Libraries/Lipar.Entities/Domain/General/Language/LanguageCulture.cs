@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.General
 {
-   public class LanguageCulture : BaseEntity
+   public class LanguageCulture : BaseEntity<int>
     {
         #region Ctor
         public LanguageCulture()
@@ -11,7 +11,7 @@ namespace Lipar.Entities.Domain.General
         }
         #endregion
 
-        #region
+        #region Fields
         /// <summary>
         /// gets or sets the title
         /// </summary>

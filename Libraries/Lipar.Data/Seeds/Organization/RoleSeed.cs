@@ -1,4 +1,5 @@
 ﻿using Lipar.Entities.Domain.Organization;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Data.Seeds.Organization
@@ -11,8 +12,8 @@ namespace Lipar.Data.Seeds.Organization
             {
                 new Role()
                 {
-                    Id = 1,
-                    CenterId = 1,
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    CenterId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     Name="مدیر سایت",
                 }
             };

@@ -3,6 +3,7 @@ using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.General
@@ -42,7 +43,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return messageTemplates.Select(messageTemplate =>
                 {
-                    var messageTemplateModel = messageTemplate.ToModel<MessageTemplateModel>();
+                    var messageTemplateModel = messageTemplate.ToModel<MessageTemplateModel, Guid>();
 
                     return messageTemplateModel;
                 });
@@ -55,7 +56,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if(messageTemplate != null)
             {
-                model = messageTemplate.ToModel<MessageTemplateModel>();
+                model = messageTemplate.ToModel<MessageTemplateModel, Guid>();
             }
 
             //preapre email account

@@ -49,7 +49,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <typeparam name="TModel">Model type</typeparam>
         /// <param name="entity">Entity to map from</param>
         /// <returns>Mapped model</returns>
-        public static TModel ToModel<TModel>(this BaseEntity entity) where TModel : BaseEntityModel
+        public static TModel ToModel<TModel,TProperty>(this BaseEntity<TProperty> entity) where TModel : BaseEntityModel<TProperty>
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -65,8 +65,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <param name="entity">Entity to map from</param>
         /// <param name="model">Model to map into</param>
         /// <returns>Mapped model</returns>
-        public static TModel ToModel<TEntity, TModel>(this TEntity entity, TModel model)
-            where TEntity : BaseEntity where TModel : BaseEntityModel
+        public static TModel ToModel<TEntity, TModel, TProperty>(this TEntity entity, TModel model)
+            where TEntity : BaseEntity<TProperty> where TModel : BaseEntityModel<TProperty>
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -83,7 +83,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <typeparam name="TEntity">Entity type</typeparam>
         /// <param name="model">Model to map from</param>
         /// <returns>Mapped entity</returns>
-        public static TEntity ToEntity<TEntity>(this BaseEntityModel model) where TEntity : BaseEntity
+        public static TEntity ToEntity<TEntity, TProperty>(this BaseEntityModel<TProperty> model) where TEntity : BaseEntity<TProperty>
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -99,8 +99,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <param name="model">Model to map from</param>
         /// <param name="entity">Entity to map into</param>
         /// <returns>Mapped entity</returns>
-        public static TEntity ToEntity<TEntity, TModel>(this TModel model, TEntity entity)
-            where TEntity : BaseEntity where TModel : BaseEntityModel
+        public static TEntity ToEntity<TEntity, TModel, TProperty>(this TModel model, TEntity entity)
+            where TEntity : BaseEntity<TProperty> where TModel : BaseEntityModel<TProperty>
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
@@ -121,7 +121,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <typeparam name="TModel">Model type</typeparam>
         /// <param name="settings">Settings to map from</param>
         /// <returns>Mapped model</returns>
-        public static TModel ToSettingsModel<TModel>(this ISettings settings) where TModel : BaseEntityModel, ISettingsModel
+        public static TModel ToSettingsModel<TModel,TProperty>(this ISettings settings) where TModel : BaseEntityModel<TProperty>, ISettingsModel
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
@@ -137,8 +137,8 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
         /// <param name="model">Model to map from</param>
         /// <param name="settings">Settings to map into</param>
         /// <returns>Mapped settings</returns>
-        public static TSettings ToSettings<TSettings, TModel>(this TModel model, TSettings settings)
-            where TSettings : class, ISettings where TModel : BaseEntityModel, ISettingsModel
+        public static TSettings ToSettings<TSettings, TModel,TProperty>(this TModel model, TSettings settings)
+            where TSettings : class, ISettings where TModel : BaseEntityModel<TProperty>, ISettingsModel
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));

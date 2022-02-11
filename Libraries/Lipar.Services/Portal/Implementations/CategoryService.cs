@@ -54,11 +54,11 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public Category GetById(int Id)
+        public Category GetById(Guid Id)
         {
             var category =  _repository.GetById(Id);
 
-            if (category.RemoverId.HasValue && category.RemoverId.Value != 0)
+            if (category.RemoverId.HasValue && category.RemoverId.Value != Guid.Empty)
                 return null;
 
             return category;
@@ -81,9 +81,9 @@ namespace Lipar.Services.Portal.Implementations
 
             string result = string.Empty;
 
-            var alreadyProcessedCategoryIds = new List<int>() { };
+            var alreadyProcessedCategoryIds = new List<Guid>() { };
 
-            while (category != null && category.Id != 0 &&  //not null
+            while (category != null && category.Id != Guid.Empty &&  //not null
                  !alreadyProcessedCategoryIds.Contains(category.Id)) //prevent circular references
             {
                 if (String.IsNullOrEmpty(result))
@@ -97,7 +97,7 @@ namespace Lipar.Services.Portal.Implementations
 
                 alreadyProcessedCategoryIds.Add(category.Id);
 
-                if (category.ParentId.HasValue && category.ParentId.Value != 0)
+                if (category.ParentId.HasValue && category.ParentId.Value != Guid.Empty)
                 {
                     category = GetById(category.ParentId.Value);
                 }

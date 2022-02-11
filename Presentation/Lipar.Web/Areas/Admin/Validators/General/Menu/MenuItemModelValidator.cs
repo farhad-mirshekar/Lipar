@@ -14,7 +14,6 @@ namespace Lipar.Web.Areas.Admin.Validators.General.Menu
 
             RuleFor(m => m.MenuId)
                 .NotEmpty()
-                .NotEqual(0)
                 .WithMessage("*");
 
             RuleFor(m => m.ViewStatusId)

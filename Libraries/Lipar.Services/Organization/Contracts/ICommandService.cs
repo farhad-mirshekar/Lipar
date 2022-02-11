@@ -1,11 +1,12 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Organization;
+using System;
 
 namespace Lipar.Services.Organization.Contracts
 {
     public interface ICommandService
     {
-        Command GetById(int Id);
+        Command GetById(Guid Id);
         void Add(Command model);
         void Edit(Command model);
         IPagedList<Command> List(CommandListVM listVM);

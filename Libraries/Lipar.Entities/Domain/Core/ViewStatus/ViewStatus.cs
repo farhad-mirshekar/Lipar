@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Core
 {
-   public class ViewStatus : BaseEntity
+   public class ViewStatus : BaseEntity<int>
     {
 
         #region Ctor
@@ -18,8 +18,6 @@ namespace Lipar.Entities.Domain.Core
             News = new HashSet<News>();
             StaticPages = new HashSet<StaticPage>();
             Languages = new HashSet<Language>();
-            LocaleStringResources = new HashSet<LocaleStringResource>();
-            ActivityLogTypes = new HashSet<ActivityLogType>();
             ProductAnswers = new HashSet<ProductAnswers>();
             ProductQuestions = new HashSet<ProductQuestion>();
         }
@@ -40,8 +38,6 @@ namespace Lipar.Entities.Domain.Core
         public ICollection<News> News { get; set; }
         public ICollection<StaticPage> StaticPages { get; set; }
         public ICollection<Language> Languages { get; set; }
-        public ICollection<LocaleStringResource> LocaleStringResources { get; set; }
-        public ICollection<ActivityLogType> ActivityLogTypes { get; set; }
         public ICollection<ProductAnswers> ProductAnswers { get; set; }
         public ICollection<ProductQuestion> ProductQuestions { get; set; }
         #endregion

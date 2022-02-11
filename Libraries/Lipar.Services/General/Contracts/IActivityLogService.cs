@@ -7,8 +7,8 @@ namespace Lipar.Services.General.Contracts
 {
     public interface IActivityLogService
     {
-        void Add(string systemKeyword , string comment , BaseEntity entity = null);
-        void Add(User user, string systemKeyword, string comment, BaseEntity entity = null);
+        void Add<T>(string systemKeyword , string comment , BaseEntity<T> entity = null);
+        void Add<T>(User user, string systemKeyword, string comment, BaseEntity<T> entity = null);
         //void Edit(ActivityLog model);
         ActivityLog GetById(int Id);
         //void Delete(ActivityLog model);

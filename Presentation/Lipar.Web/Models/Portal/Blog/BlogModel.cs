@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Portal
 {
-    public class BlogModel : BaseEntityModel
+    public class BlogModel : BaseEntityModel<Guid>
     {
         public string Name { get; set; }
         public DateTime ModifiedDate { get; set; }
@@ -14,8 +14,8 @@ namespace Lipar.Web.Models.Portal
         public int CommentStatusId { get; set; }
         public int VisitedCount { get; set; }
         public int ViewStatusId { get; set; }
-        public int CategoryId { get; set; }
-        public int UserId { get; set; }
+        public Guid CategoryId { get; set; }
+        public Guid UserId { get; set; }
         public string ReadingTime { get; set; }
         public int? LanguageId { get; set; }
         public Media Media { get; set; }

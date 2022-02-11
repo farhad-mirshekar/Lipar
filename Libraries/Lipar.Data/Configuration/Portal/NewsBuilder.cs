@@ -21,11 +21,13 @@ namespace Lipar.Data.Configuration.Portal
 
             builder.HasOne(n => n.Category)
                 .WithMany(c=>c.News)
-                .HasForeignKey(n => n.CategoryId);
+                .HasForeignKey(n => n.CategoryId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(n => n.Language)
                 .WithMany(l=>l.News)
-                .HasForeignKey(n => n.LanguageId);
+                .HasForeignKey(n => n.LanguageId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(n => n.ViewStatus)
                 .WithMany(v => v.News)
@@ -40,11 +42,6 @@ namespace Lipar.Data.Configuration.Portal
             builder.HasOne(n => n.User)
                 .WithMany(u => u.News)
                 .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(n => n.Remover)
-                .WithMany(u => u.RemoverNews)
-                .HasForeignKey(n => n.RemoverId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

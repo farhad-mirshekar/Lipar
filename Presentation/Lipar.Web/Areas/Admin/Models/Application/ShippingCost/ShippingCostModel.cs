@@ -1,11 +1,12 @@
 ﻿using Lipar.Entities;
 using Lipar.Entities.Domain.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ShippingCostModel : BaseEntityModel
+    public class ShippingCostModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ShippingCostModel()

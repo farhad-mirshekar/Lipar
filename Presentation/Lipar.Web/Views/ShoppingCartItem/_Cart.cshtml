@@ -15,7 +15,7 @@
         decimal temp2 = 0;
         decimal attributePrice = 0;
         var imgUrl = $"../images/site/product-empty.png";
-        if (shoppingCartItem.MediaModel != null && shoppingCartItem.MediaModel.MediaId != 0)
+        if (shoppingCartItem.MediaModel != null && shoppingCartItem.MediaModel.MediaId != Guid.Empty)
         {
             imgUrl = $"../images/uploaded/{shoppingCartItem.MediaModel.MediaId}-{shoppingCartItem.MediaModel.Name}{shoppingCartItem.MediaModel.MimeType}";
         }

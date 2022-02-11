@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Financial;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Financial.Contracts
@@ -33,7 +34,7 @@ namespace Lipar.Services.Financial.Contracts
         /// <param name="id">bank port id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        BankPort GetById(int id, bool noTracking = false);
+        BankPort GetById(Guid id, bool noTracking = false);
 
         /// <summary>
         /// list bank port method

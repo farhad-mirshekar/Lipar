@@ -1,6 +1,7 @@
 ﻿using Lipar.Core;
 using Lipar.Entities;
 using Lipar.Entities.Domain.Portal;
+using System;
 
 namespace Lipar.Services.Portal.Contracts
 {
@@ -8,10 +9,10 @@ namespace Lipar.Services.Portal.Contracts
     {
         void Add(Blog model);
         void Edit(Blog model);
-        Blog GetById(int Id);
+        Blog GetById(Guid Id);
         void Delete(Blog model);
         IPagedList<Blog> List(BlogListVM listVM);
-        void DeletePicture(int MediaId);
+        void DeletePicture(Guid MediaId);
         /// <summary>
         /// load blog settings
         /// </summary>

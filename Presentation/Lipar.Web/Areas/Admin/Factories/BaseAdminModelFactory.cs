@@ -133,7 +133,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         }
         public IList<SelectListItem> PrepareCategoriesForPortal(string defaultItemText = null)
         {
-            var key = _cacheKeyService.PrepareKeyForDefaultCache(LiparModelCacheDefaults.Category_Portal_List_Key);
+            var key = _cacheKeyService.PrepareKeyForDefaultCache<Guid>(LiparModelCacheDefaults.Category_Portal_List_Key);
 
             return _cacheManager.Get(key, () =>
              {
@@ -154,7 +154,7 @@ namespace Lipar.Web.Areas.Admin.Factories
 
         public IList<SelectListItem> PrepareCategoriesForProduct(string defaultItemText = null)
         {
-            var key = _cacheKeyService.PrepareKeyForDefaultCache(LiparModelCacheDefaults.Category_Product_List_Key);
+            var key = _cacheKeyService.PrepareKeyForDefaultCache<Guid>(LiparModelCacheDefaults.Category_Product_List_Key);
 
             return _cacheManager.Get(key, () =>
             {
@@ -177,7 +177,7 @@ namespace Lipar.Web.Areas.Admin.Factories
 
         public IList<SelectListItem> PrepareCommand(string defaultItemText = null)
         {
-            var key = _cacheKeyService.PrepareKeyForDefaultCache(LiparModelCacheDefaults.Command_List_Key);
+            var key = _cacheKeyService.PrepareKeyForDefaultCache<Guid>(LiparModelCacheDefaults.Command_List_Key);
 
             return _cacheManager.Get(key, () =>
             {
@@ -324,7 +324,7 @@ namespace Lipar.Web.Areas.Admin.Factories
 
             PrepareDefaultItem(items, defaultItemText);
         }
-        public MediaSearchModel PrepareMediaSearchModel(MediaSearchModel mediaSearch, int ParentId)
+        public MediaSearchModel PrepareMediaSearchModel(MediaSearchModel mediaSearch, Guid ParentId)
         {
             if (mediaSearch == null)
                 throw new ArgumentNullException(nameof(mediaSearch));

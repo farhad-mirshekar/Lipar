@@ -1,4 +1,5 @@
-﻿using Lipar.Web.Framework.Models;
+﻿using System;
+using Lipar.Web.Framework.Models;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
@@ -8,7 +9,7 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         {
             AddProductMediaModel = new ProductMediaModel();
         }
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public ProductMediaModel AddProductMediaModel { get; set; }
     }
 }

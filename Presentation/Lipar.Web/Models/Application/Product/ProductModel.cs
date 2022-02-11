@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Application
 {
-    public class ProductModel : BaseEntityModel
+    public class ProductModel : BaseEntityModel<Guid>
     {
         public ProductModel()
         {
@@ -102,7 +102,7 @@ namespace Lipar.Web.Models.Application
         /// <summary>
         /// gets or sets user
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         /// <summary>
         /// gets or sets category
         /// </summary>

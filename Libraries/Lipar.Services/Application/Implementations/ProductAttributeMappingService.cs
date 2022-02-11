@@ -25,12 +25,12 @@ namespace Lipar.Services.Application.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            if (listVM.ProductId.HasValue && listVM.ProductId.Value != 0)
+            if (listVM.ProductId.HasValue && listVM.ProductId.Value != Guid.Empty)
             {
                 query = query.Where(p => p.ProductId == listVM.ProductId);
             }
 
-            if (listVM.AttributeId.HasValue && listVM.AttributeId.Value != 0)
+            if (listVM.AttributeId.HasValue && listVM.AttributeId.Value != Guid.Empty)
             {
                 query = query.Where(p => p.ProductId == listVM.AttributeId);
             }
@@ -70,9 +70,9 @@ namespace Lipar.Services.Application.Implementations
             _repository.Delete(model);
         }
 
-        public ProductAttributeMapping GetById(int Id)
+        public ProductAttributeMapping GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return null;
             }

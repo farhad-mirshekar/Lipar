@@ -23,11 +23,6 @@ namespace Lipar.Data.Configuration.Portal
                 .HasForeignKey(g => g.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(g => g.Remover)
-               .WithMany(u => u.RemoverGalleries)
-               .HasForeignKey(g => g.RemoverId)
-               .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(g => g.ViewStatus)
                 .WithMany(v => v.Galleries)
                 .HasForeignKey(g => g.ViewStatusId)

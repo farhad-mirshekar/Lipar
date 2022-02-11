@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Services.Application.Contracts
@@ -27,7 +28,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="Id">product id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        Product GetById(int Id , bool noTracking = false);
+        Product GetById(Guid Id , bool noTracking = false);
         /// <summary>
         /// list product method
         /// </summary>
@@ -39,13 +40,13 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Ids">array id</param>
         /// <returns></returns>
-        IEnumerable<Product> GetByIds(int[] Ids);
+        IEnumerable<Product> GetByIds(Guid[] Ids);
         
         /// <summary>
         /// only get name product
         /// </summary>
         /// <param name="Id">product id</param>
         /// <returns></returns>
-        string GetProductName(int Id);
+        string GetProductName(Guid Id);
     }
 }

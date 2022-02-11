@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Models.General
 {
-    public class ContactUsModel : BaseEntityModel
+    public class ContactUsModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ContactUsModel()

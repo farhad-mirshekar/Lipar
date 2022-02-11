@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Financial
 {
-    public class BankPortModel : BaseEntityModel
+    public class BankPortModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public BankPortModel()
@@ -14,7 +14,7 @@ namespace Lipar.Web.Areas.Admin.Models.Financial
         #endregion
 
         #region Fields
-        public int BankId { get; set; }
+        public Guid BankId { get; set; }
         public string Name { get; set; }
         public string MerchantId { get; set; }
         public string MerchantKey { get; set; }

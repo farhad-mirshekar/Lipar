@@ -1,8 +1,10 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.General
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class FaqModel : BaseEntityModel
+    public class FaqModel : BaseEntityModel<Guid>
     {
-        public int FaqGroupId { get; set; }
+        public Guid FaqGroupId { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
     }

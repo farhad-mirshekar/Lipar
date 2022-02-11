@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ProductAttributeMappingModel : BaseEntityModel
+    public class ProductAttributeMappingModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ProductAttributeMappingModel()
@@ -31,11 +32,11 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         /// <summary>
         /// gets or sets the product
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         /// <summary>
         /// gets or sets the product attribute
         /// </summary>
-        public int ProductAttributeId { get; set; }
+        public Guid ProductAttributeId { get; set; }
         #endregion
 
         #region Select

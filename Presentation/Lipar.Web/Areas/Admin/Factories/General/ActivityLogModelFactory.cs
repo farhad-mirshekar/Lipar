@@ -3,6 +3,7 @@ using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.General
@@ -29,7 +30,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return activityLogs.Select(activityLog =>
                  {
-                     var activityLogModel = activityLog.ToModel<ActivityLogModel>();
+                     var activityLogModel = activityLog.ToModel<ActivityLogModel,Guid>();
                      activityLogModel.ActivityLogType = activityLog.ActivityLogType.Name;
                      return activityLogModel;
                  });

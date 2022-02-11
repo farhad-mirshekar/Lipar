@@ -16,13 +16,8 @@ namespace Lipar.Data.Configuration.General
             builder.Property(a => a.EntityName).HasColumnType("NVARCHAR(MAX)");
             builder.Property(a => a.Comment).HasColumnType("NVARCHAR(MAX)");
 
-            builder.HasOne(a => a.User)
-                .WithMany()
-                .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(a => a.ActivityLogType)
-                .WithMany()
+                .WithMany(al=>al.ActivityLogs)
                 .HasForeignKey(a => a.ActivityLogTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
         }

@@ -1,7 +1,9 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
     public class MediaListVM : BaseListVM
     {
-        public int ParentId { get; set; }
+        public Guid ParentId { get; set; }
     }
 }

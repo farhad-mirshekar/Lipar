@@ -62,7 +62,7 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(model);
         }
 
-        public User GetById(int Id)
+        public User GetById(Guid Id)
         => _repository.GetById(Id);
 
         /// <summary>

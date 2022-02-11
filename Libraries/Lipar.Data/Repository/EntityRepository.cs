@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Lipar.Data
 {
-    public class EfRepository<T> : IRepository<T> where T : BaseEntity
+    public class EfRepository<T> : IRepository<T> where T : class
     {
         private readonly IDbContext _context;
         private DbSet<T> _entities;

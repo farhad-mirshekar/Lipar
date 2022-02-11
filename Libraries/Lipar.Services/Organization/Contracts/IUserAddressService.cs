@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Organization;
+using System;
 
 namespace Lipar.Services.Organization.Contracts
 {
@@ -29,7 +30,7 @@ namespace Lipar.Services.Organization.Contracts
         /// <param name="Id"></param>
         /// <param name="noTracking">if true,model return no tracking</param>
         /// <returns></returns>
-        UserAddress GetById(int Id, bool noTracking = false);
+        UserAddress GetById(Guid Id, bool noTracking = false);
         /// <summary>
         /// list user address method
         /// </summary>

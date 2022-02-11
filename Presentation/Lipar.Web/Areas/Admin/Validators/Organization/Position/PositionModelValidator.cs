@@ -40,10 +40,8 @@ namespace Lipar.Web.Areas.Admin.Validators.Organization.Position
                 .WithMessage("*");
 
             RuleFor(p => p.DepartmentId)
-                .NotEmpty()
-                .WithMessage("*")
-                .NotEqual(0)
-                .WithMessage("**");
+                .NotNull()
+                .WithMessage("*");
         }
     }
 }

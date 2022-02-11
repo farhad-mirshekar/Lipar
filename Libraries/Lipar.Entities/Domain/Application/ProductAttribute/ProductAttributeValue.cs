@@ -1,6 +1,8 @@
-﻿namespace Lipar.Entities.Domain.Application
+﻿using System;
+
+namespace Lipar.Entities.Domain.Application
 {
-   public class ProductAttributeValue : BaseEntity
+   public class ProductAttributeValue : BaseEntity<Guid>
     {
         /// <summary>
         /// gets or sets the name
@@ -17,7 +19,7 @@
         /// <summary>
         /// gets or sets product attribute mapping
         /// </summary>
-        public int ProductAttributeMappingId { get; set; }
+        public Guid ProductAttributeMappingId { get; set; }
 
         #region Navigation
         public ProductAttributeMapping ProductAttributeMapping { get; set; }

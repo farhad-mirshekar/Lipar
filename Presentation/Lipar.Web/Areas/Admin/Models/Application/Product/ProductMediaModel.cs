@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ProductMediaModel : BaseEntityModel
+    public class ProductMediaModel : BaseEntityModel<Guid>
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         [UIHint("Picture")]
-        public int MediaId { get; set; }
+        public Guid MediaId { get; set; }
         public int Priority { get; set; }
         public string Name { get; set; }
         public string AltAttribute { get; set; }

@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class MenuItemModel : BaseEntityModel
+    public class MenuItemModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public MenuItemModel()
@@ -21,8 +22,8 @@ namespace Lipar.Web.Areas.Admin.Models.General
         public int Priority { get; set; }
         public string Parameters { get; set; }
         public string TitleCrumb { get; set; }
-        public int? ParentId { get; set; }
-        public int MenuId { get; set; }
+        public Guid? ParentId { get; set; }
+        public Guid MenuId { get; set; }
         #endregion
 
         #region Select

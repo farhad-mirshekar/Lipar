@@ -17,11 +17,10 @@ namespace Lipar.Data.Configuration.Application
             builder.Property(pc => pc.CommentText).HasColumnType("NVARCHAR(MAX)").IsRequired();
             builder.Property(pc => pc.ReplyText).HasColumnType("NVARCHAR(MAX)");
 
-            builder.Property(pc => pc.CreationDate).HasDefaultValue(DateTime.Now);
-
             builder.HasOne(pc => pc.Product)
                 .WithMany(p => p.ProductComments)
-                .HasForeignKey(pc => pc.ProductId);
+                .HasForeignKey(pc => pc.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(pc => pc.User)
                 .WithMany(u => u.ProductComments)
@@ -35,7 +34,8 @@ namespace Lipar.Data.Configuration.Application
 
             builder.HasOne(pc => pc.CommentStatus)
                 .WithMany(c => c.ProductComments)
-                .HasForeignKey(pc => pc.CommentStatusId);
+                .HasForeignKey(pc => pc.CommentStatusId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

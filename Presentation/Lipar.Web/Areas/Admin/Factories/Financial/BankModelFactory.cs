@@ -46,7 +46,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Financial
             {
                 return bankList.Select(bank =>
                 {
-                    var bankModel = bank.ToModel<BankModel>();
+                    var bankModel = bank.ToModel<BankModel,Guid>();
 
                     return bankModel;
                 });
@@ -59,7 +59,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Financial
         {
             if(bank != null)
             {
-                model = bank.ToModel<BankModel>();
+                model = bank.ToModel<BankModel, Guid>();
                 //prepare bank port
                 PrepareBankPortSearchModel(model.BankPortSearchModel, bank);
             }
@@ -87,7 +87,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Financial
             {
                 return bankPorts.Select(bankPort =>
                 {
-                    var bankPortModel = bankPort.ToModel<BankPortModel>();
+                    var bankPortModel = bankPort.ToModel<BankPortModel, Guid>();
 
                     return bankPortModel;
                 });
@@ -100,7 +100,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Financial
         {
             if(bankPort != null)
             {
-                model = bankPort.ToModel<BankPortModel>();
+                model = bankPort.ToModel<BankPortModel, Guid>();
             }
 
             //prepare enable type select

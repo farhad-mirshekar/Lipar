@@ -7,6 +7,9 @@ using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -39,47 +42,44 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region faq Group Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult List()
             => View(new FaqGroupSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult List(FaqGroupSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             var model = _faqGroupModelFactory.PrepareFaqGroupListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             var model = _faqGroupModelFactory.PrepareFaqGroupModel(new FaqGroupModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult Create(FaqGroupModel model)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var faqGroup = model.ToEntity<FaqGroup>();
+                var faqGroup = model.ToEntity<FaqGroup, Guid>();
 
                 _faqGroupService.Add(faqGroup);
 
                 //add activity log for create faq group
-                _activityLogService.Add("Admin.FaqGroup.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Create"), faqGroup);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Create"), faqGroup);
 
                 //success
                 return RedirectToAction("Edit", new { Id = faqGroup.Id });
@@ -89,12 +89,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToAction("List");
 
             var faqGroup = _faqGroupService.GetById(Id);
@@ -107,19 +105,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult Edit(FaqGroupModel model)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var faqGroup = model.ToEntity<FaqGroup>();
+                var faqGroup = model.ToEntity<FaqGroup, Guid>();
 
                 _faqGroupService.Edit(faqGroup);
 
                 //add activity log for edit faq group
-                _activityLogService.Add("Admin.FaqGroup.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Edit"), faqGroup);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Edit"), faqGroup);
 
                 //success
                 return RedirectToAction("Edit", new { Id = faqGroup.Id });
@@ -130,9 +126,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
+        public IActionResult Delete(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToAction("List");
 
             var faqGroup = _faqGroupService.GetById(Id);
@@ -142,7 +139,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _faqGroupService.Delete(faqGroup);
 
             //add activity log for delete faq group
-            _activityLogService.Add("Admin.FaqGroup.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Delete"), faqGroup);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.FaqGroup.Delete"), faqGroup);
 
             return RedirectToAction("List");
 
@@ -150,19 +147,20 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Faq Methods
+
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult FaqList(FaqSearchModel searchModel)
         {
             var model = _faqGroupModelFactory.PrepareFaqListModel(searchModel);
 
             return Json(model);
         }
-        public IActionResult FaqEdit(int Id, int faqGroupId)
-        {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
 
-            if (Id == 0)
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
+        public IActionResult FaqEdit(Guid Id, int faqGroupId)
+        {
+            if (Id == Guid.Empty)
                 return RedirectToAction("Edit", new { Id = faqGroupId });
 
             var faq = _faqService.GetById(Id);
@@ -173,20 +171,19 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
 
         }
+
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
         public IActionResult FaqEdit(FaqModel model)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var faq = model.ToEntity<Faq>();
+                var faq = model.ToEntity<Faq, Guid>();
 
                 _faqService.Edit(faq);
 
                 //add activity log for edit faq
-                _activityLogService.Add("Admin.Faq.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Faq.Edit"), faq);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Faq.Edit"), faq);
 
                 return RedirectToAction("Edit", new { Id = faq.FaqGroupId });
             }
@@ -195,11 +192,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult FaqCreate(int FaqGroupId)
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
+        public IActionResult FaqCreate(Guid FaqGroupId)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             var model = _faqGroupModelFactory.PrepareFaqModel(new FaqModel(), null);
             model.FaqGroupId = FaqGroupId;
 
@@ -207,19 +202,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: "ManageEmailAccount")]
         public IActionResult FaqCreate(FaqModel model)
         {
-            if (!_commandService.CheckPermission("ManageFaqGroup"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var faq = model.ToEntity<Faq>();
+                var faq = model.ToEntity<Faq, Guid>();
 
                 _faqService.Add(faq);
 
                 //add activity log for edit faq
-                _activityLogService.Add("Admin.Faq.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Faq.Create"), faq);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Faq.Create"), faq);
 
                 return RedirectToAction("Edit", new { Id = faq.FaqGroupId });
             }
@@ -229,9 +222,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult FaqDelete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageFaqGroup)]
+        public IActionResult FaqDelete(Guid Id)
         {
-            if(Id == 0)
+            if(Id == Guid.Empty)
                 return new NullJsonResult();
 
             var faq = _faqService.GetById(Id);

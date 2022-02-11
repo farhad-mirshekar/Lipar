@@ -1,8 +1,10 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
-    public class MediaBinary : BaseEntity
+    public class MediaBinary : BaseEntity<Guid>
     {
-        public int MediaId { get; set; }
+        public Guid MediaId { get; set; }
         public byte[] BinaryData { get; set; }
 
         #region Navigation

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
-   public class DeliveryDate : BaseEntity
+   public class DeliveryDate : BaseEntity<Guid>
     {
         #region Ctor
         public DeliveryDate()
@@ -19,13 +19,11 @@ namespace Lipar.Entities.Domain.Application
         public string Description { get; set; }
         public int EnabledTypeId { get; set; }
         public int Priority { get; set; }
-        public int UserId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 
         #region Navigations
-        public User User { get; set; }
         public EnabledType EnabledType { get; set; }
         public ICollection<Product> Products { get; set; }
         #endregion

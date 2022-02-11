@@ -1,5 +1,6 @@
 ﻿using Lipar.Entities;
 using Lipar.Entities.Domain.General;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Services.General.Contracts
@@ -16,7 +17,7 @@ namespace Lipar.Services.General.Contracts
         /// <param name="entity">entity</param>
         /// <param name="key">key</param>
         /// <param name="value">value</param>
-        void SaveAttribute<T>(BaseEntity entity, string key, T value);
+        void SaveAttribute<T,TProperty>(BaseEntity<TProperty> entity, string key, T value);
 
         /// <summary>
         /// get attribute
@@ -26,7 +27,7 @@ namespace Lipar.Services.General.Contracts
         /// <param name="key">key</param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        T GetAttribute<T>(BaseEntity entity, string key, T defaultValue = default);
+        T GetAttribute<T, TProperty>(BaseEntity<TProperty> entity, string key, T defaultValue = default);
 
         /// <summary>
         /// gets attribute for entity
@@ -35,7 +36,7 @@ namespace Lipar.Services.General.Contracts
         /// <param name="keyGroup">key group</param>
         /// <param name="noTracking"></param>
         /// <returns></returns>
-        IList<GenericAttribute> GetAttributesForEntity(int entityId, string keyGroup, bool noTracking = false);
+        IList<GenericAttribute> GetAttributesForEntity(string entityId, string keyGroup, bool noTracking = false);
 
         /// <summary>
         /// delete generic attribute method

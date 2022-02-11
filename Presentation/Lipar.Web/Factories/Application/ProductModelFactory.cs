@@ -173,11 +173,11 @@ namespace Lipar.Web.Factories.Application
             model.Category = PrepareCategoryModel(category);
 
             //prepare delivery date
-            var deliveryDate = _deliveryDateService.GetById(product.DeliveryDateId ?? 0);
+            var deliveryDate = _deliveryDateService.GetById(product.DeliveryDateId ?? Guid.Empty);
             model.DeliveryDate = PrepareDeliveryDateModel(deliveryDate);
 
             //prepare shipping cost
-            var shippingCost = _shippingCostService.GetById(product.ShippingCostId ?? 0);
+            var shippingCost = _shippingCostService.GetById(product.ShippingCostId ?? Guid.Empty);
             model.ShippingCost = PrepareShippingCostModel(shippingCost);
 
             //prepare product comment model for add comment

@@ -1,6 +1,6 @@
 ﻿namespace Lipar.Entities
 {
-    public class BaseListVM : BaseEntity
+    public class BaseListVM
     {
         public BaseListVM()
         {

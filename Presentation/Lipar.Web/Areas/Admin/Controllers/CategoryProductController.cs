@@ -10,6 +10,9 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -18,7 +21,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #region Ctor
         public CategoryProductController(ICategoryModelFactory categoryModelFactory
                                        , ICategoryService categoryService
-                                       , ICommandService commandService
                                        , ILocaleStringResourceService localeStringResourceService
                                        , IActivityLogService activityLogService
                                        , INotificationService notificationService
@@ -26,7 +28,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         {
             _categoryModelFactory = categoryModelFactory;
             _categoryService = categoryService;
-            _commandService = commandService;
             _localeStringResourceService = localeStringResourceService;
             _activityLogService = activityLogService;
             _notificationService = notificationService;
@@ -37,7 +38,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #region Fields
         private readonly ICategoryModelFactory _categoryModelFactory;
         private readonly ICategoryService _categoryService;
-        private readonly ICommandService _commandService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IActivityLogService _activityLogService;
         private readonly INotificationService _notificationService;
@@ -45,56 +45,38 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult List()
             => View(new CategorySearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult List(CategorySearchModel searchModel)
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _categoryModelFactory.PrepareCategoryListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult Create()
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _categoryModelFactory.PrepareCategoryModel(new CategoryModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult Create(CategoryModel model)
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var category = model.ToEntity<Category>();
-
-                if (category.ParentId == 0)
-                {
-                    category.ParentId = null;
-                }
+                var category = model.ToEntity<Category, Guid>();
 
                 //add category
                 _categoryService.Add(category);
@@ -103,7 +85,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _cacheManager.Remove(LiparModelCacheDefaults.Category_Product_List_Key);
 
                 //add activity log for create category
-                _activityLogService.Add("Admin.CategoryProduct.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Create"), category);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Create"), category);
 
                 //notification
                 _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityCreate"));
@@ -116,15 +98,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
+        public IActionResult Edit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -135,7 +112,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 return RedirectToAction("List");
             }
 
-            if (category.RemoverId.HasValue && category.RemoverId.Value != 0)
+            if (category.RemoverId.HasValue && category.RemoverId.Value != Guid.Empty)
             {
                 _notificationService.ErrorNotification(_localeStringResourceService.GetResource("Admin.Notification.Error.EntityRemove"));
                 return RedirectToAction("List");
@@ -147,22 +124,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
         public IActionResult Edit(CategoryModel model)
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var category = model.ToEntity<Category>();
-                
-                if (category.ParentId == 0)
-                {
-                    category.ParentId = null;
-                }
+                var category = model.ToEntity<Category, Guid>();
 
                 //edit category
                 _categoryService.Edit(category);
@@ -171,7 +138,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _cacheManager.Remove(LiparModelCacheDefaults.Category_Product_List_Key);
 
                 //add activity log for edit category
-                _activityLogService.Add("Admin.CategoryProduct.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Edit"), category);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Edit"), category);
 
                 //notification
                 _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityEdit"));
@@ -185,15 +152,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryProduct)]
+        public IActionResult Delete(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageCategoryProduct");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -204,7 +166,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 return RedirectToAction("List");
             }
 
-            if (category.RemoverId.HasValue && category.RemoverId.Value != 0)
+            if (category.RemoverId.HasValue && category.RemoverId.Value != Guid.Empty)
             {
                 _notificationService.ErrorNotification(_localeStringResourceService.GetResource("Admin.Notification.Error.EntityRemove"));
                 return RedirectToAction("List");
@@ -217,7 +179,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _cacheManager.Remove(LiparModelCacheDefaults.Category_Product_List_Key);
 
             //add activity log for delete category
-            _activityLogService.Add("Admin.CategoryProduct.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Delete"), category);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryProduct.Delete"), category);
 
             //notification
             _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityRemove"));

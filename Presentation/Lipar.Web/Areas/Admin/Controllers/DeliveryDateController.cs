@@ -8,6 +8,9 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -40,57 +43,44 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Methods
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult List()
             => View(new DeliveryDateSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult List(DeliveryDateSearchModel searchModel)
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _deliveryDateModelFactory.PrepareDeliveryDateListModel(searchModel);
 
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult Create()
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _deliveryDateModelFactory.PrepareDeliveryDateModel(new DeliveryDateModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult Create(DeliveryDateModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var deliveryDate = model.ToEntity<DeliveryDate>();
+                var deliveryDate = model.ToEntity<DeliveryDate, Guid>();
 
                 //add delivery date
                 _deliveryDateService.Add(deliveryDate);
 
                 //add activity log for create delivery date
-                _activityLogService.Add("Admin.DeliveryDate.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.DeliveryDate.Create"), deliveryDate);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.DeliveryDate.Create"), deliveryDate);
 
                 //notification
                 _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityCreate"));
@@ -103,15 +93,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
+        public IActionResult Edit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if(Id == 0)
+            if(Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -122,7 +107,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 return RedirectToAction("List");
             }
 
-            if(deliveryDate.RemoverId.HasValue && deliveryDate.RemoverId.Value != 0)
+            if(deliveryDate.RemoverId.HasValue && deliveryDate.RemoverId.Value != Guid.Empty)
             {
                 _notificationService.ErrorNotification(_localeStringResourceService.GetResource("Admin.Notification.Error.EntityRemove"));
                 return RedirectToAction("List");
@@ -134,23 +119,18 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
         public IActionResult Edit(DeliveryDateModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var deliveryDate = model.ToEntity<DeliveryDate>();
+                var deliveryDate = model.ToEntity<DeliveryDate, Guid>();
 
                 //add delivery date
                 _deliveryDateService.Edit(deliveryDate);
 
                 //add activity log for edit delivery date
-                _activityLogService.Add("Admin.DeliveryDate.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DeliveryDate.Edit"), deliveryDate);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DeliveryDate.Edit"), deliveryDate);
 
                 //notification
                 _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityEdit"));
@@ -164,15 +144,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageDeliveryDate)]
+        public IActionResult Delete(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageDeliveryDate");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }

@@ -1,8 +1,9 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class CommonSettingModel : BaseEntityModel, ISettingsModel
+    public class CommonSettingModel : BaseEntityModel<Guid>, ISettingsModel
     {
         /// <summary>
         /// get or set the show captcha

@@ -54,11 +54,11 @@ namespace Lipar.Web.Controllers
         #endregion
 
         #region Product Methods
-        [Route("Product/{ProductId:int}")]
-        public IActionResult Detail(int ProductId)
+        [Route("Product/{ProductId:guid}")]
+        public IActionResult Detail(Guid ProductId)
         {
             var product = _productService.GetById(ProductId);
-            if (product == null || (product.RemoverId.HasValue && product.RemoverId.Value > 0))
+            if (product == null || product.RemoverId.HasValue)
             {
                 return InvokeHttp404();
             }
@@ -77,7 +77,7 @@ namespace Lipar.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public IActionResult AddProductInCompareList(int ProductId)
+        public IActionResult AddProductInCompareList(Guid ProductId)
         {
             var product = _productService.GetById(ProductId);
             if (product == null || product.RemoverId.HasValue || !product.Published)
@@ -123,7 +123,7 @@ namespace Lipar.Web.Controllers
         /// </summary>
         /// <param name="ProductId">product id</param>
         /// <returns></returns>
-        public IActionResult RemoveProductFromCompareList(int ProductId)
+        public IActionResult RemoveProductFromCompareList(Guid ProductId)
         {
             var product = _productService.GetById(ProductId);
             if (product == null)
@@ -234,7 +234,7 @@ namespace Lipar.Web.Controllers
         #endregion
 
         #region Product Question-Answer
-        public IActionResult ProductQuestionAdd(int productId)
+        public IActionResult ProductQuestionAdd(Guid productId)
         {
             var product = _productService.GetById(productId, true);
             if (product == null || product.RemoverId.HasValue)
@@ -316,9 +316,9 @@ namespace Lipar.Web.Controllers
             });
         }
 
-        public IActionResult ProductAnswerAdd(int questionId)
+        public IActionResult ProductAnswerAdd(Guid questionId)
         {
-            if(questionId == 0)
+            if(questionId == Guid.Empty)
             {
                 return NotFound();
             }

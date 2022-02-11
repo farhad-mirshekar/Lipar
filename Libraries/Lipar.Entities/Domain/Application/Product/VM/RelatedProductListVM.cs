@@ -1,8 +1,10 @@
-﻿namespace Lipar.Entities.Domain.Application
+﻿using System;
+
+namespace Lipar.Entities.Domain.Application
 {
    public class RelatedProductListVM : BaseListVM
     {
-        public int? ProductId1 { get; set; }
+        public Guid? ProductId1 { get; set; }
         /// <summary>
         /// no show for popup
         /// </summary>

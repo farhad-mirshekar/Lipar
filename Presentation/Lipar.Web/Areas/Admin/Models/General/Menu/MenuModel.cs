@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class MenuModel : BaseEntityModel
+    public class MenuModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public MenuModel()

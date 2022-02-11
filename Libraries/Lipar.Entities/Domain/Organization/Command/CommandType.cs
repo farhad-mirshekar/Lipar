@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.Organization
 {
-   public class CommandType : BaseEntity
+   public class CommandType : BaseEntity<int>
     {
         #region Ctor
         public CommandType()

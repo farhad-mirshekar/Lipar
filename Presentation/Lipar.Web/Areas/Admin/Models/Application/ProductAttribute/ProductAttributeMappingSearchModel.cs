@@ -1,9 +1,10 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
     public class ProductAttributeMappingSearchModel : BaseSearchModel
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
     }
 }

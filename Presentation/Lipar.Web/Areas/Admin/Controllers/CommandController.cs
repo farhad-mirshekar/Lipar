@@ -9,6 +9,9 @@ using Lipar.Web.Areas.Admin.Models.Organization;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -38,27 +41,25 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Command Methods
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
         public IActionResult List()
             => View(new CommandSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
         public IActionResult List(CommandSearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageCommand"))
-                return AccessDeniedDataTablesJson();
-
             var model = _commandModelFactory.PrepareCommandListModel(searchModel);
             return Json(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageCommand"))
-                return AccessDeniedView();
-
             var command = _commandService.GetById(Id);
             if (command == null)
                 return RedirectToAction("List");
@@ -69,57 +70,18 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
         public IActionResult Edit(CommandModel model)
         {
-            if (!_commandService.CheckPermission("ManageCommand"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var command = model.ToEntity<Command>();
-                command.ParentId = command.ParentId.HasValue && command.ParentId.Value == 0 ? null : command.ParentId;
+                var command = model.ToEntity<Command, Guid>();
+                command.ParentId = command.ParentId.HasValue && command.ParentId.Value == Guid.Empty ? null : command.ParentId;
 
-                 _commandService.Edit(command);
+                _commandService.Edit(command);
 
                 // add activity log for edit command
-                _activityLogService.Add("Admin.Command.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Edit"), command);
-
-                //remove cache
-                _staticCacheManager.Remove(LiparModelCacheDefaults.Command_List_Key);
-
-                //success add
-                return RedirectToAction("Edit", new { Id = command.Id });
-            }
-
-            model =  _commandModelFactory.PrepareCommandModel(model, null);
-            return View(model);
-        }
-
-        public IActionResult Create()
-        {
-            if (!_commandService.CheckPermission("ManageCommand"))
-                return AccessDeniedView();
-
-            var model = _commandModelFactory.PrepareCommandModel(new CommandModel(), null);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Create(CommandModel model)
-        {
-            if (!_commandService.CheckPermission("ManageCommand"))
-                return AccessDeniedView();
-
-            if (ModelState.IsValid)
-            {
-                var command = model.ToEntity<Command>();
-                command.ParentId = command.ParentId.HasValue && command.ParentId.Value == 0 ? null : command.ParentId;
-
-                _commandService.Add(command);
-
-                // add activity log for create command
-                _activityLogService.Add("Admin.Command.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Create"), command);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Edit"), command);
 
                 //remove cache
                 _staticCacheManager.Remove(LiparModelCacheDefaults.Command_List_Key);
@@ -132,7 +94,41 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
+        public IActionResult Create()
+        {
+            var model = _commandModelFactory.PrepareCommandModel(new CommandModel(), null);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
+        public IActionResult Create(CommandModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var command = model.ToEntity<Command, Guid>();
+                command.ParentId = command.ParentId.HasValue && command.ParentId.Value == Guid.Empty ? null : command.ParentId;
+
+                _commandService.Add(command);
+
+                // add activity log for create command
+                _activityLogService.Add("Admin.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Create"), command);
+
+                //remove cache
+                _staticCacheManager.Remove(LiparModelCacheDefaults.Command_List_Key);
+
+                //success add
+                return RedirectToAction("Edit", new { Id = command.Id });
+            }
+
+            model = _commandModelFactory.PrepareCommandModel(model, null);
+            return View(model);
+        }
+
+        [CheckingPermissions(permissions: CommandNames.ManageCommand)]
+        public IActionResult Delete(Guid Id)
         {
             var command = _commandService.GetById(Id);
             if (command == null)
@@ -141,7 +137,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _commandService.Delete(command);
 
             // add activity log for delete command
-            _activityLogService.Add("Admin.Command.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Delete"), command);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.Command.Delete"), command);
 
             return new NullJsonResult();
         }

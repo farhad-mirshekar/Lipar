@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.General;
+using System;
 
 namespace Lipar.Services.General.Contracts
 {
@@ -7,7 +8,7 @@ namespace Lipar.Services.General.Contracts
     {
         void Add(MenuItem model);
         void Edit(MenuItem model);
-        MenuItem GetById(int Id);
+        MenuItem GetById(Guid Id);
         IPagedList<MenuItem> List(MenuItemListVM listVM);
         void Delete(MenuItem model);
     }

@@ -4,6 +4,7 @@ using Lipar.Data;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Organization.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Organization.Implementations
@@ -38,7 +39,7 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(model);
         }
 
-        public Role GetById(int Id)
+        public Role GetById(Guid Id)
         {
             var query = _repository.Table;
 
@@ -49,7 +50,7 @@ namespace Lipar.Services.Organization.Implementations
             if (role == null)
                 return null;
 
-            if ((role.RemoverId.HasValue && role.RemoverId.Value != 0) || (role.RemoveDate.HasValue))
+            if ((role.RemoverId.HasValue && role.RemoverId.Value != Guid.Empty) || (role.RemoveDate.HasValue))
                 return null;
 
             return role;
@@ -59,7 +60,7 @@ namespace Lipar.Services.Organization.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            if (listVM.CenterId.HasValue && listVM.CenterId.Value != 0)
+            if (listVM.CenterId.HasValue && listVM.CenterId.Value != Guid.Empty)
                 query = query.Where(r => r.CenterId == listVM.CenterId);
 
             if (!string.IsNullOrEmpty(listVM.Name))

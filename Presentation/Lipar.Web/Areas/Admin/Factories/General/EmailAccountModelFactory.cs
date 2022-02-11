@@ -3,6 +3,7 @@ using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.General
@@ -39,7 +40,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return emailAccounts.Select(emailAccount =>
                 {
-                    var emailAccountModel = emailAccount.ToModel<EmailAccountModel>();
+                    var emailAccountModel = emailAccount.ToModel<EmailAccountModel, Guid>();
 
                     return emailAccountModel;
                 });
@@ -53,7 +54,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if(emailAccount != null)
             {
-                model = emailAccount.ToModel<EmailAccountModel>();
+                model = emailAccount.ToModel<EmailAccountModel, Guid>();
             }
 
             return model;

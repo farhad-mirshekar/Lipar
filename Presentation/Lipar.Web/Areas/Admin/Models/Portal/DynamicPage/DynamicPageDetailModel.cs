@@ -1,11 +1,12 @@
 ﻿using Lipar.Entities;
 using Lipar.Entities.Domain.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
-    public class DynamicPageDetailModel : BaseEntityModel
+    public class DynamicPageDetailModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public DynamicPageDetailModel()
@@ -23,7 +24,7 @@ namespace Lipar.Web.Areas.Admin.Models.Portal
         public string MetaDescription { get; set; }
         public int Priority { get; set; }
         public int ViewStatusId { get; set; }
-        public int DynamicPageId { get; set; }
+        public Guid DynamicPageId { get; set; }
         #endregion
 
         #region Select

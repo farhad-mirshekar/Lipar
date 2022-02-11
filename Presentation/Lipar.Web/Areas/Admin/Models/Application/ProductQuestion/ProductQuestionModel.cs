@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class ProductQuestionModel : BaseEntityModel
+    public class ProductQuestionModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public ProductQuestionModel()

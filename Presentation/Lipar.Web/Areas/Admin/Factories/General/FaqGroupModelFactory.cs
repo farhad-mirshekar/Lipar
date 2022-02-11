@@ -42,7 +42,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return faqGroups.Select(faqGroup =>
                 {
-                    var faqGroupModel = faqGroup.ToModel<FaqGroupModel>();
+                    var faqGroupModel = faqGroup.ToModel<FaqGroupModel, Guid>();
 
                     return faqGroupModel;
                 });
@@ -55,7 +55,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if(faqGroup != null)
             {
-                model = faqGroup.ToModel<FaqGroupModel>();
+                model = faqGroup.ToModel<FaqGroupModel, Guid>();
 
                 //set grid faq cartable
                 PrepareFaqSearchModel(model.FaqSearchModel, faqGroup);
@@ -81,7 +81,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return faqs.Select(faq =>
                 {
-                    var faqModel = faq.ToModel<FaqModel>();
+                    var faqModel = faq.ToModel<FaqModel, Guid>();
 
                     return faqModel;
                 });
@@ -94,7 +94,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if (faq != null)
             {
-                model = faq.ToModel<FaqModel>();
+                model = faq.ToModel<FaqModel, Guid>();
             }
 
             return model;

@@ -19,12 +19,6 @@ namespace Lipar.Data.Configuration.General
                 .WithMany(l=>l.Menus)
                 .HasForeignKey(m => m.LanguageId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(m => m.User)
-                .WithMany()
-                .HasForeignKey(m => m.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Lipar.Data.Configuration.Organization
             builder.HasOne(r => r.Center)
                 .WithMany(c => c.Roles)
                 .HasForeignKey(r => r.CenterId)
-                .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

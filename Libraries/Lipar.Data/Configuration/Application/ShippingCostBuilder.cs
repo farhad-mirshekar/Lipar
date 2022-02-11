@@ -23,11 +23,6 @@ namespace Lipar.Data.Configuration.Application
                 .WithMany(e => e.shippingCosts)
                 .HasForeignKey(s => s.EnabledTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(s => s.User)
-                .WithMany(u => u.shippingCosts)
-                .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

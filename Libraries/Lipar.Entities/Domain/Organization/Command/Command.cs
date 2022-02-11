@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Organization
 {
-    public class Command : BaseEntity
+    public class Command : BaseEntity<Guid>
     {
         #region Ctor
         public Command()
@@ -14,11 +14,11 @@ namespace Lipar.Entities.Domain.Organization
         public string Name { get; set; }
         public string SystemName { get; set; }
         public int CommandTypeId { get; set; }
+        public Guid? ParentId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
-        public int? RemoverId { get; set; }
 
         //navigations
-        public int? ParentId { get; set; }
         public Command Parent { get; set; }
         public ICollection<Command> Children { get; set; }
         public ICollection<RolePermission> RolePermissions { get; set; }

@@ -115,7 +115,7 @@ namespace Lipar.Services.General.Implementations
 
              _repository.Delete(model);
         }
-        public Media GetById(int Id)
+        public Media GetById(Guid Id)
         => _repository.GetById(Id);
 
         public IPagedList<Media> List(MediaListVM listVM)
@@ -147,7 +147,7 @@ namespace Lipar.Services.General.Implementations
         #endregion
 
         #region Utilities
-        protected virtual void SavePictureInFile(int pictureId, string fileNameSeo, byte[] pictureBinary, string mimeType)
+        protected virtual void SavePictureInFile(Guid pictureId, string fileNameSeo, byte[] pictureBinary, string mimeType)
         {
             var fileName = $"{pictureId}-{fileNameSeo}{mimeType}";
             _fileProvider.WriteAllBytes(GetPictureLocalPath(fileName), pictureBinary);
@@ -170,7 +170,7 @@ namespace Lipar.Services.General.Implementations
 
             return imagesPathUrl;
         }
-        protected void DeletePicture(int Id, string fileName)
+        protected void DeletePicture(Guid Id, string fileName)
         {
             var filter = $"{Id}-{fileName}";
 

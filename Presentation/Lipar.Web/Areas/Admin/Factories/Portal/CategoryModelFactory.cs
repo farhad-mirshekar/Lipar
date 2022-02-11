@@ -3,6 +3,7 @@ using Lipar.Services.Portal.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Portal
@@ -31,7 +32,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
            {
                return categories.Select(category =>
                {
-                   var categoryModel = category.ToModel<CategoryModel>();
+                   var categoryModel = category.ToModel<CategoryModel, Guid>();
                    categoryModel.NameCrumb = _categoryService.GetFormattedBreadCrumb(category) ?? "";
                    return categoryModel;
                });
@@ -43,7 +44,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Portal
         public CategoryModel PrepareCategoryModel(CategoryModel model, Category category)
         {
             if (category != null) // for edit
-                model ??= category.ToModel<CategoryModel>();
+                model ??= category.ToModel<CategoryModel, Guid>();
 
             model.AvailableCategories = _baseAdminModelFactory.PrepareCategoriesForPortal();
 

@@ -1,6 +1,8 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
-   public class GenericAttribute : BaseEntity
+   public class GenericAttribute : BaseEntity<Guid>
     {
         /// <summary>
         /// gets or sets the key group
@@ -17,6 +19,6 @@
         /// <summary>
         /// gets or sets the entity id
         /// </summary>
-        public int EntityId { get; set; }
+        public string EntityId { get; set; }
     }
 }

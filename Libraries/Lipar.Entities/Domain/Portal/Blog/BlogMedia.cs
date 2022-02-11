@@ -1,12 +1,18 @@
-﻿namespace Lipar.Entities.Domain.Portal
+﻿using Lipar.Entities.Domain.General;
+using System;
+
+namespace Lipar.Entities.Domain.Portal
 {
     /// <summary>
     /// blog_media_mapping
     /// </summary>
-    public class BlogMedia : BaseEntity
+    public class BlogMedia : BaseEntity<Guid>
     {
-        public int BlogId { get; set; }
-        public int MediaId { get; set; }
+        public Guid BlogId { get; set; }
+        public Guid MediaId { get; set; }
         public int Priority { get; set; }
+
+        public Blog Blog { get; set; }
+        public Media Media { get; set; }
     }
 }

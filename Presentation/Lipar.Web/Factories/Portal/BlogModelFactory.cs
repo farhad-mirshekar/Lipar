@@ -45,7 +45,7 @@ namespace Lipar.Web.Factories.Portal
                 blogModel.Id = blog.Id;
                 blogModel.Body = blog.Body;
                 blogModel.CommentStatusId = blog.CommentStatusId;
-                blogModel.CreationDate = blog.CreationDate.Value;
+                blogModel.CreationDate = blog.CreationDate;
                 blogModel.Description = blog.Description;
                 blogModel.MetaKeywords = blog.MetaKeywords;
                 blogModel.ModifiedDate = blog.ModifiedDate;
@@ -97,7 +97,7 @@ namespace Lipar.Web.Factories.Portal
                 Id = blogComment.Id,
                 BlogId = blogComment.BlogId,
                 Body = blogComment.Body,
-                CreationDate = blogComment.CreationDate.Value,
+                CreationDate = blogComment.CreationDate,
                 FullName = $"{user.FirstName} {user.LastName}",
                 ParentId = blogComment.ParentId,
             };
@@ -128,7 +128,7 @@ namespace Lipar.Web.Factories.Portal
                   blogModel.Id = blog.Id;
                   blogModel.Body = blog.Body;
                   blogModel.CommentStatusId = blog.CommentStatusId;
-                  blogModel.CreationDate = blog.CreationDate.Value;
+                  blogModel.CreationDate = blog.CreationDate;
                   blogModel.MetaKeywords = blog.MetaKeywords;
                   blogModel.ModifiedDate = blog.ModifiedDate;
                   blogModel.Name = blog.Name;

@@ -6,17 +6,21 @@ namespace Lipar.Entities.Domain.Application
     /// <summary>
     /// shopping cart item
     /// </summary>
-   public class ShoppingCartItem : BaseEntity
+   public class ShoppingCartItem : BaseEntity<Guid>
     {
         #region Fields
         /// <summary>
         /// gets or sets the product id
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         /// <summary>
         /// gets or sets the user id
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
+        /// <summary>
+        /// gets or sets the shopping cart item cookie
+        /// </summary>
+        public Guid ShoppingCartItemId { get; set; }
         /// <summary>
         /// gets or sets the quantity
         /// </summary>
@@ -29,7 +33,6 @@ namespace Lipar.Entities.Domain.Application
         /// gets or sets the modified date
         /// </summary>
         public DateTime ModifiedDate { get; set; }
-        public Guid ShoppingCartItemId { get; set; }
         #endregion
 
         #region Navigations

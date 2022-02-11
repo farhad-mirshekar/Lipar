@@ -1,5 +1,6 @@
 ﻿using Lipar.Web.Areas.Admin.Models.General;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Factories
@@ -34,7 +35,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         /// <param name="defaultItemtext"></param>
         void PrepareAttributeControlType(IList<SelectListItem> items, string defaultItemtext = null);
         IList<SelectListItem> PrepareCategoriesForPortal(string defaultItemText = null);
-        MediaSearchModel PrepareMediaSearchModel(MediaSearchModel mediaSearch, int ParentId);
+        MediaSearchModel PrepareMediaSearchModel(MediaSearchModel mediaSearch, Guid ParentId);
         IList<SelectListItem> PrepareCommand(string defaultItemText = null);
         IList<SelectListItem> PrepareDepartment(string defaultItemText = null);
         /// <summary>

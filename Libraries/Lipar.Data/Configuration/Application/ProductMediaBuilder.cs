@@ -10,9 +10,18 @@ namespace Lipar.Data.Configuration.Application
         {
             builder.ToTable("Product_Media_Mapping", schema: "Application");
 
-            builder.Property(pm => pm.ProductId).IsRequired();
+            builder.HasKey(pm => pm.Id);
+            builder.Property(pm => pm.Id).ValueGeneratedOnAdd();
 
-            builder.Property(pm => pm.MediaId).IsRequired();
+            builder.HasOne(pm => pm.Product)
+                .WithMany(p => p.ProductMedias)
+                .HasForeignKey(pm => pm.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(pm => pm.Media)
+                .WithMany(m => m.ProductMedias)
+                .HasForeignKey(pm => pm.MediaId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

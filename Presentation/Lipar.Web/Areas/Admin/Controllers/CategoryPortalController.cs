@@ -9,6 +9,9 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -18,7 +21,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly ICategoryModelFactory _categoryModelFactory;
         private readonly ICategoryService _categoryService;
         private readonly IStaticCacheManager _cacheManager;
-        private readonly ICommandService _commandService;
         private readonly IActivityLogService _activityLogService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         #endregion
@@ -27,64 +29,56 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public CategoryPortalController(ICategoryModelFactory categoryModelFactory
                                       , ICategoryService categoryService
                                       , IStaticCacheManager cacheManager
-                                      , ICommandService commandService
                                       , IActivityLogService activityLogService
                                       , ILocaleStringResourceService localeStringResourceService)
         {
             _categoryModelFactory = categoryModelFactory;
             _categoryService = categoryService;
             _cacheManager = cacheManager;
-            _commandService = commandService;
             _activityLogService = activityLogService;
             _localeStringResourceService = localeStringResourceService;
         }
         #endregion
 
         #region Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult List()
         => View(new CategorySearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult List(CategorySearchModel searchModel)
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             var categories = _categoryModelFactory.PrepareCategoryListModel(searchModel);
 
             return Json(categories);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult Create()
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             var model = _categoryModelFactory.PrepareCategoryModel(new CategoryModel(), null);
 
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult Create(CategoryModel model)
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var category = model.ToEntity<Category>();
-
-                if (category.ParentId == 0)
-                    category.ParentId = null;
+                var category = model.ToEntity<Category, Guid>();
 
                 _categoryService.Add(category);
 
                 // add activity log for create category
-                _activityLogService.Add("Admin.CategoryPortal.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Create"), category);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Create"), category);
 
                 //remove cache for dropdown
                 _cacheManager.Remove(LiparModelCacheDefaults.Category_Portal_List_Key);
@@ -96,11 +90,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
+        public IActionResult Edit(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             var category = _categoryService.GetById(Id);
             if (category == null)
                 return RedirectToAction("List");
@@ -111,19 +103,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
         public IActionResult Edit(CategoryModel model)
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             if (ModelState.IsValid)
             {
-                var category = model.ToEntity<Category>();
+                var category = model.ToEntity<Category, Guid>();
 
                 _categoryService.Edit(category);
 
                 // add activity log for edit category
-                _activityLogService.Add("Admin.CategoryPortal.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Edit"), category);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Edit"), category);
 
                 //remove cache for dropdown
                 _cacheManager.Remove(LiparModelCacheDefaults.Category_Portal_List_Key);
@@ -136,11 +126,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageCategoryPortal)]
+        public IActionResult Delete(Guid Id)
         {
-            if (!_commandService.CheckPermission("ManageCategoryPortal"))
-                return AccessDeniedView();
-
             var category = _categoryService.GetById(Id);
 
             if (category == null)
@@ -149,7 +137,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _categoryService.Delete(category);
 
             // add activity log for delete category
-            _activityLogService.Add("Admin.CategoryPortal.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Delete"), category);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.CategoryPortal.Delete"), category);
 
             return RedirectToAction("List");
         }

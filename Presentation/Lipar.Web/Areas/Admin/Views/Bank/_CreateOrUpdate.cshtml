@@ -32,7 +32,7 @@
     <lipar-select asp-for="EnabledTypeId" asp-items="@Model.AvailableEnableTypes" asp-required="true" />
 </div>
 
-@if (Model.Id > 0)
+@if (Model.Id != Guid.Empty)
 {
     @await Html.PartialAsync("_BankPortList", Model)
 }

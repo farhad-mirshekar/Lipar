@@ -12,7 +12,7 @@ namespace Lipar.Data.Seeds.Organization
             Items = new List<Center>();
             Items.Add(new Center
             {
-                Id = 1,
+                Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 Code ="1000",
                 CreationDate=DateTime.Now,
                 EnabledTypeId = (int)EnabledTypeEnum.Active,

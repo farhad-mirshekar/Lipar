@@ -25,7 +25,7 @@ namespace Lipar.Services.Application.Implementations
         private readonly IProductService _productService;
         #endregion
 
-        public void AddProductToCompareList(int ProductId)
+        public void AddProductToCompareList(Guid ProductId)
         {
            if(_httpContextAccessor.HttpContext?.Response == null)
             {
@@ -67,7 +67,7 @@ namespace Lipar.Services.Application.Implementations
                 .Where(product => product.Published && !product.RemoverId.HasValue).ToList();
         }
 
-        public void RemoveProductFromCompareList(int ProductId)
+        public void RemoveProductFromCompareList(Guid ProductId)
         {
             if(_httpContextAccessor.HttpContext?.Response == null)
             {
@@ -89,28 +89,28 @@ namespace Lipar.Services.Application.Implementations
         }
 
         #region Utilities
-        private IList<int> GetComparedProductIds()
+        private IList<Guid> GetComparedProductIds()
         {
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext?.Request == null)
             {
-                return new List<int>();
+                return new List<Guid>();
             }
 
             //try to get cookie
             var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ComparedProductsCookie}";
             if(!httpContext.Request.Cookies.TryGetValue(cookieName, out var productIdsCookie) || string.IsNullOrEmpty(productIdsCookie))
             {
-                return new List<int>();
+                return new List<Guid>();
             }
 
             //get array of string product identifiers from cookie
             var productIds = productIdsCookie.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            return productIds.Select(int.Parse).Distinct().ToList();
+            return productIds.Select(Guid.Parse).Distinct().ToList();
         }
 
-        private void AddCompareProductsCookie(IList<int> comparedProductIds)
+        private void AddCompareProductsCookie(IList<Guid> comparedProductIds)
         {
             var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ComparedProductsCookie}";
             _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName);

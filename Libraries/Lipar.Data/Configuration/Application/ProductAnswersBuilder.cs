@@ -17,7 +17,8 @@ namespace Lipar.Data.Configuration.Application
 
             builder.HasOne(pa => pa.ProductQuestion)
                 .WithMany(pq => pq.ProductAnswers)
-                .HasForeignKey(pa => pa.ProductQuestionId);
+                .HasForeignKey(pa => pa.ProductQuestionId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(pa => pa.User)
                 .WithMany(u => u.ProductAnswers)

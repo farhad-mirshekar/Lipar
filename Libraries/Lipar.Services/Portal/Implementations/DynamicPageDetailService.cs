@@ -14,6 +14,7 @@ namespace Lipar.Services.Portal.Implementations
     {
         private readonly IRepository<DynamicPageDetail> _repository;
         private readonly IWorkContext _workContext;
+
         #region Fields
 
         #endregion
@@ -55,17 +56,17 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public DynamicPageDetail GetById(int Id)
+        public DynamicPageDetail GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return null;
 
             return _repository.GetById(Id);
         }
 
-        public int GetDynamicPageDetailCount(int DynamicPageId, ViewStatusEnum viewStatus)
+        public int GetDynamicPageDetailCount(Guid DynamicPageId, ViewStatusEnum viewStatus)
         {
-            if (DynamicPageId == 0)
+            if (DynamicPageId == Guid.Empty)
                 return 0;
 
             var query = _repository.TableNoTracking;
@@ -83,7 +84,7 @@ namespace Lipar.Services.Portal.Implementations
             var query = _repository.TableNoTracking;
             query = query.Where(dd => dd.RemoverId == null && dd.RemoveDate == null);
 
-            if (listVM.DynamicPageId.HasValue && listVM.DynamicPageId.Value != 0)
+            if (listVM.DynamicPageId.HasValue && listVM.DynamicPageId.Value != Guid.Empty)
             {
                 query = query.Where(dd => dd.DynamicPageId == listVM.DynamicPageId);
             }

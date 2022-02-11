@@ -1,4 +1,5 @@
 ﻿using Lipar.Entities.Domain.Application;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Services.Application.Contracts
@@ -9,7 +10,7 @@ namespace Lipar.Services.Application.Contracts
         /// add product to compare list method
         /// </summary>
         /// <param name="ProductId">product id</param>
-        void AddProductToCompareList(int ProductId);
+        void AddProductToCompareList(Guid ProductId);
         /// <summary>
         /// delete all product in compare list method
         /// </summary>
@@ -23,6 +24,6 @@ namespace Lipar.Services.Application.Contracts
         /// delete product from compre list
         /// </summary>
         /// <param name="ProductId">product id</param>
-        void RemoveProductFromCompareList(int ProductId);
+        void RemoveProductFromCompareList(Guid ProductId);
     }
 }

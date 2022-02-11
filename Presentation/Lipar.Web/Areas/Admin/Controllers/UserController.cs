@@ -44,7 +44,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return Json(usersResult);
         }
 
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(Guid Id)
         {
             var user = _userService.GetById(Id);
             var model = _userModelFactory.PrepareUserModel(null, user);

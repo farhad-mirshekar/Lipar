@@ -13,7 +13,7 @@
                     <div class="col-md-4 d-flex align-items-lg-stretch">
                         @{
                             var imgUrl = "../images/site/product-empty.png";
-                            if (relatedProduct.MediaModel != null && relatedProduct.MediaModel.Id != 0)
+                            if (relatedProduct.MediaModel != null && relatedProduct.MediaModel.Id != Guid.Empty)
                             {
                                 imgUrl = $"../images/uploaded/{relatedProduct.MediaModel.MediaId}-{relatedProduct.MediaModel.Name}{relatedProduct.MediaModel.MimeType}";
                             }

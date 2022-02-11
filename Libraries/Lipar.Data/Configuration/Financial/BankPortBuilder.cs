@@ -19,11 +19,13 @@ namespace Lipar.Data.Configuration.Financial
 
             builder.HasOne(bp => bp.EnabledType)
                 .WithMany(e => e.BankPorts)
-                .HasForeignKey(bp => bp.EnabledTypeId);
+                .HasForeignKey(bp => bp.EnabledTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(bp => bp.Bank)
                 .WithMany(b => b.BankPorts)
-                .HasForeignKey(bp => bp.BankId);
+                .HasForeignKey(bp => bp.BankId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Lipar.Entities.Domain.Financial
     /// <summary>
     /// bank
     /// </summary>
-   public class Bank : BaseEntity
+   public class Bank : BaseEntity<Guid>
     {
         #region Ctor
         public Bank()
@@ -49,12 +49,10 @@ namespace Lipar.Entities.Domain.Financial
         /// <summary>
         /// gets or sets creator
         /// </summary>
-        public int UserId { get; set; }
         #endregion
 
         #region Navigations
         public EnabledType EnabledType { get; set; }
-        public User User { get; set; }
         public ICollection<BankPort> BankPorts { get; set; }
         #endregion
     }

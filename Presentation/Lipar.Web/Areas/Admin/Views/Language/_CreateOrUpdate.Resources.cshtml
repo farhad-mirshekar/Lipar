@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Routing
 
 @{
-    if (Model.Id > 0)
+    if (Model.Id != 0)
     {
         var gridModel = new DataTablesModel
         {

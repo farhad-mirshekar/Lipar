@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.Organization
 {
-   public class PositionType : BaseEntity
+   public class PositionType : BaseEntity<int>
     {
         #region Ctor
         public PositionType()

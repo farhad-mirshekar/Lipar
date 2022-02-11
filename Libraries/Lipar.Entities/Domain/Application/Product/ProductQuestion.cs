@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities.Domain.Core;
 using Lipar.Entities.Domain.Organization;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Application
 {
-   public class ProductQuestion : BaseEntity
+   public class ProductQuestion : BaseEntity<Guid>
     {
         #region Ctor
         public ProductQuestion()
@@ -25,11 +26,11 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the product
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         /// <summary>
         /// gets or sets the creator question
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         #endregion
 
         #region Navigations

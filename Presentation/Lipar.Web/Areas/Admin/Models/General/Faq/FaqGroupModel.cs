@@ -1,6 +1,8 @@
-﻿namespace Lipar.Web.Areas.Admin.Models.General
+﻿using System;
+
+namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class FaqGroupModel : BaseEntityModel
+    public class FaqGroupModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public FaqGroupModel()

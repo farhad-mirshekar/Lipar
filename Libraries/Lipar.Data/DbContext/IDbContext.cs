@@ -10,7 +10,7 @@ namespace Lipar.Data
         /// </summary>
         /// <typeparam name="TEntity">Entity type</typeparam>
         /// <returns>DbSet</returns>
-        DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         /// <summary>
         /// Save changes

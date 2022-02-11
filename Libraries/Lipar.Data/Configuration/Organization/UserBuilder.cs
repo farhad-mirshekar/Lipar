@@ -29,6 +29,10 @@ namespace Lipar.Data.Configuration.Organization
                 .HasForeignKey(u => u.EnabledTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasOne(u => u.Gender)
+                    .WithMany(g => g.Users)
+                    .HasForeignKey(u => u.GenderId)
+                    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

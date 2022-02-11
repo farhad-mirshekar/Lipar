@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Application
 {
-    public class ProductAttributeModel : BaseEntityModel
+    public class ProductAttributeModel : BaseEntityModel<Guid>
     {
         public ProductAttributeModel()
         {
@@ -11,8 +12,8 @@ namespace Lipar.Web.Models.Application
         public string TextPrompt { get; set; }
         public int AttributeControlTypeId { get; set; }
         public bool IsRequired { get; set; }
-        public int ProductId { get; set; }
-        public int ProductAttributeId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid ProductAttributeId { get; set; }
         public IList<ProductAttributeValueModel> ProductAttributeValues { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return menus.Select(menu =>
                  {
-                     var menuModel = menu.ToModel<MenuModel>();
+                     var menuModel = menu.ToModel<MenuModel, Guid>();
 
                      return menuModel;
                  });
@@ -49,7 +49,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             if (menu != null)
             {
-                model = menu.ToModel<MenuModel>();
+                model = menu.ToModel<MenuModel, Guid>();
                 PrepareMenuItemSearchModel(model.MenuItemSearchModel, menu);
             }
 
@@ -67,7 +67,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
             {
                 return menuItems.Select(menu =>
                 {
-                    var menuItemModel = menu.ToModel<MenuItemModel>();
+                    var menuItemModel = menu.ToModel<MenuItemModel, Guid>();
 
                     return menuItemModel;
                 });
@@ -79,7 +79,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         public MenuItemModel PrepareMenuItemModel(MenuItemModel model, MenuItem menuItem)
         {
             if (menuItem != null)
-                model = menuItem.ToModel<MenuItemModel>();
+                model = menuItem.ToModel<MenuItemModel, Guid>();
 
             _baseAdminModelFactory.PrepareForeignLinkType(model.AvailableForeignLinkType);
             _baseAdminModelFactory.PrepareViewStatusType(model.AvailableViewStatusType);

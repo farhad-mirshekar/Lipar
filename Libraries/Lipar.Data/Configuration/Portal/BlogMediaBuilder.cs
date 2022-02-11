@@ -10,9 +10,18 @@ namespace Lipar.Data.Configuration.Portal
         {
             builder.ToTable("Blog_Media_Mapping", schema: "Portal");
 
-            builder.Property(bm => bm.BlogId).IsRequired();
+            builder.HasKey(bm => bm.Id);
+            builder.Property(bm => bm.Id).ValueGeneratedOnAdd();
 
-            builder.Property(bm => bm.MediaId).IsRequired();
+            builder.HasOne(bm => bm.Blog)
+                .WithMany(b => b.BlogMedias)
+                .HasForeignKey(bm => bm.BlogId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(bm => bm.Media)
+                .WithMany(b => b.BlogMedias)
+                .HasForeignKey(bm => bm.MediaId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

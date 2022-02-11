@@ -32,11 +32,6 @@ namespace Lipar.Data.Configuration.Portal
                 .WithMany(u => u.StaticPages)
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(s => s.Remover)
-                .WithMany(u => u.RemoverStaticPages)
-                .HasForeignKey(s => s.RemoverId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

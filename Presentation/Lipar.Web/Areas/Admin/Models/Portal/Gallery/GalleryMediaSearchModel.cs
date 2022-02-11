@@ -1,4 +1,5 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
@@ -12,7 +13,7 @@ namespace Lipar.Web.Areas.Admin.Models.Portal
         #endregion
 
         #region Fields
-        public int GalleryId { get; set; }
+        public Guid GalleryId { get; set; }
         public GalleryMediaModel AddGalleryMediaModel { get; set; }
         #endregion
     }

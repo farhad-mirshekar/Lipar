@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class LanguageModel : BaseEntityModel
+    public class LanguageModel : BaseEntityModel<int>
     {
         public LanguageModel()
         {

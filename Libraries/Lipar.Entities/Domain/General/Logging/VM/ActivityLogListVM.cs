@@ -1,4 +1,6 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
    public class ActivityLogListVM : BaseListVM
     {

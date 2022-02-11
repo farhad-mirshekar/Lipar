@@ -2,9 +2,9 @@
 
 namespace Lipar.Web.Models
 {
-    public class BaseEntityModel
+    public class BaseEntityModel<T>
     {
-        public int Id { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public T Id { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

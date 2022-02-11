@@ -18,13 +18,12 @@ namespace Lipar.Data.Configuration.Organization
             builder.HasOne(up => up.User)
                 .WithMany(u => u.UserPasswords)
                 .HasForeignKey(up => up.UserId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(u => u.PasswordFormatType)
                 .WithMany(p => p.UserPasswords)
                 .HasForeignKey(u => u.PasswordFormatTypeId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

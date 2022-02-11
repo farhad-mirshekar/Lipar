@@ -56,7 +56,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return products.Select(product =>
                 {
-                    var productModel = product.ToModel<ProductModel>();
+                    var productModel = product.ToModel<ProductModel, Guid>();
 
                     return productModel;
                 });
@@ -68,7 +68,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if (product != null)
             {
-                model = product.ToModel<ProductModel>();
+                model = product.ToModel<ProductModel, Guid>();
 
                 //prepare product attribute mapping
                 PrepareProductAttributeMappingSearchModel(model.ProductAttributeMappingSearchModel, product);
@@ -112,7 +112,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productAttributeMappings.Select(productAttributeMapping =>
                 {
-                    var productAttributeMappingModel = productAttributeMapping.ToModel<ProductAttributeMappingModel>();
+                    var productAttributeMappingModel = productAttributeMapping.ToModel<ProductAttributeMappingModel, Guid>();
 
                     return productAttributeMappingModel;
                 });
@@ -129,7 +129,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
             if (productAttributeMapping != null)
             {
-                model = productAttributeMapping.ToModel<ProductAttributeMappingModel>();
+                model = productAttributeMapping.ToModel<ProductAttributeMappingModel, Guid>();
 
                 //prepare product attribute value
                 PrepareProductAttributeValueSearchModel(model.ProductAttributeValueSearchModel, productAttributeMapping);
@@ -163,7 +163,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productAttributeValues.Select(productAttributeValue =>
                 {
-                    var productAttributeValueModel = productAttributeValue.ToModel<ProductAttributeValueModel>();
+                    var productAttributeValueModel = productAttributeValue.ToModel<ProductAttributeValueModel, Guid>();
 
                     return productAttributeValueModel;
                 });
@@ -180,7 +180,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
             if (productAttributeValue != null)
             {
-                model = productAttributeValue.ToModel<ProductAttributeValueModel>();
+                model = productAttributeValue.ToModel<ProductAttributeValueModel, Guid>();
             }
 
             model.ProductAttributeMappingId = productAttributeMapping.Id;
@@ -203,7 +203,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productMediaList.Select(productMedia =>
                 {
-                    var productMediaModel = productMedia.ToModel<ProductMediaModel>();
+                    var productMediaModel = productMedia.ToModel<ProductMediaModel, Guid>();
 
                     var mediaResult = _mediaService.GetById(productMedia.MediaId);
                     if (mediaResult == null)
@@ -234,7 +234,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return relatedProducts.Select(relatedProduct =>
                 {
-                    var relatedProductModel = relatedProduct.ToModel<RelatedProductModel>();
+                    var relatedProductModel = relatedProduct.ToModel<RelatedProductModel, Guid>();
 
                     relatedProductModel.ProductName2 = _productService.GetById(relatedProduct.ProductId2)?.Name;
 

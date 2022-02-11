@@ -13,17 +13,13 @@ namespace Lipar.Data.Configuration.General
             builder.HasKey(f => f.Id);
             builder.Property(f => f.Id).ValueGeneratedOnAdd();
 
-            builder.Property(f => f.UserId).IsRequired();
             builder.Property(f => f.Question).HasColumnType("NVARCHAR(MAX)").IsRequired();
             builder.Property(f => f.Answer).HasColumnType("NVARCHAR(MAX)").IsRequired();
 
             builder.HasOne(f => f.FaqGroup)
                 .WithMany(f => f.Faqs)
-                .HasForeignKey(f => f.FaqGroupId);
-
-            builder.HasOne(f => f.User)
-                .WithMany(u => u.Faqs)
-                .HasForeignKey(f => f.UserId);
+                .HasForeignKey(f => f.FaqGroupId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

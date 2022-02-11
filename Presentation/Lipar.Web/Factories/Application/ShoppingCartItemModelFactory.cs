@@ -104,7 +104,7 @@ namespace Lipar.Web.Factories.Application
                                 };
                             }
 
-                            var productAttributeValueId = int.Parse(ctrlAttributes);
+                            var productAttributeValueId = Guid.Parse(ctrlAttributes);
                             var productAttributeValueModel = productAttribute.ProductAttributeValues.FirstOrDefault(x => x.Id == productAttributeValueId);
                             if (productAttributeValueModel == null)
                             {
@@ -140,7 +140,7 @@ namespace Lipar.Web.Factories.Application
 
                             _shoppingCartItemService.Add(shoppingCartItem);
 
-                            if (shoppingCartItem.Id > 0)
+                            if (shoppingCartItem.Id != Guid.Empty)
                             {
                                 return new ResultViewModel
                                 {
@@ -373,7 +373,7 @@ namespace Lipar.Web.Factories.Application
         #endregion
 
         #region Utilities
-        protected MediaModel PrepareMediaModel(int productId)
+        protected MediaModel PrepareMediaModel(Guid productId)
         {
             var mediaModel = new MediaModel();
             var productMedia = _productMediaService.List(new ProductMediaListVM

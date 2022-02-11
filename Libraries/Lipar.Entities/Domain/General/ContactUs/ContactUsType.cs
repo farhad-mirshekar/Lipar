@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.General
 {
-   public class ContactUsType : BaseEntity
+   public class ContactUsType : BaseEntity<int>
     {
         #region Ctor
         public ContactUsType()

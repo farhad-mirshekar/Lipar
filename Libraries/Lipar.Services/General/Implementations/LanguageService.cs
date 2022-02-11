@@ -4,6 +4,7 @@ using Lipar.Data;
 using Lipar.Entities.Domain.General;
 using Lipar.Services.General.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.General.Implementations
@@ -24,9 +25,6 @@ namespace Lipar.Services.General.Implementations
         #region Methods
         public void Add(Language model)
         {
-            var _workContext = EngineContext.Current.Resolve<IWorkContext>();
-            model.UserId = _workContext.CurrentUser.Id;
-
             _repository.Insert(model);
         }
 

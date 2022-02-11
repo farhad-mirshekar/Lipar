@@ -1,4 +1,5 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Portal
 {
@@ -8,7 +9,7 @@ namespace Lipar.Web.Areas.Admin.Models.Portal
         {
             AddBlogMediaModel = new BlogMediaModel();
         }
-        public int BlogId { get; set; }
+        public Guid BlogId { get; set; }
 
         public BlogMediaModel AddBlogMediaModel { get; set; }
     }

@@ -4,7 +4,7 @@ using System;
 
 namespace Lipar.Entities.Domain.Portal
 {
-   public class DynamicPageDetail : BaseEntity
+   public class DynamicPageDetail : BaseEntity<Guid>
     {
         #region Fields
         public string Name { get; set; }
@@ -15,15 +15,14 @@ namespace Lipar.Entities.Domain.Portal
         public string MetaDescription { get; set; }
         public int Priority { get; set; }
         public int ViewStatusId { get; set; }
-        public int DynamicPageId { get; set; }
-        public int UserId { get; set; }
-        public int? RemoverId { get; set; }
+        public Guid DynamicPageId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid? RemoverId { get; set; }
         public DateTime? RemoveDate { get; set; }
         #endregion
 
         #region Navigations
         public User User { get; set; }
-        public User Remover { get; set; }
         public DynamicPage DynamicPage { get; set; }
         public ViewStatus ViewStatus { get; set; }
         #endregion

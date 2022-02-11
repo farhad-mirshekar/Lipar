@@ -3,6 +3,7 @@ using Lipar.Services.Portal.Contracts;
 using Lipar.Web.Factories.Portal;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Controllers
 {
@@ -23,9 +24,9 @@ namespace Lipar.Web.Controllers
         #endregion
 
         #region Methods
-        public IActionResult Detail(int Id)
+        public IActionResult Detail(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return AccessDeniedView();
             }

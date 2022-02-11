@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.General;
+using System;
 
 namespace Lipar.Services.General.Contracts
 {
@@ -26,7 +27,7 @@ namespace Lipar.Services.General.Contracts
         /// <param name="id">email account id</param>
         /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <returns></returns>
-        EmailAccount GetById(int id, bool noTracking = false);
+        EmailAccount GetById(Guid id, bool noTracking = false);
 
         /// <summary>
         /// list email account method

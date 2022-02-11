@@ -2,7 +2,7 @@
 
 namespace Lipar.Entities.Domain.General
 {
-   public class QueuedEmail : BaseEntity
+   public class QueuedEmail : BaseEntity<Guid>
     {
         /// <summary>
         /// Gets or sets the priority
@@ -40,7 +40,7 @@ namespace Lipar.Entities.Domain.General
         /// <summary>
         /// Gets or sets the used email account identifier
         /// </summary>
-        public int EmailAccountId { get; set; }
+        public Guid EmailAccountId { get; set; }
 
         /// <summary>
         /// gets or sets the time send

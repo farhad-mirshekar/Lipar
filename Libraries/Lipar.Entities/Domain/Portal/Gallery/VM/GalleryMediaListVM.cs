@@ -1,8 +1,10 @@
-﻿namespace Lipar.Entities.Domain.Portal
+﻿using System;
+
+namespace Lipar.Entities.Domain.Portal
 {
     public class GalleryMediaListVM : BaseListVM
     {
-        public int? GalleryId { get; set; }
-        public int? MediaId { get; set; }
+        public Guid? GalleryId { get; set; }
+        public Guid? MediaId { get; set; }
     }
 }

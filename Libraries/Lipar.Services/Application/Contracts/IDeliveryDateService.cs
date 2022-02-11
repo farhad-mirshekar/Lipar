@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -26,7 +27,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        DeliveryDate GetById(int Id);
+        DeliveryDate GetById(Guid Id);
         /// <summary>
         /// list delivery date product method
         /// </summary>

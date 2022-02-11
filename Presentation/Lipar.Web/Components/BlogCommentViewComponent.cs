@@ -2,6 +2,7 @@
 using Lipar.Web.Factories.Portal;
 using Lipar.Web.Models.Portal;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Components
@@ -26,7 +27,7 @@ namespace Lipar.Web.Components
         #endregion
 
         #region Methods
-        public IViewComponentResult Invoke(int Id)
+        public IViewComponentResult Invoke(Guid Id)
         {
             var blogComments = _blogCommentService.List(new Entities.Domain.Portal.BlogCommentListVM { ParentId = Id });
             var blogCommentModels = new List<BlogCommentListModel>();

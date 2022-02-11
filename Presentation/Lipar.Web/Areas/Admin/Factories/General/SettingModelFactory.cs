@@ -4,7 +4,7 @@ using Lipar.Entities.Domain.Portal;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.General;
-
+using System;
 
 namespace Lipar.Web.Areas.Admin.Factories.General
 {
@@ -27,7 +27,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             var blogSettings = _settingService.LoadSettings<BlogSetting>();
 
-            var blogSettingModel = blogSettings.ToSettingsModel<BlogSettingModel>();
+            var blogSettingModel = blogSettings.ToSettingsModel<BlogSettingModel, Guid>();
 
             return blogSettingModel;
         }
@@ -36,7 +36,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             var orderSetting = _settingService.LoadSettings<OrderSetting>();
 
-            var orderSettingModel = orderSetting.ToSettingsModel<OrderSettingModel>();
+            var orderSettingModel = orderSetting.ToSettingsModel<OrderSettingModel, Guid>();
 
             return orderSettingModel;
         }
@@ -45,7 +45,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             var commonSetting = _settingService.LoadSettings<CommonSetting>();
 
-            var commonSettingModel = commonSetting.ToSettingsModel<CommonSettingModel>();
+            var commonSettingModel = commonSetting.ToSettingsModel<CommonSettingModel,Guid>();
 
             return commonSettingModel;
         }
@@ -54,7 +54,7 @@ namespace Lipar.Web.Areas.Admin.Factories.General
         {
             var securitySetting = _settingService.LoadSettings<SecuritySetting>();
 
-            var securitySettingModel = securitySetting.ToSettingsModel<SecuritySettingModel>();
+            var securitySettingModel = securitySetting.ToSettingsModel<SecuritySettingModel, Guid>();
 
             _baseAdminModelFactory.PreparePasswordFormatType(securitySettingModel.AvailablePasswordFormatTypes);
 

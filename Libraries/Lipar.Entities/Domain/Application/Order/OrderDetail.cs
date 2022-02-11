@@ -1,28 +1,28 @@
-﻿namespace Lipar.Entities.Domain.Application
+﻿using System;
+
+namespace Lipar.Entities.Domain.Application
 {
-    public class OrderDetail : BaseEntity
+    public class OrderDetail : BaseEntity<Guid>
     {
         #region Fields
         /// <summary>
         /// gets or sets the order id
         /// </summary>
-        public int OrderId { get; set; }
-        /// <summary>
-        /// gets or sets the product json
-        /// </summary>
-        public string ProductJson { get; set; }
-        /// <summary>
-        /// gets or sets the user json
-        /// </summary>
-        public string UserJson { get; set; }
-        /// <summary>
-        /// gets or sets the attribute product json
-        /// </summary>
-        public string AttributeProductJson { get; set; }
-        /// <summary>
-        /// gets or sets the shopping cart item json
-        /// </summary>
-        public string ShoppingCartItemJson { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal ProductPrice { get; set; }
+        public int? ProductDiscountTypeId { get; set; }
+        public decimal? ProductDiscountPrice { get; set; }
+        public Guid ProductCategoryId { get; set; }
+        public string ProductCategoryName { get; set; }
+        public Guid? ShippingCostId { get; set; }
+        public string ShippingCostName { get; set; }
+        public int ShippingCostPriority { get; set; }
+        public Guid? DeliveryDateId { get; set; }
+        public string DeliveryDateName { get; set; }
+        public int DeliveryDatePriority { get; set; }
+        public string ProductAttributeJson { get; set; }
         /// <summary>
         /// gets or sets the quantity
         /// </summary>

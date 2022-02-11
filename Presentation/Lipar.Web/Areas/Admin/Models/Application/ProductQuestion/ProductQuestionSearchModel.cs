@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Lipar.Web.Framework.Models;
 using System.Collections.Generic;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
@@ -10,7 +11,7 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         {
             AvailableViewStatus = new List<SelectListItem>();
         }
-        public int? ProductId { get; set; }
+        public Guid? ProductId { get; set; }
         public int? ViewStatusId { get; set; }
 
         #region Select

@@ -39,10 +39,10 @@ namespace Lipar.Services.Portal.Implementations
                         join b in _blogRepository.Table on bm.BlogId equals b.Id
                         select bm;
 
-            if (listVM.BlogId.HasValue && listVM.BlogId.Value > 0)
+            if (listVM.BlogId.HasValue && listVM.BlogId.Value != Guid.Empty)
                 query = query.Where(x => x.BlogId == listVM.BlogId.Value);
 
-            if (listVM.MediaId.HasValue && listVM.MediaId.Value > 0)
+            if (listVM.MediaId.HasValue && listVM.MediaId.Value != Guid.Empty)
                 query = query.Where(x => x.MediaId == listVM.MediaId.Value);
 
             var blogMediaList = new PagedList<BlogMedia>(query, listVM.PageIndex, listVM.PageSize);

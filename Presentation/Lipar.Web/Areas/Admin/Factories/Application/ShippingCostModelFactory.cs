@@ -3,6 +3,7 @@ using Lipar.Services.Application.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Application
@@ -42,7 +43,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return shippingCosts.Select(shippingCost =>
                 {
-                    var shippingCostModel = shippingCost.ToModel<ShippingCostModel>();
+                    var shippingCostModel = shippingCost.ToModel<ShippingCostModel, Guid>();
 
                     return shippingCostModel;
                 });
@@ -55,7 +56,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if(shippingCost != null)
             {
-                model = shippingCost.ToModel<ShippingCostModel>();
+                model = shippingCost.ToModel<ShippingCostModel, Guid>();
             }
 
             _baseAdminModelFactory.PrepareEnabledType(model.AvailableEnabledType);

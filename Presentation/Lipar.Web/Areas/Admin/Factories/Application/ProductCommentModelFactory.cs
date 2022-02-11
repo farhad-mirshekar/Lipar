@@ -5,6 +5,7 @@ using Lipar.Services.Application.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Models;
+using System;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Application
@@ -44,7 +45,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             {
                 return productComments.Select(productComment =>
                 {
-                    var productCommentModel = productComment.ToModel<ProductCommentModel>();
+                    var productCommentModel = productComment.ToModel<ProductCommentModel, Guid>();
 
                     return productCommentModel;
                 });
@@ -57,7 +58,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         {
             if(productComment != null)
             {
-                model = productComment.ToModel<ProductCommentModel>();
+                model = productComment.ToModel<ProductCommentModel, Guid>();
             }
 
             //prepare comment status type

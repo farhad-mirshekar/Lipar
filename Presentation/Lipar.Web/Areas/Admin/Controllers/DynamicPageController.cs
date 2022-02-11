@@ -7,6 +7,9 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Portal;
 using Lipar.Web.Framework.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Lipar.Web.Framework.MVC.Filters;
+using Lipar.Web.Areas.Admin.Helpers;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -16,7 +19,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IDynamicPageModelFactory _dynamicPageModelFactory;
         private readonly IDynamicPageService _dynamicPageService;
         private readonly IDynamicPageDetailService _dynamicPageDetailService;
-        private readonly ICommandService _commandService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IActivityLogService _activityLogService;
         private readonly IUrlRecordService _urlRecordService;
@@ -26,7 +28,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public DynamicPageController(IDynamicPageModelFactory dynamicPageModelFactory
                                    , IDynamicPageService dynamicPageService
                                    , IDynamicPageDetailService dynamicPageDetailService
-                                   , ICommandService commandService
                                    , ILocaleStringResourceService localeStringResourceService
                                    , IActivityLogService activityLogService
                                    , IUrlRecordService urlRecordService)
@@ -34,7 +35,6 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _dynamicPageModelFactory = dynamicPageModelFactory;
             _dynamicPageService = dynamicPageService;
             _dynamicPageDetailService = dynamicPageDetailService;
-            _commandService = commandService;
             _localeStringResourceService = localeStringResourceService;
             _activityLogService = activityLogService;
             _urlRecordService = urlRecordService;
@@ -42,13 +42,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         #endregion
 
         #region Dynamic Page Methods
+
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult Index()
             => RedirectToAction("List");
 
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult List()
             => View(new DynamicPageSearchModel());
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult List(DynamicPageSearchModel searchModel)
         {
             var model = _dynamicPageModelFactory.PrepareDynamicPageListModel(searchModel);
@@ -56,36 +60,26 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult Create()
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if(!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _dynamicPageModelFactory.PrepareDynamicPageModel(new DynamicPageModel(), null);
             
             return View(model);
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult Create(DynamicPageModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var dynamicPage = model.ToEntity<DynamicPage>();
+                var dynamicPage = model.ToEntity<DynamicPage, Guid>();
 
                 _dynamicPageService.Add(dynamicPage);
 
                 //insert activity log for create dynamic page
-                _activityLogService.Add("Admin.DynamicPage.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Create"), dynamicPage);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Create"), dynamicPage);
 
                 return RedirectToAction("Edit", new { Id = dynamicPage.Id });
             }
@@ -95,15 +89,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
+        public IActionResult Edit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToAction("List");
 
             var dynamicPage = _dynamicPageService.GetById(Id);
@@ -118,22 +107,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult Edit(DynamicPageModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var dynamicPage = model.ToEntity<DynamicPage>();
+                var dynamicPage = model.ToEntity<DynamicPage, Guid>();
 
                 _dynamicPageService.Edit(dynamicPage);
 
                 //insert activity log for edit dynamic page
-                _activityLogService.Add("Admin.DynamicPage.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Edit"), dynamicPage);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Edit"), dynamicPage);
 
                 return RedirectToAction("Edit", new { Id = dynamicPage.Id });
             }
@@ -144,15 +128,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
+        public IActionResult Delete(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return RedirectToAction("List");
 
             var dynamicPage = _dynamicPageService.GetById(Id);
@@ -164,22 +143,18 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _dynamicPageService.Delete(dynamicPage);
 
             //insert activity log for delete dynamic page
-            _activityLogService.Add("Admin.DynamicPage.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Delete"), dynamicPage);
+            _activityLogService.Add("Admin.Delete", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPage.Delete"), dynamicPage);
 
             return RedirectToAction("List");
         }
         #endregion
 
         #region Dynamic Page Detail Methods
-        public IActionResult DynamicPageDetails(int? filterByPageId)
-        {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
 
-            var dynamicPage = _dynamicPageService.GetById(filterByPageId ?? 0);
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
+        public IActionResult DynamicPageDetails(Guid? filterByPageId)
+        {
+            var dynamicPage = _dynamicPageService.GetById(filterByPageId ?? Guid.Empty);
             if (dynamicPage == null && filterByPageId.HasValue)
                 return RedirectToAction("DynamicPageDetails");
 
@@ -188,27 +163,17 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult DynamicPageDetails(DynamicPageDetailSearchModel searchModel)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var model = _dynamicPageModelFactory.PrepareDynamicPageDetailListModel(searchModel);
             return Json(model);
         }
 
-        public IActionResult DynamicPageDetailCreate(int pageId)
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
+        public IActionResult DynamicPageDetailCreate(Guid pageId)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
-            if (pageId == 0)
+            if (pageId == Guid.Empty)
                 return RedirectToAction("List");
 
             var dynamicPage = _dynamicPageService.GetById(pageId);
@@ -228,24 +193,19 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult DynamicPageDetailCreate(DynamicPageDetailModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var dynamicPageDetail = model.ToEntity<DynamicPageDetail>();
+                var dynamicPageDetail = model.ToEntity<DynamicPageDetail, Guid>();
 
                 _dynamicPageDetailService.Add(dynamicPageDetail);
 
                 //insert activity log for create dynamic page
-                _activityLogService.Add("Admin.DynamicPageDetail.Create", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPageDetail.Create"), dynamicPageDetail);
+                _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPageDetail.Create"), dynamicPageDetail);
 
-                _urlRecordService.SaveSlug<DynamicPageDetail>(dynamicPageDetail, dynamicPageDetail.Title, 0);
+                //_urlRecordService.SaveSlug<DynamicPageDetail>(dynamicPageDetail, dynamicPageDetail.Title, 0);
 
                 return RedirectToAction("DynamicPageDetailEdit", new { Id = dynamicPageDetail.Id });
             }
@@ -255,14 +215,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult DynamicPageDetailEdit(int Id)
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
+        public IActionResult DynamicPageDetailEdit(Guid Id)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             var dynamicPageDetail = _dynamicPageDetailService.GetById(Id);
             if (dynamicPageDetail == null || (dynamicPageDetail.RemoverId.HasValue))
                 return RedirectToAction("List");
@@ -272,24 +227,19 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckingPermissions(permissions: CommandNames.ManageDynamicPage)]
         public IActionResult DynamicPageDetailEdit(DynamicPageDetailModel model)
         {
-            var permission = _commandService.CheckPermission("ManageDynamicPage");
-            if (!permission)
-            {
-                return AccessDeniedView();
-            }
-
             if (ModelState.IsValid)
             {
-                var dynamicPageDetail = model.ToEntity<DynamicPageDetail>();
+                var dynamicPageDetail = model.ToEntity<DynamicPageDetail, Guid>();
 
                 _dynamicPageDetailService.Edit(dynamicPageDetail);
 
                 //insert activity log for create dynamic page
-                _activityLogService.Add("Admin.DynamicPageDetail.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPageDetail.Edit"), dynamicPageDetail);
+                _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.DynamicPageDetail.Edit"), dynamicPageDetail);
 
-                _urlRecordService.SaveSlug<DynamicPageDetail>(dynamicPageDetail, dynamicPageDetail.Title, 0);
+                //_urlRecordService.SaveSlug<DynamicPageDetail>(dynamicPageDetail, dynamicPageDetail.Title, 0);
 
                 return RedirectToAction("DynamicPageDetailEdit", new { Id = dynamicPageDetail.Id });
             }

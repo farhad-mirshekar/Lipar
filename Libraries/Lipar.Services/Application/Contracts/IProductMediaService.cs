@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using System;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -26,12 +27,12 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="Id">id</param>
         /// <returns></returns>
-        ProductMedia GetById(int Id);
+        ProductMedia GetById(Guid Id);
         /// <summary>
         /// retrieve product media by media id method
         /// </summary>
         /// <param name="mediaId"></param>
         /// <returns></returns>
-        ProductMedia GetByMediaId(int mediaId);
+        ProductMedia GetByMediaId(Guid mediaId);
     }
 }

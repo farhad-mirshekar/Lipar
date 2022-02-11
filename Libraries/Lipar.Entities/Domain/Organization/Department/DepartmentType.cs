@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.Organization
 {
-   public class DepartmentType : BaseEntity
+   public class DepartmentType : BaseEntity<int>
     {
         #region Ctor
         public DepartmentType()

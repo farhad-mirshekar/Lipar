@@ -1,6 +1,8 @@
-﻿namespace Lipar.Entities.Domain.General
+﻿using System;
+
+namespace Lipar.Entities.Domain.General
 {
-   public class MessageTemplate : BaseEntity
+   public class MessageTemplate : BaseEntity<Guid>
     {
         #region Fields
         /// <summary>
@@ -22,7 +24,7 @@
         /// <summary>
         /// gets or sets the email address
         /// </summary>
-        public int EmailAccountId { get; set; }
+        public Guid EmailAccountId { get; set; }
         #endregion
 
         #region Navigations

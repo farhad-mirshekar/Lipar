@@ -7,7 +7,7 @@ using Lipar.Entities.Domain.Financial;
 
 namespace Lipar.Entities.Domain.Core
 {
-   public class EnabledType : BaseEntity
+   public class EnabledType : BaseEntity<int>
     {
         #region Ctor
         public EnabledType()

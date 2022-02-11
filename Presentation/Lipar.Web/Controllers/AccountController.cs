@@ -64,14 +64,18 @@ namespace Lipar.Web.Controllers
         #region Login / Register / SignOut
         public IActionResult Login()
         {
-            return View();
+            var loginModel = new LoginModel();
+
+            _userModelFactory.PrepareLoginModel(loginModel);
+
+            return View(loginModel);
         }
 
         [HttpPost]
         public IActionResult Login(LoginModel model, string returnUrl, string captcha)
         {
-            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
-            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInLoginPage").Value, out bool showCaptchaInLoginPage);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha")?.Value, out bool showCaptcha);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInLoginPage")?.Value, out bool showCaptchaInLoginPage);
 
             if (showCaptcha && showCaptchaInLoginPage)
             {

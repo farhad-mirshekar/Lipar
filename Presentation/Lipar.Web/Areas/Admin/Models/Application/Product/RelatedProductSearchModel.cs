@@ -1,9 +1,10 @@
 ﻿using Lipar.Web.Framework.Models;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
     public class RelatedProductSearchModel : BaseSearchModel
     {
-        public int ProductId1 { get; set; }
+        public Guid ProductId1 { get; set; }
     }
 }

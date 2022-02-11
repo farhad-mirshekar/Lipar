@@ -11,15 +11,12 @@ namespace Lipar.Services.General.Implementations
     {
         #region Fields
         private readonly IRepository<Faq> _repository;
-        private readonly IWorkContext _workContext;
         #endregion
 
         #region Ctor
-        public FaqService(IRepository<Faq> repository
-                        , IWorkContext workContext)
+        public FaqService(IRepository<Faq> repository)
         {
             _repository = repository;
-            _workContext = workContext;
         }
         #endregion
 
@@ -28,8 +25,6 @@ namespace Lipar.Services.General.Implementations
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
-
-            model.UserId = _workContext.CurrentUser.Id;
 
             _repository.Insert(model);
         }
@@ -47,19 +42,17 @@ namespace Lipar.Services.General.Implementations
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
-            model.UserId = _workContext.CurrentUser.Id;
-
             _repository.Update(model);
         }
 
-        public Faq GetById(int Id)
+        public Faq GetById(Guid Id)
         => _repository.GetById(Id);
 
         public IPagedList<Faq> List(FaqListVM listVM)
         {
             var query = _repository.Table;
 
-            if (listVM.FaqGroupId.HasValue && listVM.FaqGroupId.Value != 0)
+            if (listVM.FaqGroupId.HasValue && listVM.FaqGroupId.Value != Guid.Empty)
                 query = query.Where(f => f.FaqGroupId == listVM.FaqGroupId);
 
             var models = new PagedList<Faq>(query, listVM.PageIndex, listVM.PageSize);

@@ -32,8 +32,6 @@ namespace Lipar.Services.Application.Implementations
                 throw new ArgumentNullException(nameof(model));
             }
 
-            model.UserId = _workContext.CurrentUser.Id;
-
             _repository.Insert(model);
         }
 
@@ -57,14 +55,12 @@ namespace Lipar.Services.Application.Implementations
                 throw new ArgumentNullException(nameof(model));
             }
 
-            model.UserId = _workContext.CurrentUser.Id;
-
             _repository.Update(model);
         }
 
-        public ShippingCost GetById(int Id)
+        public ShippingCost GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
             {
                 return null;
             }

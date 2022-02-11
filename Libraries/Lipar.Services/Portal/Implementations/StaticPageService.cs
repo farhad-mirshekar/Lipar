@@ -52,9 +52,9 @@ namespace Lipar.Services.Portal.Implementations
             _repository.Update(model);
         }
 
-        public StaticPage GetById(int Id)
+        public StaticPage GetById(Guid Id)
         {
-            if (Id == 0)
+            if (Id == Guid.Empty)
                 return null;
 
             return _repository.GetById(Id);

@@ -1,8 +1,10 @@
-﻿namespace Lipar.Entities.Domain.Application
+﻿using System;
+
+namespace Lipar.Entities.Domain.Application
 {
    public class ProductAttributeMappingListVM : BaseListVM
     {
-        public int? ProductId { get; set; }
-        public int? AttributeId { get; set; }
+        public Guid? ProductId { get; set; }
+        public Guid? AttributeId { get; set; }
     }
 }

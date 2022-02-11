@@ -1,8 +1,9 @@
 ﻿using Lipar.Entities.Domain.General;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Models.General
 {
-    public class ContactUsModel : BaseEntityModel
+    public class ContactUsModel : BaseEntityModel<Guid>
     {
         #region Fields
         /// <summary>

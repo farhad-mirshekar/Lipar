@@ -1,6 +1,7 @@
 ﻿using Lipar.Services.Application.Contracts;
 using Lipar.Web.Factories.Application;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Components
 {
@@ -16,7 +17,7 @@ namespace Lipar.Web.Components
         private readonly IProductService _productService;
         private readonly IProductModelFactory _productModelFactory;
 
-        public IViewComponentResult Invoke(int productId)
+        public IViewComponentResult Invoke(Guid productId)
         {
             var product = _productService.GetById(productId, true);
 

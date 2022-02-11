@@ -1,10 +1,11 @@
 ﻿using Lipar.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Admin.Models.Application
 {
-    public class CategoryModel : BaseEntityModel
+    public class CategoryModel : BaseEntityModel<Guid>
     {
         #region Ctor
         public CategoryModel()
@@ -19,7 +20,7 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         public string NameCrumb { get; set; }
         public string Description { get; set; }
         public string MetaDescription { get; set; }
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public int EnabledTypeId { get; set; }
         public bool IncludeInTopMenu { get; set; }
         #endregion

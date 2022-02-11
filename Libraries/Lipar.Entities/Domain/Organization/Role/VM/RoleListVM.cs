@@ -1,10 +1,12 @@
-﻿namespace Lipar.Entities.Domain.Organization
+﻿using System;
+
+namespace Lipar.Entities.Domain.Organization
 {
     public class RoleListVM : BaseListVM
     {
-        public int? CenterId { get; set; }
-        public int? PositionId { get; set; }
-        public int? UserId { get; set; }
+        public Guid? CenterId { get; set; }
+        public Guid? PositionId { get; set; }
+        public Guid? UserId { get; set; }
         public string Name { get; set; }
     }
 }

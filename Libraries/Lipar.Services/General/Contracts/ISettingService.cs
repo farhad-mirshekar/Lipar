@@ -8,7 +8,7 @@ namespace Lipar.Services.General.Contracts
 {
     public interface ISettingService
     {
-        Setting GetById(int Id);
+        Setting GetById(Guid Id);
         void Delete(Setting model);
         Setting GetSetting(string Name);
         T GetSettingByKey<T>(string Key, T DefaultValue = default);

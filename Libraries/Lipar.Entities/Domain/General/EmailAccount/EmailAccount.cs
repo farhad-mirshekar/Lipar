@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Entities.Domain.General
 {
     /// <summary>
     /// email account
     /// </summary>
-   public class EmailAccount : BaseEntity
+   public class EmailAccount : BaseEntity<Guid>
     {
         #region Ctor
         public EmailAccount()

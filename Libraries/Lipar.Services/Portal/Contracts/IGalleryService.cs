@@ -1,5 +1,6 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Portal;
+using System;
 
 namespace Lipar.Services.Portal.Contracts
 {
@@ -9,6 +10,6 @@ namespace Lipar.Services.Portal.Contracts
         void Edit(Gallery model);
         void Delete(Gallery model);
         IPagedList<Gallery> List(GalleryListVM listVM);
-        Gallery GetById(int Id);
+        Gallery GetById(Guid Id);
     }
 }

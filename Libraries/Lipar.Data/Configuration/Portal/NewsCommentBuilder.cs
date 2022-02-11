@@ -15,8 +15,6 @@ namespace Lipar.Data.Configuration.Portal
 
             builder.Property(bc => bc.Body).HasColumnType("NVARCHAR(MAX)").IsRequired();
 
-            builder.Property(bc => bc.UserId).IsRequired();
-
             builder.HasOne(bc => bc.News)
                 .WithMany(b => b.NewsComments)
                 .HasForeignKey(bc => bc.NewsId)
@@ -35,12 +33,6 @@ namespace Lipar.Data.Configuration.Portal
             builder.HasOne(bc => bc.User)
                 .WithMany(u => u.NewsComments)
                 .HasForeignKey(bc => bc.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-
-            builder.HasOne(bc => bc.Remover)
-                .WithMany(u => u.RemoverNewsComments)
-                .HasForeignKey(bc => bc.RemoverId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

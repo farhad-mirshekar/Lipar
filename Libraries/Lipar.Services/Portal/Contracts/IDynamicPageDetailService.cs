@@ -2,6 +2,7 @@
 using Lipar.Entities;
 using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Portal;
+using System;
 
 namespace Lipar.Services.Portal.Contracts
 {
@@ -27,7 +28,7 @@ namespace Lipar.Services.Portal.Contracts
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        DynamicPageDetail GetById(int Id);
+        DynamicPageDetail GetById(Guid Id);
         /// <summary>
         /// list dynamic page detail
         /// </summary>
@@ -40,6 +41,6 @@ namespace Lipar.Services.Portal.Contracts
         /// <param name="DynamicPageId">dynamic page id</param>
         /// <param name="viewStatus">view status enum</param>
         /// <returns></returns>
-        int GetDynamicPageDetailCount(int DynamicPageId, ViewStatusEnum viewStatus);
+        int GetDynamicPageDetailCount(Guid DynamicPageId, ViewStatusEnum viewStatus);
     }
 }
