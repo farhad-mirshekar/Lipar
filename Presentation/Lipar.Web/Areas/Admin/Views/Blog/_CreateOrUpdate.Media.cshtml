@@ -103,7 +103,7 @@
             $('#media-add-btn').attr('disabled', true);
            var MediaId= $("#@Html.IdFor(model=>model.BlogMediaSearchModel.AddBlogMediaModel.MediaId)").val();
 
-            if (MediaId == 0) {
+            if (MediaId == null || MediaId.length == 0) {
                 $('#media-add-btn').attr('disabled', false);
                 return;
             }

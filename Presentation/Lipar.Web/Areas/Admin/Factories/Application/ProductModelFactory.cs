@@ -58,6 +58,8 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                 {
                     var productModel = product.ToModel<ProductModel, Guid>();
 
+                    productModel.NumberProductQuestions = product.ProductQuestions.Count();
+
                     return productModel;
                 });
             });

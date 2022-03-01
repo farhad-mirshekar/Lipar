@@ -119,6 +119,8 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         /// </summary>
         public Guid? DeliveryDateId { get; set; }
 
+        public int NumberProductQuestions { get; set; }
+
         public ProductAttributeMappingSearchModel ProductAttributeMappingSearchModel { get; set; }
         public ProductMediaSearchModel ProductMediaSearchModel { get; set; }
         /// <summary>

@@ -35,13 +35,13 @@ namespace Lipar.Web.Infrastructure
             endpointRouteBuilder.MapControllerRoute("CompareProducts", "CompareProducts",
                 new { controller = "Product", action = "CompareProducts" });
 
-            endpointRouteBuilder.MapControllerRoute("AddProductToCompare", "CompareProduct/add/{ProductId:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("AddProductToCompare", "CompareProduct/add/{ProductId:guid}",
                 new { controller = "Product", action = "AddProductInCompareList" });
 
             endpointRouteBuilder.MapControllerRoute("ClearCompareList", $"{pattern}CompareProduct/ClearAll",
                 new { controller = "Product", action = "ClearCompareList" });
 
-            endpointRouteBuilder.MapControllerRoute("RemoveProductFromCompareList", "CompareProduct/remove/{ProductId:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("RemoveProductFromCompareList", "CompareProduct/remove/{ProductId:guid}",
                new { controller = "Product", action = "RemoveProductFromCompareList" });
 
             endpointRouteBuilder.MapControllerRoute("AddProductComment", "Product/CreateComment",
@@ -50,19 +50,19 @@ namespace Lipar.Web.Infrastructure
             endpointRouteBuilder.MapControllerRoute("AddProductQuestion", "Product/CreateQuestion",
                 new { controller = "Product", action = "ProductQuestionAdd" });
 
-            endpointRouteBuilder.MapControllerRoute("AddToCart", "Cart/Create/{ProductId:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("AddToCart", "Cart/Create/{ProductId:guid}",
                 new { controller = "ShoppingCartItem", action = "ShoppingCartItemCreate" });
 
             endpointRouteBuilder.MapControllerRoute("ShoppingCartView", "Cart",
                 new { controller = "ShoppingCartItem", action = "Cart" });
             
-            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityPlus", "Cart/QuantityPlus/{Id:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityPlus", "Cart/QuantityPlus/{Id:guid}",
                 new { controller = "ShoppingCartItem", action = "CartItemPlus" });
 
-            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityMinus", "Cart/QuantityMinus/{Id:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityMinus", "Cart/QuantityMinus/{Id:guid}",
                new { controller = "ShoppingCartItem", action = "CartItemMinus" });
 
-            endpointRouteBuilder.MapControllerRoute("ChangeLanguage", "ChangeLanguage/{LanguageId:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("ChangeLanguage", "ChangeLanguage/{LanguageId:guid}",
                 new { controller = "Common", action = "SetLanguage" });
 
             endpointRouteBuilder.MapControllerRoute("Register", $"{pattern}Register/"
@@ -77,10 +77,10 @@ namespace Lipar.Web.Infrastructure
             endpointRouteBuilder.MapControllerRoute("AddUserAddress", $"Cart/UserAddress/Create",
                 new { controller = "ShoppingCartItem", action = "UserAddressCreate" });
 
-            endpointRouteBuilder.MapControllerRoute("UserAddressEdit", "Cart/UserAddress/Edit/{Id:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("UserAddressEdit", "Cart/UserAddress/Edit/{Id:guid}",
                 new { controller = "ShoppingCartItem", action = "UserAddressEdit" });
 
-            endpointRouteBuilder.MapControllerRoute("UserAddressDelete", "Cart/UserAddress/Delete/{Id:min(0)}",
+            endpointRouteBuilder.MapControllerRoute("UserAddressDelete", "Cart/UserAddress/Delete/{Id:guid}",
                  new { controller = "ShoppingCartItem", action = "UserAddressDelete" });
 
             endpointRouteBuilder.MapControllerRoute("PasswordRecovery", "Password-Recovery",

@@ -1,7 +1,9 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Application.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -48,5 +50,7 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="Id">product id</param>
         /// <returns></returns>
         string GetProductName(Guid Id);
+
+        IQueryable<ProductDTO> GetProductDTOs(ProductListVM listVM);
     }
 }

@@ -81,6 +81,25 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
             return Json(new { Result = true });
         }
+
+        [HttpPost]
+        public IActionResult Delete(Guid id)
+        {
+            if(id == Guid.Empty)
+            {
+                throw new Exception("Media NotFound");
+            }
+
+            var media = _mediaService.GetById(id);
+            if(media == null)
+            {
+                throw new Exception("Media NotFound");
+            }
+
+            _mediaService.Delete(media);
+
+            return Json(new { success = true });
+        }
         #endregion
 
         #region Froala-Editor

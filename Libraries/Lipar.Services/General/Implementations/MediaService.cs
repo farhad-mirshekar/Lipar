@@ -51,9 +51,10 @@ namespace Lipar.Services.General.Implementations
 
             var media = new Media
             {
-                AltAttribute = null,
+                AltAttribute = string.Empty,
                 Name = fileName,
-                MimeType = fileExtension
+                MimeType = fileExtension,
+                CreationDate = CommonHelper.GetCurrentDateTime()
             };
             _repository.Insert(media);
 
@@ -110,8 +111,6 @@ namespace Lipar.Services.General.Implementations
                 throw new ArgumentNullException(nameof(model));
 
             DeletePicture(model.Id, $"{model.Name}{model.MimeType}");
-
-           // _mediaBinaryRepository.Delete(new MediaBinary { MediaId = model.Id });
 
              _repository.Delete(model);
         }

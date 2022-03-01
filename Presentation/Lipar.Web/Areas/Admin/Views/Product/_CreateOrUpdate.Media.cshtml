@@ -34,7 +34,7 @@
 
             gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductMediaModel.Id))
             {
-                Title = T("Common.Edit.Button").Text,
+                Title = "",
                 Width = "100",
                 ClassName = LiparColumnClassDefaults.Button,
                 Render = new RenderButtonsInlineEdit()
@@ -104,7 +104,7 @@
             $('#media-add-btn').attr('disabled', true);
 
             var MediaId = $("#@Html.IdFor(model => model.ProductMediaSearchModel.AddProductMediaModel.MediaId)").val();
-            if (MediaId == 0) {
+            if (MediaId == null || MediaId.length == 0) {
                 $('#media-add-btn').attr('disabled', false);
                 return;
             }
@@ -114,7 +114,7 @@
                 AltAttribute: $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.AltAttribute)").val(),
                 Priority: $("#@Html.IdFor(model=>model.ProductMediaSearchModel.AddProductMediaModel.Priority)").val(),
                 MediaId: MediaId,
-                ProductId:@Model.Id
+                ProductId:'@Model.Id'
             };
 
             addAntiForgeryToken(postData);

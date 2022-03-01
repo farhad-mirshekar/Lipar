@@ -5,7 +5,7 @@
 @{
     //other variables
     var random = Guid.NewGuid();
-    var clientId = "picture-" + random;
+    var clientId = $"picture-{random}";
     var picture = _mediaService.GetById(Model);
 }
 
@@ -73,7 +73,7 @@
     </div>
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#@(clientId)").fineUploader({
             request: {
                 endpoint: '@(Html.Raw(Url.Action("Upload","Media")))'
@@ -87,11 +87,25 @@
                 $("#@(clientId + "remove")").show();
             }
         });
-        $("#@(clientId + "remove")").click(function(e) {
-            $("#@(clientId + "image")").html("<img src='" + responseJSON.imageUrl + "' class='img-fluid' />");
-            $("#@(clientId + "value") input").val(0);
-            $("#@(clientId) .qq-upload-list-selector").empty();
-            $(this).hide();
+        $("#@(clientId + "remove")").click(function (e) {
+
+            var mediaId = $("#@(clientId + "value") input").val();
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: "@Html.Raw(Url.Action("Delete", "Media"))",
+                data: { id: mediaId },
+                success: function (response) {
+                    if (response.success) {
+                        $("#@(clientId + "image")").html("<img src='' class='img-fluid' />");
+                        $("#@(clientId + "value") input").val(null);
+                        $("#@(clientId) .qq-upload-list-selector").empty();
+                        $(this).hide();
+                    }
+                }
+            })
         });
     });
 </script>

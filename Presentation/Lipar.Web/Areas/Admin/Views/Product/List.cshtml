@@ -42,7 +42,7 @@
                     Length = Model.PageSize,
                     LengthMenu = Model.AvailablePageSizes,
                     Filters = new List<FilterParameter>()
-                                {
+                                    {
                         new FilterParameter(nameof(Model.Name))
                     }
                 };
@@ -71,12 +71,29 @@
 
                 gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Id))
                 {
+                    Title = T("Product.Field.NumberProductQuestion").Text,
+                    Render = new RenderCustom("renderNumberProductQuestion"),
+                    Width = "200"
+                });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(ProductModel.Id))
+                {
                     Title = "",
                     Width = "10",
                     ClassName = LiparColumnClassDefaults.Button,
                     Render = new RenderButtonEdit(new DataUrl("Edit"))
                 });
                 @await Html.PartialAsync("Table", gridModel)
+
+
+                <script>
+                    function renderNumberProductQuestion(data, type, row, meta) {
+                        var link = "ProductQuestionList?filterByProductId=" + data;
+                        var title ='@T("Product.Field.NumberProductQuestion")';
+
+                        return `<a class='btn btn-primary' href='${link}'>${title} - ${row.NumberProductQuestions}</a>`;
+                    }
+                </script>
             }
         </div>
     </section>

@@ -101,5 +101,11 @@
         /// Manage Faq Group
         /// </summary>
         public const string ManageFaqGroup = "ManageFaqGroup";
+
+
+        /// <summary>
+        /// Manage Product Question
+        /// </summary>
+        public const string ManageProductQuestion = "ManageProductQuestion";
     }
 }

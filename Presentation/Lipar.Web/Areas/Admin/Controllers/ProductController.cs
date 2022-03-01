@@ -635,7 +635,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
         #region Product Question Methods
 
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductQuestionList(Guid? filterByProductId)
         {
             var product = _productService.GetById(filterByProductId.Value, true);
@@ -651,7 +651,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductQuestionList(ProductQuestionSearchModel searchModel)
         {
             var model = _productQuestionModelFactory.PrepareProductQuestionListModel(searchModel);
@@ -659,7 +659,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductQuestionEdit(Guid Id)
         {
             if(Id == Guid.Empty)
@@ -679,7 +679,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductQuestionEdit(ProductQuestionModel model)
         {
             if (ModelState.IsValid)
@@ -699,7 +699,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductAnswersList(ProductAnswersSearchModel searchModel)
         {
             if(searchModel != null && searchModel.ProductQuestionId.HasValue && searchModel.ProductQuestionId.Value != Guid.Empty)
@@ -716,7 +716,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductAnswersEdit(Guid Id)
         {
             var productAnswer = _productAnswersService.GetById(Id, true);
@@ -731,7 +731,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [CheckingPermissions(permissions: CommandNames.ManageProductComment)]
+        [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductAnswersEdit(ProductAnswersModel model)
         {
             if (ModelState.IsValid)
