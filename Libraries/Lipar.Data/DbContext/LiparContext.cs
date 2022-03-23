@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lipar.Core.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +11,6 @@ namespace Lipar.Data
     {
         public LiparContext(DbContextOptions<LiparContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,7 +28,16 @@ namespace Lipar.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=fm-pc;Integrated Security=true;Initial Catalog=LiparDb;Persist Security Info=True;;MultipleActiveResultSets=true;");
+            var _configuration = EngineContext.Current.Resolve<IConfiguration>();
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("connection string is null");
+            }
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
         DbSet<TEntity> IDbContext.Set<TEntity>() 
         {

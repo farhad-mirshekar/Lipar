@@ -1,6 +1,8 @@
 ﻿using Lipar.Core;
+using Lipar.Core.Caching;
 using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.General;
+using Lipar.Services.General;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Factories;
 using Lipar.Web.Framework.Controllers;
@@ -8,7 +10,9 @@ using Lipar.Web.Models.General;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 
@@ -21,13 +25,17 @@ namespace Lipar.Web.Controllers
                               , IContactUsService contactUsService
                               , ILocaleStringResourceService localeStringResourceService
                               , ILanguageService languageService
-                              , IWorkContext workContext)
+                              , IWorkContext workContext
+                              , IHttpContextAccessor httpContextAccessor
+                              , IStaticCacheManager cacheKeyService)
         {
             _commonModelFactory = commonModelFactory;
             _contactUsService = contactUsService;
             _localeStringResourceService = localeStringResourceService;
             _languageService = languageService;
             _workContext = workContext;
+            _httpContextAccessor = httpContextAccessor;
+            _cacheKeyService = cacheKeyService;
         }
         #endregion
 
@@ -37,6 +45,8 @@ namespace Lipar.Web.Controllers
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly ILanguageService _languageService;
         private readonly IWorkContext _workContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IStaticCacheManager _cacheKeyService;
         #endregion
 
         public IActionResult PageNotFound()
@@ -94,11 +104,40 @@ namespace Lipar.Web.Controllers
 
             if(language != null && language.ViewStatusId == (int)ViewStatusEnum.Active)
             {
+                _localeStringResourceService.ClearCacheLocalStringResources(_workContext.WorkingLanguage.Id);
+
                 _workContext.WorkingLanguage = language;
             }
-            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(language.LanguageCulture.Seo)),new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("UserCulture");
+
+            Response.Cookies.Append("UserCulture", CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(language.LanguageCulture.Seo)),new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
             
             return Redirect(returnUrl);
+        }
+
+        public JsonResult Countries()
+        {
+            var counries = new List<SelectListItem>();
+            _commonModelFactory.PrepareCountries(counries);
+
+            return Json(counries);
+        }
+
+        public JsonResult Provinces(int? countryId = null)
+        {
+            var provinces = new List<SelectListItem>();
+            _commonModelFactory.PrepareProvinces(provinces , countryId);
+
+            return Json(provinces);
+        }
+
+        public JsonResult Cities(int? provinceId = null)
+        {
+            var cities = new List<SelectListItem>();
+            _commonModelFactory.PrepareCities(cities, provinceId);
+
+            return Json(cities);
         }
     }
 }

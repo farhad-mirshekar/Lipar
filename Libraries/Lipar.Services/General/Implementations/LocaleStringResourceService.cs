@@ -98,7 +98,7 @@ namespace Lipar.Services.General.Implementations
         }
         private Dictionary<string, KeyValuePair<Guid, string>> GetAllResourceValues(int LanguageId)
         {
-            var key = _cacheKeyService.PrepareKey<Guid>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, LanguageId);
+            var key = _cacheKeyService.PrepareKey<int>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, LanguageId);
 
             return _cacheManager.Get(key, () =>
             {
@@ -117,6 +117,14 @@ namespace Lipar.Services.General.Implementations
 
                 return dictionary;
             });
+        }
+
+        public void ClearCacheLocalStringResources(int languageId)
+        {
+            var key = _cacheKeyService.PrepareKey<int>(LiparPublicDefaults.Locale_String_Resource_Get_All_Resource_Values, languageId);
+
+            _cacheManager.Remove(key);
+
         }
     }
 }

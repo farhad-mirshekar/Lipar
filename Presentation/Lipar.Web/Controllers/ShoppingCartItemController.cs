@@ -6,6 +6,7 @@ using Lipar.Services.Application.Contracts;
 using Lipar.Services.General.Contracts;
 using Lipar.Services.Organization.Contracts;
 using Lipar.Web.Factories.Application;
+using Lipar.Web.Factories.Organization;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Infrastructure;
 using Lipar.Web.Models;
@@ -27,7 +28,8 @@ namespace Lipar.Web.Controllers
                                         , IProductModelFactory productModelFactory
                                         , IShoppingCartItemService shoppingCartItemService
                                         , IStaticCacheManager cacheManager
-                                        , IUserAddressService userAddressService)
+                                        , IUserAddressService userAddressService
+                                        , IUserModelFactory userModelFactory)
         {
             _productService = productService;
             _workContext = workContext;
@@ -37,6 +39,7 @@ namespace Lipar.Web.Controllers
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
             _userAddressService = userAddressService;
+            _userModelFactory = userModelFactory;
         }
         #endregion
 
@@ -49,6 +52,7 @@ namespace Lipar.Web.Controllers
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IStaticCacheManager _cacheManager;
         private readonly IUserAddressService _userAddressService;
+        private readonly IUserModelFactory _userModelFactory;
         #endregion
 
         #region Shopping Cart Item
@@ -137,7 +141,7 @@ namespace Lipar.Web.Controllers
                 NotyType = "success",
                 Message = "",
                 Html = RenderPartialViewToString("_Cart", model),
-                DivName="#cart"
+                DivName = "#cart"
 
             });
         }
@@ -200,14 +204,13 @@ namespace Lipar.Web.Controllers
         #region User Address Method
         public IActionResult UserAddressCreate()
         {
-            if(_workContext.CurrentUser == null)
+            if (_workContext.CurrentUser == null)
             {
                 return null;
             }
-            var userAddressModel = new UserAddressModel();
-            userAddressModel.UserId = _workContext.CurrentUser.Id;
 
-            return View(userAddressModel);
+            var model = _userModelFactory.PrepareUserAddressModel(new UserAddressModel(), null);
+            return View(model);
         }
 
         [HttpPost]
@@ -226,15 +229,17 @@ namespace Lipar.Web.Controllers
 
             if (ModelState.IsValid)
             {
-
-                _userAddressService.Add(new UserAddress
+                var userAddress = new UserAddress
                 {
-                    UserId = model.UserId,
                     Address = model.Address,
-                    PostalCode = model.PostalCode
-                });
+                    PostalCode = model.PostalCode,
+                    CountryId = model.CountryId,
+                    ProvinceId = model.ProvinceId,
+                    CityId = model.CityId,
+                };
+                _userAddressService.Add(userAddress);
 
-                return Json(new 
+                return Json(new
                 {
                     Success = true,
                     NotyType = "success",
@@ -253,26 +258,20 @@ namespace Lipar.Web.Controllers
 
         public IActionResult UserAddressEdit(Guid id)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 return null;
             }
 
             var userAddress = _userAddressService.GetById(id);
-            if(userAddress == null)
+            if (userAddress == null)
             {
                 return null;
             }
 
-            var userAddressModel = new UserAddressModel
-            {
-                Id = userAddress.Id,
-                UserId = userAddress.UserId,
-                PostalCode = userAddress.PostalCode,
-                Address = userAddress.Address,
-            };
+            var model = _userModelFactory.PrepareUserAddressModel(new UserAddressModel(), userAddress);
 
-            return View(userAddressModel);
+            return View(model);
         }
 
         [HttpPost]
@@ -293,6 +292,9 @@ namespace Lipar.Web.Controllers
                 var userAddress = _userAddressService.GetById(model.Id);
                 userAddress.Address = model.Address;
                 userAddress.PostalCode = model.PostalCode;
+                userAddress.CountryId = model.CountryId;
+                userAddress.ProvinceId = model.ProvinceId;
+                userAddress.CityId = model.CityId;
 
                 _userAddressService.Edit(userAddress);
 
@@ -331,12 +333,12 @@ namespace Lipar.Web.Controllers
                 UserId = _workContext.CurrentUser.Id
             });
 
-            if(!userAddressList.Any(u=>u.Id == id))
+            if (!userAddressList.Any(u => u.Id == id))
             {
                 return Json(new ResultViewModel
                 {
                     Success = false,
-                    Message ="شما قادر به حذف این آدرس نمی باشید",
+                    Message = "شما قادر به حذف این آدرس نمی باشید",
                     NotyType = "error"
                 });
             }

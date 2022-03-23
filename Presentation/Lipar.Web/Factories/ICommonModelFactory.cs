@@ -31,5 +31,29 @@ namespace Lipar.Web.Factories
         /// </summary>
         /// <returns></returns>
         LanguageSelectorModel PrepareLanguageSelectorModel();
+
+
+        /// <summary>
+        /// prepare list countries
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="defaultItemText"></param>
+        void PrepareCountries(IList<SelectListItem> items, string defaultItemText = null);
+
+        /// <summary>
+        /// prepare list provinces
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="countryId">countryid</param>
+        /// <param name="defaultItemText"></param>
+        void PrepareProvinces(IList<SelectListItem> items , int? countryId = null, string defaultItemText = null);
+
+        /// <summary>
+        /// prepare list cities
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="provinceId">provinceid</param>
+        /// <param name="defaultItemText"></param>
+        void PrepareCities(IList<SelectListItem> items,int? provinceId = null, string defaultItemText = null);
     }
 }

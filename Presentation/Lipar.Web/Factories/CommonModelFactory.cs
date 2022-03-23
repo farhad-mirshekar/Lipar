@@ -21,13 +21,19 @@ namespace Lipar.Web.Factories
                                 , IStaticPageService staticPageService
                                 , IDynamicPageService dynamicPageService
                                 , IContactUsTypeService contactUsTypeService
-                                , ILanguageService languageService)
+                                , ILanguageService languageService
+                                , ICountryService countryService
+                                , IProvinceService provinceService
+                                , ICityService cityService)
         {
             _workContext = workContext;
             _staticPageService = staticPageService;
             _dynamicPageService = dynamicPageService;
             _contactUsTypeService = contactUsTypeService;
             _languageService = languageService;
+            _countryService = countryService;
+            _provinceService = provinceService;
+            _cityService = cityService;
         }
         #endregion
 
@@ -37,6 +43,9 @@ namespace Lipar.Web.Factories
         private readonly IDynamicPageService _dynamicPageService;
         private readonly IContactUsTypeService _contactUsTypeService;
         private readonly ILanguageService _languageService;
+        private readonly ICountryService _countryService;
+        private readonly IProvinceService _provinceService;
+        private readonly ICityService _cityService;
         #endregion
 
         #region Methods
@@ -135,6 +144,63 @@ namespace Lipar.Web.Factories
 
             return model;
         }
+
+        public void PrepareCountries(IList<SelectListItem> items, string defaultItemText = null)
+        {
+            var countries = _countryService.List();
+
+            foreach (var country in countries)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = country.Title,
+                    Value = country.Id.ToString(),
+                });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
+
+        public void PrepareProvinces(IList<SelectListItem> items,int? countryId, string defaultItemText = null)
+        {
+            var provinces = _provinceService.List(new ProvinceListVM
+            {
+                CountryId = countryId,
+            });
+
+            foreach (var province in provinces)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = province.Title,
+                    Value = province.Id.ToString(),
+                });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
+
+        public void PrepareCities(IList<SelectListItem> items,int? provinceId = null, string defaultItemText = null)
+        {
+            var cities = _cityService.List(new CityListVM
+            {
+                ProvinceId = provinceId,
+            });
+
+            foreach (var city in cities)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = city.Title,
+                    Value = city.Id.ToString(),
+                });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
         #endregion
 
         #region Utilities
@@ -163,9 +229,8 @@ namespace Lipar.Web.Factories
                 defaultItemText = "انتخاب نمایید";
             }
 
-            const string value = "0";
-
-            items.Insert(0, new SelectListItem { Value = value, Text = defaultItemText });
+            const string value = "";
+            items.Insert(0, new SelectListItem { Value = value, Text = defaultItemText , Selected = true });
         }
         #endregion
     }

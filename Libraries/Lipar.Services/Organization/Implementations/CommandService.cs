@@ -36,8 +36,8 @@ namespace Lipar.Services.Organization.Implementations
 
             if (_workContext.Commands != null)
             {
-                var commands = _workContext.Commands.ToList();
-                if (commands.Count == 0)
+                var commands = _workContext.Commands;
+                if (!commands.Any())
                     return false;
 
                 if (!commands.Any(command => command.SystemName.ToLower().Equals(name.ToLower())))

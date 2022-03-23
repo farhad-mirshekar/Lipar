@@ -72,6 +72,22 @@ namespace Lipar.Services.Organization.Implementations
             _repository.Update(positions);
         }
 
+        public Position GetActivePosition(Guid userId)
+        {
+            if(userId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            var position = _repository.TableNoTracking
+                                      .Include(p=>p.PositionRoles)
+                                      .Where(p => p.UserId == userId &&
+                                                p.EnabledTypeId == (int)EnabledTypeEnum.Active &&
+                                                p.Default).FirstOrDefault();
+
+            return position;
+        }
+
         public Position GetById(Guid Id)
         {
             var query = _repository.Table;

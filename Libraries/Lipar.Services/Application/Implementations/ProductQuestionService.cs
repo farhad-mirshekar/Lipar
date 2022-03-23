@@ -1,4 +1,5 @@
 ﻿using Lipar.Core;
+using Lipar.Core.Common;
 using Lipar.Data;
 using Lipar.Entities;
 using Lipar.Entities.Domain.Application;
@@ -30,6 +31,7 @@ namespace Lipar.Services.Application.Implementations
                 throw new ArgumentNullException(nameof(model));
             }
 
+            model.CreationDate = CommonHelper.GetCurrentDateTime();
             _repository.Insert(model);
         }
 

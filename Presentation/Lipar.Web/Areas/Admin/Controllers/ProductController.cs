@@ -13,6 +13,7 @@ using System;
 using System.Linq;
 using Lipar.Web.Framework.MVC.Filters;
 using Lipar.Web.Areas.Admin.Helpers;
+using Lipar.Core;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -34,7 +35,8 @@ namespace Lipar.Web.Areas.Admin.Controllers
                                , IProductCommentModelFactory productCommentModelFactory
                                , IProductQuestionModelFactory productQuestionModelFactory
                                , IProductQuestionService productQuestionService
-                               , IProductAnswersService productAnswersService)
+                               , IProductAnswersService productAnswersService
+                               , IWorkContext workContext)
         {
             _productModelFactory = productModelFactory;
             _productService = productService;
@@ -52,6 +54,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _productQuestionModelFactory = productQuestionModelFactory;
             _productQuestionService = productQuestionService;
             _productAnswersService = productAnswersService;
+            _workContext = workContext;
         }
         #endregion
 
@@ -72,6 +75,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IProductQuestionModelFactory _productQuestionModelFactory;
         private readonly IProductQuestionService _productQuestionService;
         private readonly IProductAnswersService _productAnswersService;
+        private readonly IWorkContext _workContext;
         #endregion
 
         #region Product Methods
@@ -113,7 +117,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _productService.Add(product);
 
                 //add url record
-                _urlRecordService.SaveSlug<Product, Guid>(product, product.Name, 1);
+                _urlRecordService.SaveSlug<Product, Guid>(product, product.Name, _workContext.WorkingLanguage.Id);
 
                 //add activity log for create product
                 _activityLogService.Add("Admin.Add", _localeStringResourceService.GetResource("ActivityLog.Admin.Product.Create"), product);
@@ -169,7 +173,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 _productService.Edit(product);
 
                 //add url record
-                //_urlRecordService.SaveSlug(product, product.Name, 1);
+                _urlRecordService.SaveSlug<Product, Guid>(product, product.Name, _workContext.WorkingLanguage.Id);
 
                 //add activity log for edit product
                 _activityLogService.Add("Admin.Edit", _localeStringResourceService.GetResource("ActivityLog.Admin.Product.Edit"), product);

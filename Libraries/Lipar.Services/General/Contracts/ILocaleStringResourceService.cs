@@ -13,5 +13,11 @@ namespace Lipar.Services.General.Contracts
         string GetResource(string Format);
         void Delete(LocaleStringResource model);
         IPagedList<LocaleStringResource> List(LocaleStringResourceListVM listVM);
+
+        /// <summary>
+        /// clear cached local string resource
+        /// </summary>
+        /// <param name="languageId">language id</param>
+        void ClearCacheLocalStringResources(int languageId);
     }
 }

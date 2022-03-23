@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lipar.Core.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +34,15 @@ namespace Lipar.Data.Seeds
 
         public void Add(int index)
         {
+            var _configuration = EngineContext.Current.Resolve<IConfiguration>();
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("connection string is null");
+            }
+
             var contextOptions = new DbContextOptionsBuilder<LiparContext>().UseSqlServer(@"Data Source=fm-pc;Integrated Security=true;Initial Catalog=LiparDb;Persist Security Info=True;;MultipleActiveResultSets=true;").Options;
             using (var db = new LiparContext(contextOptions))
             {
@@ -42,6 +54,15 @@ namespace Lipar.Data.Seeds
 
         public void Update(int index)
         {
+            var _configuration = EngineContext.Current.Resolve<IConfiguration>();
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("connection string is null");
+            }
+
             var contextOptions = new DbContextOptionsBuilder<LiparContext>().UseSqlServer(@"Data Source=fm-pc;Integrated Security=true;Initial Catalog=LiparDb;Persist Security Info=True;;MultipleActiveResultSets=true;").Options;
             using (var db = new LiparContext(contextOptions))
             {

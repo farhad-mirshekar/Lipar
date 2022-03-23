@@ -37,12 +37,12 @@
                 {
                     Name = "product-grid",
                     SearchButtonId = "search-product-question-list",
-                    UrlRead = new DataUrl("ProductQuestionList", "Product", null),
+                    UrlRead = new DataUrl("ProductQuestionList", "Product",  new RouteValueDictionary { [nameof(Model.ProductId)] = Model.ProductId }),
                     Length = Model.PageSize,
                     LengthMenu = Model.AvailablePageSizes,
                     Filters = new List<FilterParameter>()
-                                        {
-                        new FilterParameter(nameof(Model.ViewStatusId))
+                    {
+                        new FilterParameter(nameof(Model.ViewStatusId)),
                     }
                 };
 

@@ -100,8 +100,11 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<IEmailAccountService, EmailAccountService>();
             services.AddTransient<IMessageTemplateService, MessageTemplateService>();
             services.AddTransient<IGenericAttributeService, GenericAttributeService>();
-            services.AddTransient<IQueuedEmailService, QueuedEmailService>();
+             services.AddTransient<IQueuedEmailService, QueuedEmailService>();
             services.AddTransient<IWorkflowMessageService, WorkflowMessageService>();
+            services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IProvinceService, ProvinceService>();
+            services.AddTransient<ICityService, CityService>();
         }
 
         protected void PortalService(IServiceCollection services, IConfiguration configuration)

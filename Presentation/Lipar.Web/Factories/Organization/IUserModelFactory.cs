@@ -1,4 +1,5 @@
-﻿using Lipar.Web.Models.Organization;
+﻿using Lipar.Entities.Domain.Organization;
+using Lipar.Web.Models.Organization;
 
 namespace Lipar.Web.Factories.Organization
 {
@@ -20,5 +21,13 @@ namespace Lipar.Web.Factories.Organization
         /// <param name="model">login model</param>
         /// <returns></returns>
         LoginModel PrepareLoginModel(LoginModel model);
+
+        /// <summary>
+        /// prepare user address model
+        /// </summary>
+        /// <param name="model">user address model</param>
+        /// <param name="userAddress">user address</param>
+        /// <returns>userAddressModel</returns>
+        UserAddressModel PrepareUserAddressModel(UserAddressModel model, UserAddress userAddress);
     }
 }

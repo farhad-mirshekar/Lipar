@@ -18,9 +18,9 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         public string QuestionText { get; set; }
         public int ViewStatusId { get; set; }
         public string ViewStatusTitle { get; set; }
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public string ProductName { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string FullName { get; set; }
         public ProductAnswersSearchModel ProductAnswersSearchModel { get; set; }
         #endregion

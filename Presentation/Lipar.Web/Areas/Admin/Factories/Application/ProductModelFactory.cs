@@ -1,4 +1,5 @@
-﻿using Lipar.Entities.Domain.Application;
+﻿using Lipar.Core;
+using Lipar.Entities.Domain.Application;
 using Lipar.Services.Application.Contracts;
 using Lipar.Services.General.Contracts;
 using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
@@ -43,24 +44,30 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         #region Methods
         public ProductListModel PrepareProductListModel(ProductSearchModel searchModel)
         {
-            var products = _productService.List(new ProductListVM
+            var productDTOs = _productService.GetProductDTOs(new ProductListVM
             {
                 Name = searchModel.Name,
                 PriceFrom = searchModel.PriceFrom,
                 PriceTo = searchModel.PriceTo,
-                PageIndex = searchModel.Page - 1,
-                PageSize = searchModel.PageSize,
             });
+
+            var productModels = productDTOs.Select(p => new ProductModel
+            {
+                Id = p.ProductId,
+                Name = p.Name,
+                ShowOnHomePage = p.ShowOnHomePage,
+                StockQuantity = p.StockQuantity,
+                NumberProductQuestions = p.NumberProductQuestions,
+                Price = p.Price,
+            });
+
+            var products = new PagedList<ProductModel>(productModels, searchModel.Page - 1, searchModel.PageSize);
 
             var models = new ProductListModel().PrepareToGrid(searchModel, products, () =>
             {
                 return products.Select(product =>
                 {
-                    var productModel = product.ToModel<ProductModel, Guid>();
-
-                    productModel.NumberProductQuestions = product.ProductQuestions.Count();
-
-                    return productModel;
+                    return product;
                 });
             });
 

@@ -2,6 +2,7 @@
 using Lipar.Core.Common;
 using Lipar.Data;
 using Lipar.Entities.Domain.Application;
+using Lipar.Entities.Domain.Application.DTOs;
 using Lipar.Services.Application.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -167,6 +168,40 @@ namespace Lipar.Services.Application.Implementations
             var query = _repository.TableNoTracking.Where(x => x.Id == Id).Select(x => x.Name);
 
             return query.FirstOrDefault();
+        }
+
+        public IQueryable<ProductDTO> GetProductDTOs(ProductListVM listVM)
+        {
+            var query = _repository.TableNoTracking;
+
+            query = query.Where(p => !p.RemoverId.HasValue);
+
+            if (!string.IsNullOrEmpty(listVM.Name))
+            {
+                query = query.Where(p => p.Name.Contains(listVM.Name.Trim()));
+            }
+
+            if (listVM.SpecialOffer.HasValue)
+            {
+                query = query.Where(p => p.SpecialOffer == listVM.SpecialOffer);
+            }
+
+            if (listVM.ShowOnHomePage.HasValue)
+            {
+                query = query.Where(p => p.ShowOnHomePage == listVM.ShowOnHomePage);
+            }
+
+            var result = query.Select(p => new ProductDTO
+            {
+                ProductId = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                ShowOnHomePage = p.ShowOnHomePage,
+                StockQuantity = p.StockQuantity,
+                NumberProductQuestions = p.ProductQuestions.Count(),
+            });
+
+            return result;
         }
         #endregion
     }

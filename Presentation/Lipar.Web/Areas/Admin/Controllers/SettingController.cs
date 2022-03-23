@@ -32,6 +32,9 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IStaticCacheManager _cacheManager;
         #endregion
 
+        public IActionResult Index()
+            => View();
+
         #region Blog Setting Methods
         public IActionResult Blog()
         {

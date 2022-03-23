@@ -249,7 +249,9 @@ namespace Lipar.Web.Factories.Application
                         Priority = x.Product.ShippingCost.Priority
                     }
                     : null,
-                    ProductAttributeValues = CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
+                    ProductAttributeValues = !string.IsNullOrEmpty(x.AttributeJson) 
+                                             ? CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
+                                             : null
                 }).ToList();
 
                 foreach (var shoppingCartItem in shoppingCartItemModels)
@@ -302,7 +304,9 @@ namespace Lipar.Web.Factories.Application
                         Priority = x.Product.ShippingCost.Priority
                     }
                     : null,
-                    ProductAttributeValues = CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
+                    ProductAttributeValues = !string.IsNullOrEmpty(x.AttributeJson)
+                                             ? CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
+                                             : null
                 }).ToList();
 
                 miniShoppingCartItemModel.ShoppingCartItemId = shoppingCartItemId;
@@ -315,7 +319,7 @@ namespace Lipar.Web.Factories.Application
                 }
 
                 miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.AmountProducts - (miniShoppingCartItemModel.CartDiscountAmount ?? 0);
-                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate.Priority).Select(cart => cart.DeliveryDate).FirstOrDefault();
+                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate?.Priority).Select(cart => cart.DeliveryDate).FirstOrDefault();
                 miniShoppingCartItemModel.ShippingCost = shoppingCartItemModels.Where(cart => cart.ShippingCost != null).OrderByDescending(cart => cart.ShippingCost.Priority).Select(cart => cart.ShippingCost).FirstOrDefault();
 
                 if (miniShoppingCartItemModel.ShippingCost != null)

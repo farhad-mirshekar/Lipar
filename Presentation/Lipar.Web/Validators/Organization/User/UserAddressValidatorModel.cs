@@ -16,6 +16,18 @@ namespace Lipar.Web.Validators.Organization
             RuleFor(u => u.Address)
                 .NotNull().WithMessage(_localeStringResourceService.GetResource("UserAddress.Field.Address.Validator.NotNull"))
                 .NotEmpty().WithMessage(_localeStringResourceService.GetResource("UserAddress.Field.Address.Validator.NotNull"));
+
+            RuleFor(u => u.CountryId)
+                .NotEmpty().WithMessage("*")
+                .NotNull().WithMessage("*");
+
+            RuleFor(u => u.ProvinceId)
+                .NotEmpty().WithMessage("*")
+                .NotNull().WithMessage("*");
+
+            RuleFor(u => u.CityId)
+                .NotEmpty().WithMessage("*")
+                .NotNull().WithMessage("*");
         }
     }
 }

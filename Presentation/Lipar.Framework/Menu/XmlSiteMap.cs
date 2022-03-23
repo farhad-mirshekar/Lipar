@@ -110,12 +110,11 @@ namespace Lipar.Web.Framework.Menu
             var permissionNames = GetStringValueFromAttribute(xmlNode, "PermissionNames");
             if (!string.IsNullOrEmpty(permissionNames))
             {
-                var _commandService = EngineContext.Current.Resolve<ICommandService>();
                 var _workContext = EngineContext.Current.Resolve<IWorkContext>();
 
                 if (_workContext.CurrentPosition != null)
                 {
-                    var commands = _commandService.List(new CommandListVM { RoleId = _workContext.CurrentPosition.PositionRoles.Select(r => r.RoleId).First() });
+                    var commands = _workContext.Commands;
 
                     siteMapNode.Visible = commands.Any(c => (c.CommandType.Title + "." + c.SystemName).ToLower().Equals(permissionNames.ToLower()));
                 }

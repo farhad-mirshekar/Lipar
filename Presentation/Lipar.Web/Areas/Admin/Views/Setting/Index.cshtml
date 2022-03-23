@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.PageTitle = T("Admin.Setting.List.Title").Text;
+}
+
+<div class="card">
+    <div class="card-header">لیست تنظیمات</div>
+    <div class="card-body">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Blog" target="_blank">تنظیمات بلاگ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Order" target="_blank">تنظیمات سبد خرید</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Common" target="_blank">تنظیمات عمومی</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Security" target="_blank">تنظیمات امنیت</a>
+            </li>
+        </ul>
+    </div>
+</div>

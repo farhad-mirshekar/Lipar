@@ -62,7 +62,7 @@ namespace Lipar.Web.Infrastructure
             endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityMinus", "Cart/QuantityMinus/{Id:guid}",
                new { controller = "ShoppingCartItem", action = "CartItemMinus" });
 
-            endpointRouteBuilder.MapControllerRoute("ChangeLanguage", "ChangeLanguage/{LanguageId:guid}",
+            endpointRouteBuilder.MapControllerRoute("ChangeLanguage", "ChangeLanguage/{LanguageId:min(0)}",
                 new { controller = "Common", action = "SetLanguage" });
 
             endpointRouteBuilder.MapControllerRoute("Register", $"{pattern}Register/"

@@ -14,5 +14,12 @@ namespace Lipar.Services.Organization.Contracts
         void Edit(IEnumerable<Position> positions);
         IPagedList<Position> List(PositionListVM listVM);
         void Delete(Position model);
+
+        /// <summary>
+        /// get active position
+        /// </summary>
+        /// <param name="userId">userid</param>
+        /// <returns>position</returns>
+        Position GetActivePosition(Guid userId);
     }
 }

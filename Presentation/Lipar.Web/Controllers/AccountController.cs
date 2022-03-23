@@ -14,6 +14,7 @@ using System;
 using Lipar.Services.Organization;
 using Lipar.Services.Messages;
 using Lipar.Core;
+using Lipar.Core.Caching;
 
 namespace Lipar.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace Lipar.Web.Controllers
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IWorkContext _workContext;
+        private readonly IStaticCacheManager _cacheManager;
         #endregion
 
         #region Ctor
@@ -45,7 +47,8 @@ namespace Lipar.Web.Controllers
                                , IUserModelFactory userModelFactory
                                , IGenericAttributeService genericAttributeService
                                , IWorkflowMessageService workflowMessageService
-                               , IWorkContext workContext)
+                               , IWorkContext workContext
+                               , IStaticCacheManager cacheManager)
         {
             _userService = userService;
             _authenticationService = authenticationService;
@@ -58,6 +61,7 @@ namespace Lipar.Web.Controllers
             _genericAttributeService = genericAttributeService;
             _workflowMessageService = workflowMessageService;
             _workContext = workContext;
+            _cacheManager = cacheManager;
         }
         #endregion
 
@@ -129,6 +133,9 @@ namespace Lipar.Web.Controllers
         public IActionResult Logout()
         {
             _authenticationService.SignOut();
+
+            //clear all cache
+            _cacheManager.Clear();
 
             return RedirectToRoute("Homepage");
         }

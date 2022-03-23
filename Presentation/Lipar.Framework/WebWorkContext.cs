@@ -1,4 +1,5 @@
 ﻿using Lipar.Core;
+using Lipar.Core.Caching;
 using Lipar.Core.Common;
 using Lipar.Core.Http;
 using Lipar.Entities.Domain.Core.Enums;
@@ -26,11 +27,15 @@ namespace Lipar.Web.Framework
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICenterService _centerService;
         private readonly ILanguageService _languageService;
+        private readonly IStaticCacheManager _staticCacheManager;
 
         private User _cachedUser;
         private Position _cachedPosition;
         private IList<Command> _cachedCommand;
         private Language _cachedLanguage;
+        private CacheKey _cachKeyUser => new CacheKey("_cachedUser");
+        private CacheKey _cachKeyPosition => new CacheKey("_cachKeyPosition");
+        private CacheKey _cachKeyCommand => new CacheKey("_cachKeyCommand");
         #endregion
 
         #region Ctor
@@ -39,7 +44,8 @@ namespace Lipar.Web.Framework
                             , IHttpContextAccessor httpContextAccessor
                             , ICommandService commandService
                             , ICenterService centerService
-                            , ILanguageService languageService)
+                            , ILanguageService languageService
+                            , IStaticCacheManager staticCacheManager)
         {
             _authenticationService = authenticationService;
             _positionService = positionService;
@@ -47,6 +53,7 @@ namespace Lipar.Web.Framework
             _commandService = commandService;
             _centerService = centerService;
             _languageService = languageService;
+            _staticCacheManager = staticCacheManager;
         }
         #endregion
 
@@ -55,51 +62,60 @@ namespace Lipar.Web.Framework
         {
             get
             {
-                //whether there is a cached value
-                if (_cachedUser != null)
-                    return _cachedUser;
-
-                User user = null;
-                if (user == null || user.EnabledTypeId == (int)EnabledTypeEnum.InActive)
+                return _staticCacheManager.Get(_cachKeyUser, () =>
                 {
-                    //try to get registered user
-                    user = _authenticationService.GetAuthenticatedCustomer();
-                    _cachedUser = user;
-                }
+                    //whether there is a cached value
+                    if (_cachedUser != null)
+                        return _cachedUser;
 
-                if (user != null && user.EnabledTypeId == (int)EnabledTypeEnum.Active)
-                    SetUserCookie(_cachedUser.UserGuid);
+                    User user = null;
+                    if (user == null || user.EnabledTypeId == (int)EnabledTypeEnum.InActive)
+                    {
+                        //try to get registered user
+                        user = _authenticationService.GetAuthenticatedCustomer();
+                        _cachedUser = user;
+                    }
 
-                return _cachedUser;
+                    if (user != null && user.EnabledTypeId == (int)EnabledTypeEnum.Active)
+                        SetUserCookie(_cachedUser.UserGuid);
+
+                    return _cachedUser;
+                });
+
             }
             set
             {
-                SetUserCookie(value.UserGuid);
+                _staticCacheManager.Remove(_cachKeyUser);
                 _cachedUser = value;
             }
+
         }
         public Position CurrentPosition
         {
             get
             {
-                if (_cachedPosition != null)
+                return _staticCacheManager.Get(_cachKeyPosition, () =>
                 {
-                    return _cachedPosition;
-                }
+                    if (_cachedPosition != null)
+                    {
+                        return _cachedPosition;
+                    }
 
-                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
-                {
-                    var positions = _positionService.List(new PositionListVM { UserId = CurrentUser.Id });
-                    var position = positions.Where(p => p.EnabledTypeId == (int)EnabledTypeEnum.Active && p.Default == true).FirstOrDefault();
+                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+                    {
+                        var position = _positionService.GetActivePosition(CurrentUser.Id);
 
-                    _cachedPosition = position;
-                    return _cachedPosition;
-                }
+                        _cachedPosition = position;
+                        return _cachedPosition;
+                    }
 
-                return null;
+                    return null;
+                });
             }
             set
             {
+                _staticCacheManager.Remove(_cachKeyPosition);
+
                 _cachedPosition = value;
             }
 
@@ -123,26 +139,31 @@ namespace Lipar.Web.Framework
         {
             get
             {
-                if (_cachedCommand != null)
+                return _staticCacheManager.Get(_cachKeyCommand, () =>
                 {
-                    return _cachedCommand;
-                }
+                    if (_cachedCommand != null)
+                    {
+                        return _cachedCommand;
+                    }
 
-                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
-                {
-                    var roleId = CurrentPosition.PositionRoles.Select(r => r.RoleId).First();
-                    var commands = _commandService.List(new CommandListVM { RoleId = roleId });
+                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+                    {
+                        var roleId = CurrentPosition.PositionRoles.Select(r => r.RoleId).First();
+                        var commands = _commandService.List(new CommandListVM { RoleId = roleId });
 
-                    if (commands.Count() == 0)
-                        return null;
+                        if (!commands.Any())
+                            return null;
 
-                    _cachedCommand = commands;
-                    return _cachedCommand;
-                }
-                return null;
+                        _cachedCommand = commands;
+                        return _cachedCommand;
+                    }
+                    return null;
+                });
             }
             set
             {
+                _staticCacheManager.Remove(_cachKeyCommand);
+
                 _cachedCommand = value.ToList();
             }
         }
@@ -181,7 +202,7 @@ namespace Lipar.Web.Framework
                 }
 
                 detectedLanguage = GetLanguageFromRequest();
-                if(detectedLanguage != null)
+                if (detectedLanguage != null)
                 {
                     _cachedLanguage = detectedLanguage;
                     return _cachedLanguage;
@@ -201,7 +222,7 @@ namespace Lipar.Web.Framework
                 var languageId = value.Id;
                 var language = _languageService.GetById(languageId, true);
 
-                if(language != null && language.Id != 0)
+                if (language != null && language.Id != 0)
                 {
                     _cachedLanguage = language;
                 }
@@ -249,7 +270,7 @@ namespace Lipar.Web.Framework
 
             //try to get language by culture name
             var requestLanguage = _languageService.List(new LanguageListVM { }).FirstOrDefault(language =>
-                language.LanguageCulture.Seo.Equals(requestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase));
+                language.LanguageCulture.Seo.Equals("fa-IR", StringComparison.InvariantCultureIgnoreCase));
 
             //check language availability
             if (requestLanguage == null || requestLanguage.ViewStatusId != (int)ViewStatusEnum.Active)
