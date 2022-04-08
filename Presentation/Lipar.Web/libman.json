@@ -17,6 +17,18 @@
     {
       "library": "noty@3.1.4",
       "destination": "wwwroot/libs/noty/"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/admin/lib/select2/",
+      "files": [
+        "js/select2.min.js",
+        "css/select2.css",
+        "css/select2.min.css",
+        "js/select2.full.js",
+        "js/select2.full.min.js",
+        "js/select2.js"
+      ]
     }
   ]
 }

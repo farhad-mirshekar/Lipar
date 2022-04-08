@@ -107,5 +107,10 @@
         /// Manage Product Question
         /// </summary>
         public const string ManageProductQuestion = "ManageProductQuestion";
+
+        /// <summary>
+        /// Manage Product Tag
+        /// </summary>
+        public const string ManageProductTag = "ManageProductTag";
     }
 }

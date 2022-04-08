@@ -6,6 +6,7 @@ using Lipar.Web.Areas.Admin.Infrastructure.Mapper;
 using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Lipar.Web.Areas.Admin.Factories.Application
@@ -19,7 +20,8 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                                  , IProductAttributeValueService productAttributeValueService
                                  , IProductMediaService productMediaService
                                  , IMediaService mediaService
-                                 , IRelatedProductService relatedProductService)
+                                 , IRelatedProductService relatedProductService
+                                 , IProductTagService productTagService)
         {
             _productService = productService;
             _baseAdminModelFactory = baseAdminModelFactory;
@@ -28,6 +30,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             _productMediaService = productMediaService;
             _mediaService = mediaService;
             _relatedProductService = relatedProductService;
+            _productTagService = productTagService;
         }
         #endregion
 
@@ -39,6 +42,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         private readonly IProductMediaService _productMediaService;
         private readonly IMediaService _mediaService;
         private readonly IRelatedProductService _relatedProductService;
+        private readonly IProductTagService _productTagService;
         #endregion
 
         #region Methods
@@ -87,6 +91,9 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
                 //prepare related product
                 PrepareRelatedProductSearchModel(model.RelatedProductSearchModel, product);
+
+                //prepare product tag
+                model.ProductTags = PrepareProductTags(product.Id);
             }
 
             //gets all categories
@@ -100,6 +107,9 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
             //gets discount type
             _baseAdminModelFactory.PrepareDiscountType(model.AvailableDiscountType);
+
+            //gets product tags
+            _baseAdminModelFactory.PrepareProductTags(model.AvailableProductTags);
 
             return model;
         }
@@ -203,7 +213,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                 ProductId = searchModel.ProductId
             });
 
-            if(productMediaList == null)
+            if (productMediaList == null)
             {
                 return null;
             }
@@ -234,7 +244,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                 ProductId1 = searchModel.ProductId1,
             });
 
-            if(relatedProducts == null)
+            if (relatedProducts == null)
             {
                 return null;
             }
@@ -253,14 +263,14 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
             return models;
         }
-        public RelatedProductModel PrepareRelatedProductModel(RelatedProductModel model , Product product)
+        public RelatedProductModel PrepareRelatedProductModel(RelatedProductModel model, Product product)
         {
-            if(model == null)
+            if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            if(product == null)
+            if (product == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -272,7 +282,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                 ProductId1 = product.Id
             });
 
-            if(relatedProducts == null || relatedProducts.Count == 0)
+            if (relatedProducts == null || relatedProducts.Count == 0)
             {
                 model.Priority = 1;
             }
@@ -290,6 +300,18 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             searchModel.SetPopupGridPageSize();
 
             return searchModel;
+        }
+
+        public IList<Guid> PrepareProductTags(Guid productId)
+        {
+            if (productId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(productId));
+            }
+
+            var productTags = _productTagService.GetProductTagIds(productId);
+
+            return productTags;
         }
         #endregion
 
@@ -320,7 +342,7 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
 
             return searchModel;
         }
-        protected ProductMediaSearchModel PrepareProductMediaSearchModel(ProductMediaSearchModel searchModel , Product product)
+        protected ProductMediaSearchModel PrepareProductMediaSearchModel(ProductMediaSearchModel searchModel, Product product)
         {
             if (searchModel == null)
                 throw new Exception(nameof(searchModel));
@@ -340,14 +362,14 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         /// <param name="searchModel">related product search model</param>
         /// <param name="product">product</param>
         /// <returns></returns>
-        protected RelatedProductSearchModel PrepareRelatedProductSearchModel(RelatedProductSearchModel searchModel , Product product)
+        protected RelatedProductSearchModel PrepareRelatedProductSearchModel(RelatedProductSearchModel searchModel, Product product)
         {
-            if(searchModel == null)
+            if (searchModel == null)
             {
                 throw new ArgumentNullException(nameof(searchModel));
             }
 
-            if(product == null)
+            if (product == null)
             {
                 throw new ArgumentNullException(nameof(product));
             }

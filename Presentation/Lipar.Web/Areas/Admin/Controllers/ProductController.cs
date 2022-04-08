@@ -36,7 +36,8 @@ namespace Lipar.Web.Areas.Admin.Controllers
                                , IProductQuestionModelFactory productQuestionModelFactory
                                , IProductQuestionService productQuestionService
                                , IProductAnswersService productAnswersService
-                               , IWorkContext workContext)
+                               , IWorkContext workContext
+                               , IProductTagService productTagService)
         {
             _productModelFactory = productModelFactory;
             _productService = productService;
@@ -55,6 +56,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             _productQuestionService = productQuestionService;
             _productAnswersService = productAnswersService;
             _workContext = workContext;
+            _productTagService = productTagService;
         }
         #endregion
 
@@ -76,6 +78,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         private readonly IProductQuestionService _productQuestionService;
         private readonly IProductAnswersService _productAnswersService;
         private readonly IWorkContext _workContext;
+        private readonly IProductTagService _productTagService;
         #endregion
 
         #region Product Methods
@@ -172,6 +175,12 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 //edit product 
                 _productService.Edit(product);
 
+                if (model.ProductTags.Any())
+                {
+                    //save product tag
+                    _productTagService.SaveProductTagMapping(model.ProductTags, model.Id);
+                }
+                
                 //add url record
                 _urlRecordService.SaveSlug<Product, Guid>(product, product.Name, _workContext.WorkingLanguage.Id);
 
@@ -666,13 +675,13 @@ namespace Lipar.Web.Areas.Admin.Controllers
         [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductQuestionEdit(Guid Id)
         {
-            if(Id == Guid.Empty)
+            if (Id == Guid.Empty)
             {
                 return RedirectToAction("ProductQuestionList");
             }
 
             var productQuestion = _productQuestionService.GetById(Id);
-            if(productQuestion == null)
+            if (productQuestion == null)
             {
                 return RedirectToAction("ProductQuestionList");
             }
@@ -689,7 +698,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var productQuestion = _productQuestionService.GetById(model.Id);
-                if(productQuestion == null)
+                if (productQuestion == null)
                 {
 
                 }
@@ -706,10 +715,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         [CheckingPermissions(permissions: CommandNames.ManageProductQuestion)]
         public IActionResult ProductAnswersList(ProductAnswersSearchModel searchModel)
         {
-            if(searchModel != null && searchModel.ProductQuestionId.HasValue && searchModel.ProductQuestionId.Value != Guid.Empty)
+            if (searchModel != null && searchModel.ProductQuestionId.HasValue && searchModel.ProductQuestionId.Value != Guid.Empty)
             {
                 var productQuestion = _productQuestionService.GetById(searchModel.ProductQuestionId.Value, true);
-                if(productQuestion == null)
+                if (productQuestion == null)
                 {
                     return RedirectToAction("ProductQuestionList");
                 }
@@ -724,7 +733,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult ProductAnswersEdit(Guid Id)
         {
             var productAnswer = _productAnswersService.GetById(Id, true);
-            if(productAnswer == null)
+            if (productAnswer == null)
             {
                 return RedirectToAction("ProductQuestionList");
             }
@@ -750,7 +759,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                 //notification
                 _notificationService.SusscessNotification(_localeStringResourceService.GetResource("Admin.Notification.Success.EntityEdit"));
 
-                return RedirectToAction("ProductQuestionEdit", new {Id = productAnswers.ProductQuestionId });
+                return RedirectToAction("ProductQuestionEdit", new { Id = productAnswers.ProductQuestionId });
             }
 
             model = _productQuestionModelFactory.PrepareProductAnswersModel(model, null);

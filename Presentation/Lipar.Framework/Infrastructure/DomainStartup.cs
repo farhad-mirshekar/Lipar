@@ -139,6 +139,7 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<AppContract.IDiscountTypeService, AppImplement.DiscountTypeService>();
             services.AddTransient<AppContract.IShoppingCartItemService, AppImplement.ShoppingCartItemService>();
             services.AddTransient<AppContract.IOrderService, AppImplement.OrderService>();
+            services.AddTransient<AppContract.IProductTagService, AppImplement.ProductTagService>();
         }
 
         protected void CoreService(IServiceCollection services, IConfiguration configuration)

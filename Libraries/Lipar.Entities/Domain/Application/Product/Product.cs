@@ -24,6 +24,7 @@ namespace Lipar.Entities.Domain.Application
             ProductAttributeMappings = new HashSet<ProductAttributeMapping>();
             ShoppingCartItems = new HashSet<ShoppingCartItem>();
             ProductMedias = new HashSet<ProductMedia>();
+            ProductTagMappings = new HashSet<ProductTagMapping>();
         }
         #endregion
 
@@ -144,6 +145,7 @@ namespace Lipar.Entities.Domain.Application
         public ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         public ICollection<ProductMedia> ProductMedias { get; set; }
+        public ICollection<ProductTagMapping> ProductTagMappings { get; set; }
         #endregion
     }
 }

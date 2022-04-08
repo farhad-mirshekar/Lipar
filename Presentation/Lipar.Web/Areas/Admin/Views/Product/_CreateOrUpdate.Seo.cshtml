@@ -1,5 +1,7 @@
 ﻿@model Lipar.Web.Areas.Admin.Models.Application.ProductModel
 
+
+
 <div class="form-group">
     <label asp-for="MetaKeywords" class="control-label">@T("Product.Field.MetaKeywords")</label>
     <input type="text" class="form-control" asp-for="MetaKeywords">
@@ -14,4 +16,10 @@
     <label asp-for="MetaTitle" class="control-label">@T("Product.Field.MetaTitle")</label>
     <input type="text" class="form-control" asp-for="MetaTitle">
     <span class="text-danger" asp-validation-for="MetaTitle" />
+</div>
+<div class="form-group">
+    <label asp-for="ProductTags" class="control-label">@T("Product.Field.ProductTags")</label>
+    <lipar-select2 asp-for="ProductTags"  
+                   asp-multiple="true"
+                   asp-items="@Model.AvailableProductTags"/>
 </div>

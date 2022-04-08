@@ -280,7 +280,9 @@ namespace Lipar.Web.Areas.Admin.Infrastructure.Mapper
                 .ForMember(model => model.AvailableCategories, option => option.Ignore())
                 .ForMember(model => model.AvailableDeliveryDate, option => option.Ignore())
                 .ForMember(model => model.AvailableDiscountType, option => option.Ignore())
-                .ForMember(model => model.AvailableShippingCost, option => option.Ignore());
+                .ForMember(model => model.AvailableShippingCost, option => option.Ignore())
+                .ForMember(model => model.AvailableProductTags, option => option.Ignore())
+                .ForMember(model => model.ProductTags, option => option.Ignore());
 
             CreateMap<AppModel.ProductModel, App.Product>();
 

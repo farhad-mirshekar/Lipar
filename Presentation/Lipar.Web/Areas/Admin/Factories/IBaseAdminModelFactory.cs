@@ -78,5 +78,12 @@ namespace Lipar.Web.Areas.Admin.Factories
         /// <param name="defaultItemText"></param>
         /// <returns></returns>
         void PrepareEmailAccounts(IList<SelectListItem> items, string defaultItemText = null);
+
+        /// <summary>
+        /// prepare product tags
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="defaultItemText"></param>
+        void PrepareProductTags(IList<SelectListItem> items , string defaultItemText = null);
     }
 }

@@ -1,0 +1,9 @@
+﻿@model ProductTagModel
+
+<input type="hidden" asp-for="Id" />
+
+<div class="form-group">
+    <label asp-for="Name" class="control-label">@T("ProductTag.Field.Name")</label>
+    <input type="text" class="form-control" asp-for="Name" required>
+    <span class="text-danger" asp-validation-for="Name" />
+</div>

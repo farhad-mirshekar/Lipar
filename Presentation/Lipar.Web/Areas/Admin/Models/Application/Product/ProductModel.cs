@@ -14,6 +14,8 @@ namespace Lipar.Web.Areas.Admin.Models.Application
             AvailableDeliveryDate = new List<SelectListItem>();
             AvailableDiscountType = new List<SelectListItem>();
             AvailableShippingCost = new List<SelectListItem>();
+            AvailableProductTags = new List<SelectListItem>();
+            ProductTags = new List<Guid>();
             Published = true;
             ProductAttributeMappingSearchModel = new ProductAttributeMappingSearchModel();
             ProductMediaSearchModel = new ProductMediaSearchModel();
@@ -121,6 +123,8 @@ namespace Lipar.Web.Areas.Admin.Models.Application
 
         public int NumberProductQuestions { get; set; }
 
+        public IList<Guid> ProductTags { get; set; }
+
         public ProductAttributeMappingSearchModel ProductAttributeMappingSearchModel { get; set; }
         public ProductMediaSearchModel ProductMediaSearchModel { get; set; }
         /// <summary>
@@ -134,6 +138,7 @@ namespace Lipar.Web.Areas.Admin.Models.Application
         public IList<SelectListItem> AvailableDiscountType { get; set; }
         public IList<SelectListItem> AvailableShippingCost { get; set; }
         public IList<SelectListItem> AvailableDeliveryDate { get; set; }
+        public IList<SelectListItem> AvailableProductTags { get; set; }
         #endregion
 
     }

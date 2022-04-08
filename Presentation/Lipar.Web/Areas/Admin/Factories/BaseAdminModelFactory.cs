@@ -41,7 +41,8 @@ namespace Lipar.Web.Areas.Admin.Factories
                                    , ILanguageCultureService languageCultureService
                                    , IPositionTypeService positionTypeService
                                    , IPasswordFormatTypeService passwordFormatTypeService
-                                   , IEmailAccountService emailAccountService)
+                                   , IEmailAccountService emailAccountService
+                                   , App.IProductTagService productTagService)
         {
             _categoryPortalService = categoryPortalService;
             _cacheKeyService = cacheKeyService;
@@ -66,6 +67,7 @@ namespace Lipar.Web.Areas.Admin.Factories
             _positionTypeService = positionTypeService;
             _passwordFormatTypeService = passwordFormatTypeService;
             _emailAccountService = emailAccountService;
+            _productTagService = productTagService;
         }
         #endregion
 
@@ -93,6 +95,7 @@ namespace Lipar.Web.Areas.Admin.Factories
         private readonly IPositionTypeService _positionTypeService;
         private readonly IPasswordFormatTypeService _passwordFormatTypeService;
         private readonly IEmailAccountService _emailAccountService;
+        private readonly App.IProductTagService _productTagService;
         #endregion
         public void PrepareAllLanguage(IList<SelectListItem> items, string defaultItemText = null)
         {
@@ -396,6 +399,18 @@ namespace Lipar.Web.Areas.Admin.Factories
             foreach (var emailAccount in emailAccounts)
             {
                 items.Add(new SelectListItem { Text = emailAccount.Name.Trim(), Value = emailAccount.Id.ToString() });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
+        }
+
+        public void PrepareProductTags(IList<SelectListItem> items, string defaultItemText = null)
+        {
+            var productTags = _productTagService.List(new Entities.Domain.Application.ProductTagListVM { });
+
+            foreach (var productTag in productTags)
+            {
+                items.Add(new SelectListItem { Text = productTag.Name.Trim(), Value = productTag.Id.ToString() });
             }
 
             PrepareDefaultItem(items, defaultItemText);

@@ -1,21 +1,14 @@
-﻿@model Lipar.Web.Areas.Admin.Models.Application.ProductModel
+﻿@model ProductTagModel
 @{
-    Html.SetActiveMenuItemSystemName("Product List");
-    ViewBag.PageTitle = T("Admin.Product.Add.Card.Title").Text;
+    Html.SetActiveMenuItemSystemName("Product-Tag-List");
+    ViewBag.PageTitle = T("Admin.ProductTag.Edit.Card.Title").Text;
 }
-@section Head{
-<link href="~/admin/lib/select2/css/select2.min.css" rel="stylesheet" />
-<style>
-    .select2-container {
-        display: block !important;
-    }
-</style>
-}
-<form asp-action="Edit" asp-controller="Product" method="post" id="product-form">
+
+<form asp-action="Edit" asp-controller="ProductTag" method="post">
     <section class="card">
         <div class="card-header clearfix">
             <div class="float-left">
-                <span class="card-title">@T("Admin.Product.Edit.Card.Title") - @Model.Name</span>
+                <span class="card-title">@T("Admin.ProductTag.Edit.Card.Title") - @Model.Name</span>
             </div>
 
             <div class="float-right">
@@ -23,7 +16,7 @@
                     <i class="fa fa-floppy-o"></i>
                     @T("Common.Edit.Button")
                 </button>
-                <span id="product-delete" class="btn btn-danger">
+                <span id="product-tag-delete" class="btn btn-danger">
                     <i class="fa fa-trash-o"></i>
                     @T("Common.Delete.Button")
                 </span>
@@ -41,8 +34,4 @@
     @Html.AntiForgeryToken()
 </form>
 
-<lipar-delete-confirmation asp-button-id="product-delete" asp-model-id="@Model.Id" />
-
-@section Scripts{
-<script src="~/admin/lib/select2/js/select2.min.js"></script>
-}
+<lipar-delete-confirmation asp-button-id="product-tag-delete" asp-model-id="@Model.Id" />

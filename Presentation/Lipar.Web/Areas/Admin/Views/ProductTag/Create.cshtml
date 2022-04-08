@@ -1,0 +1,31 @@
+﻿@model ProductTagModel
+@{
+    Html.SetActiveMenuItemSystemName("Product-TAg-List");
+    ViewBag.PageTitle = T("Admin.ProductTag.Add.Card.Title").Text;
+}
+
+<form asp-action="Create" asp-controller="ProductTag" method="post">
+    <section class="card">
+        <div class="card-header clearfix">
+            <div class="float-left">
+                <span class="card-title">@T("Admin.ProductTag.Add.Card.Title")</span>
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-floppy-o"></i>
+                    @T("Common.Add.Button")
+                </button>
+                <a asp-action="List" class="btn btn-primary">
+                    <i class="fa fa-arrow-circle-left"></i>
+                    @T("Common.Back.Button")
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("_CreateOrUpdate", Model)
+        </div>
+    </section>
+
+    @Html.AntiForgeryToken()
+</form>
