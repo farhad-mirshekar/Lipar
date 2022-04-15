@@ -1,14 +1,14 @@
 ﻿@model ProductModel
 
-<div class="card">
-    <div class="card-header">
-        <span class="card-title">@T("Product.Page.RelatedProduct.List.Title").Text</span>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            @if (Model.RelatedProducts != null && Model.RelatedProducts.Count > 0)
-            {
-                foreach (var relatedProduct in Model.RelatedProducts.OrderBy(r => r.Priority))
+@if (Model.RelatedProducts != null && Model.RelatedProducts.Count > 0)
+{
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">@T("Product.Page.RelatedProduct.List.Title").Text</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var relatedProduct in Model.RelatedProducts.OrderBy(r => r.Priority))
                 {
                     <div class="col-md-4 d-flex align-items-lg-stretch">
                         @{
@@ -25,13 +25,7 @@
                         </div>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="alert alert-info col-md-12">
-                    <p class="text-center">@T("Product.Page.RelatedProduct.Empty").Text</p>
-                </div>
-            }
+            </div>
         </div>
     </div>
-</div>
+}

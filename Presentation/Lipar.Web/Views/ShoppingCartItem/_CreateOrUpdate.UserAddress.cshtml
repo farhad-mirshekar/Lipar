@@ -11,18 +11,18 @@
         <textarea class="form-control" asp-for="Address"></textarea>
         <span class="text-danger" asp-validation-for="Address"></span>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label asp-for="CountryId">@T("UserAddress.Field.CountryId")</label>
-        <lipar-select asp-for="CountryId" asp-items="Model.AvailableCountries"></lipar-select>
+        <input asp-for="CountryId" class="form-control" />
         <span class="text-danger" asp-validation-for="CountryId"></span>
 
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label asp-for="ProvinceId">@T("UserAddress.Field.ProvinceId")</label>
-        <select asp-for="ProvinceId" class="form-control" disabled></select>
+        <input asp-for="ProvinceId" class="form-control" disabled />
         <span class="text-danger" asp-validation-for="ProvinceId"></span>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label asp-for="CityId">@T("UserAddress.Field.CityId")</label>
         <select asp-for="CityId" class="form-control" disabled></select>
         <span class="text-danger" asp-validation-for="CityId"></span>
@@ -35,80 +35,51 @@
     var provinceUrl = '@Url.Action("Provinces","Common")';
     var cityUrl = '@Url.Action("Cities","Common")';
 
-    function countryFilter(){
-        return{
-            countryId:$('#CountryId').val()
-        }
-    }
     function provinceFilter(){
+        var countryId = $('#CountryId').val();
         return{
-            provinceId:$('#ProvinceId').val()
+            countryId:countryId
         }
     }
 
-    $(document).ready(function(){
-        $('#CountryId').change(function(e){
-            e.preventDefault();
+    function cityFilter(){
+        var provinceUrl = $('#ProvinceId').val();
+        return{
+            provinceId : provinceUrl
+        }
+    }
 
-            var val = $(this).val();
-
-            if(val.length != 0){
-                $.ajax({
-                    url:provinceUrl,
-                    data:countryFilter,
-                    dataType: 'json',
-                }).done(function(response){
-                    var provinceElement = $('#ProvinceId');
-                    provinceElement.empty();
-                    provinceElement.removeAttr("disabled");
-
-                    if(response != null){
-                        for(var i = 0 ; i < response.length;i++){
-                            provinceElement.append('<option value="' + response[i].Value + '">' + response[i].Text + '</option>');
-                        }
-                    }
-                });
+    $("#CountryId").kendoDropDownList({
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: countryUrl
             }
-            else{
-                var provinceElement = $('#ProvinceId');
-                    provinceElement.empty();
-                    provinceElement.attr("disabled","disabled");
+        }
+    })
 
-                var cityElement = $('#CityId');
-                    cityElement.empty();
-                    cityElement.attr("disabled","disabled");
-
-
+    $("#ProvinceId").kendoDropDownList({
+        autoBind: false,
+        cascadeFrom: "CountryId",
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: {"url":provinceUrl , "data":provinceFilter},
             }
-        })
+        }
+    })
 
-       $('#ProvinceId').change(function(e){
-            e.preventDefault();
-
-            var val = $(this).val();
-
-            if(val.length != 0){
-                $.ajax({
-                    url:cityUrl,
-                    data:provinceFilter,
-                    dataType: 'json',
-                }).done(function(response){
-                    var cityElement = $('#CityId');
-                    cityElement.empty();
-                    cityElement.removeAttr("disabled");
-
-                    if(response != null){
-                        for(var i = 0 ; i < response.length;i++){
-                            cityElement.append('<option value="' + response[i].Value + '">' + response[i].Text + '</option>');
-                        }
-                    }
-                });
+    $("#CityId").kendoDropDownList({
+        autoBind: false,
+        cascadeFrom: "ProvinceId",
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: {"url":cityUrl , "data":cityFilter},
             }
-            else{
-                var cityElement = $('#CityId');
-                    cityElement.empty();
-                    cityElement.attr("disabled","disabled");
-            }
-        })
-    });
+        }
+    })
 </script>

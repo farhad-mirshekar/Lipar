@@ -51,6 +51,9 @@
         <div class="col-lg-12">
             @await Html.PartialAsync("_RelatedProduct",Model)
         </div>
+        <div class="col-lg-12">
+            @await Html.PartialAsync("_ProductTags",Model)
+        </div>
     </div>
 }
 @section Scripts{

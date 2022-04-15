@@ -251,7 +251,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
                 _blogCommentService.Edit(blogComment);
 
-                return RedirectToAction("BlogComments");
+                return RedirectToAction("BlogComments" , new { filterByBlogId = blogComment.BlogId});
             }
 
             model = _blogModelFactory.PrepareBlogCommentModel(model, null);

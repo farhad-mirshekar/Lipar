@@ -89,7 +89,7 @@ namespace Lipar.Web.Controllers
                 _blogCommentService.Add(blogComment);
 
                 //add activity log for create blog comment
-                _activityLogService.Add("Web.Comment.Create", _localeStringResourceService.GetResource("ActivityLog.Web.Comment.Create"), blogComment);
+                //_activityLogService.Add("Web.Comment.Create", _localeStringResourceService.GetResource("ActivityLog.Web.Comment.Create"), blogComment);
 
                 TempData["Lipar.Web.Blog.Comment"] = _localeStringResourceService.GetResource("Web.Comment.CreateText");
             }

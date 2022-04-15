@@ -127,6 +127,9 @@ namespace Lipar.Web.Controllers
                         break;
                 }
             }
+
+            _userModelFactory.PrepareLoginModel(model);
+
             return View(model);
         }
 

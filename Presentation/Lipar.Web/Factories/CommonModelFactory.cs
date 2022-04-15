@@ -230,7 +230,7 @@ namespace Lipar.Web.Factories
             }
 
             const string value = "";
-            items.Insert(0, new SelectListItem { Value = value, Text = defaultItemText , Selected = true });
+            items.Insert(0, new SelectListItem { Value = value, Text = defaultItemText });
         }
         #endregion
     }

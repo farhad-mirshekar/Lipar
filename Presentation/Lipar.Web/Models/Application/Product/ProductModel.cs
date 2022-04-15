@@ -17,6 +17,7 @@ namespace Lipar.Web.Models.Application
             ProductCommentModel = new ProductCommentModel();
             ProductComments = new List<ProductCommentListModel>();
             ProductQuestions = new List<ProductQuestionModel>();
+            ProductTags = new List<ProductTagMappingModel>();
         }
         #region Fields
         /// <summary>
@@ -141,6 +142,11 @@ namespace Lipar.Web.Models.Application
         /// gets or sets the all product question
         /// </summary>
         public IList<ProductQuestionModel> ProductQuestions { get; set; }
+
+        /// <summary>
+        /// gets or sets the all product tag
+        /// </summary>
+        public IList<ProductTagMappingModel> ProductTags { get; set; }
         #endregion
     }
 }

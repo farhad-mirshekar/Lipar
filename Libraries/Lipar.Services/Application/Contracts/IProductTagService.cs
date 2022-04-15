@@ -52,5 +52,12 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="productId"></param>
         /// <returns></returns>
         IList<Guid> GetProductTagIds(Guid productId);
+
+        /// <summary>
+        /// list product tag
+        /// </summary>
+        /// <param name="productId">product id</param>
+        /// <returns></returns>
+        IList<ProductTagMapping> GetProductTagMappings(Guid productId);
     }
 }

@@ -112,7 +112,7 @@ namespace Lipar.Services.Application.Implementations
             foreach (var productTagRemove in productTagForDeleteNotExists)
             {
                 var ptm = _productTagMappingRepository.Table
-                                                      .Where(ptm=>ptm.ProductTagId == productTagRemove)
+                                                      .Where(ptm => ptm.ProductTagId == productTagRemove)
                                                       .FirstOrDefault();
                 productTagMappingsRemove.Add(ptm);
             }
@@ -128,9 +128,33 @@ namespace Lipar.Services.Application.Implementations
         {
             var productTags = _productTagMappingRepository.TableNoTracking;
 
-            return productTags.Where(ptm=>ptm.ProductId == productId)
+            return productTags.Where(ptm => ptm.ProductId == productId)
                               .Select(pt => pt.ProductTagId)
                               .ToList();
+        }
+
+        public IList<ProductTagMapping> GetProductTagMappings(Guid productId)
+        {
+            if (productId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var query = _productTagMappingRepository.TableNoTracking;
+
+            var productTags = query.Where(ptm => ptm.ProductId == productId)
+                                   .Select(ptm => new ProductTagMapping
+                                   {
+                                       Id = ptm.Id,
+                                       ProductId = ptm.ProductId,
+                                       ProductTagId = ptm.ProductTagId,
+                                       ProductTag = new ProductTag
+                                       {
+                                           Name = ptm.ProductTag.Name
+                                       }
+                                   }).ToList();
+
+            return productTags;
         }
         #endregion
 

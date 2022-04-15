@@ -27,7 +27,8 @@ namespace Lipar.Web.Factories.Application
                                  , ICategoryService categoryService
                                  , IShippingCostService shippingCostService
                                  , IDeliveryDateService deliveryDateService
-                                 , IProductCommentService productCommentService)
+                                 , IProductCommentService productCommentService
+                                 , IProductTagService productTagService)
         {
             _productService = productService;
             _mediaService = mediaService;
@@ -39,6 +40,7 @@ namespace Lipar.Web.Factories.Application
             _shippingCostService = shippingCostService;
             _deliveryDateService = deliveryDateService;
             _productCommentService = productCommentService;
+            _productTagService = productTagService;
         }
         #endregion
 
@@ -53,6 +55,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IShippingCostService _shippingCostService;
         private readonly IDeliveryDateService _deliveryDateService;
         private readonly IProductCommentService _productCommentService;
+        private readonly IProductTagService _productTagService;
         #endregion
 
         #region Methods
@@ -182,9 +185,12 @@ namespace Lipar.Web.Factories.Application
 
             //prepare product comment model for add comment
             model.ProductCommentModel = PrepareProductCommentModel(product);
-            
+
             //prepare product questions
             //model.ProductQuestions = PrepareProductQuestionListModel(product);
+
+            //prepare product tag
+            model.ProductTags = PrepareProductTagListModel(product.Id);
 
             if (showComment)
             {
@@ -192,7 +198,7 @@ namespace Lipar.Web.Factories.Application
                 var productComments = _productCommentService.List(new ProductCommentListVM
                 {
                     ProductId = model.Id,
-                    CommentStatusId =(int)CommentStatusEnum.Open,
+                    CommentStatusId = (int)CommentStatusEnum.Open,
                 });
 
                 //prepare product comments list
@@ -243,7 +249,7 @@ namespace Lipar.Web.Factories.Application
             var productQuestionListModel = new List<ProductQuestionModel>();
 
             var productQuestions = product.ProductQuestions.Where(x => x.ViewStatusId == (int)ViewStatusEnum.Active)
-                                                           .OrderByDescending(pq=>pq.CreationDate).ToList();
+                                                           .OrderByDescending(pq => pq.CreationDate).ToList();
             if (productQuestions.Count > 0)
             {
                 foreach (var productQuestion in productQuestions)
@@ -256,7 +262,7 @@ namespace Lipar.Web.Factories.Application
                     productQuestionModel.CreationDate = productQuestion.CreationDate;
 
                     var productAnswers = productQuestion.ProductAnswers.Where(pa => pa.ViewStatusId == (int)ViewStatusEnum.Active)
-                                                                       .OrderByDescending(pa=>pa.CreationDate)
+                                                                       .OrderByDescending(pa => pa.CreationDate)
                                                                        .ToList();
 
                     productQuestionModel.ProductAnswers = PrepareProductAnswersListModel(productAnswers);
@@ -269,9 +275,9 @@ namespace Lipar.Web.Factories.Application
             return productQuestionListModel;
         }
 
-        public ProductQuestionModel PrepareProductQuestionModel(ProductQuestionModel model,Product product)
+        public ProductQuestionModel PrepareProductQuestionModel(ProductQuestionModel model, Product product)
         {
-            if(product is null)
+            if (product is null)
             {
                 throw new ArgumentNullException(nameof(product));
             }
@@ -673,6 +679,36 @@ namespace Lipar.Web.Factories.Application
             }
 
             return productAnswersModel;
+        }
+
+        protected IList<ProductTagMappingModel> PrepareProductTagListModel(Guid productId)
+        {
+            var productTagMappingListModel = new List<ProductTagMappingModel>();
+
+            if (productId == Guid.Empty)
+            {
+                return productTagMappingListModel;
+            }
+
+            var productTags = _productTagService.GetProductTagMappings(productId);
+
+            if (productTags.Any())
+            {
+                foreach (var productTag in productTags)
+                {
+                    var ptm = new ProductTagMappingModel()
+                    {
+                        Id = productTag.Id,
+                        Name = productTag.ProductTag.Name,
+                        ProductId = productTag.ProductId,
+                        ProductTagId = productTag.ProductTagId,
+                    };
+
+                    productTagMappingListModel.Add(ptm);
+                }
+            }
+
+            return productTagMappingListModel;
         }
         #endregion
     }
