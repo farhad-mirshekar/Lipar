@@ -272,6 +272,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Helpers">
+      <HintPath>..\..\..\Banking-Portal\Banking-Portal\Helpers\bin\Debug\net6.0\Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Melli.Portal">
+      <HintPath>..\..\..\Banking-Portal\Banking-Portal\Melli.Portal\bin\Debug\net6.0\Melli.Portal.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\libs\jquery-ajax-unobtrusive\jquery.unobtrusive-ajax.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

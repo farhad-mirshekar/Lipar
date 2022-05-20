@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20220515160032_addBankTypAndRemoveAddressInShoppingCartItem")]
+    partial class addBankTypAndRemoveAddressInShoppingCartItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,10 +162,10 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("ShippingCartRate")
-                        .HasColumnType("DECIMAL(18,3)");
+                    b.Property<decimal?>("ShoppingCartRate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UserAddressId")
                         .HasColumnType("uniqueidentifier");
@@ -215,7 +217,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("nvarchar(3000)");
 
                     b.Property<decimal?>("ProductDiscountPrice")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ProductDiscountTypeId")
                         .HasColumnType("int");
@@ -227,7 +229,7 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ProductPrice")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -247,33 +249,6 @@ namespace Lipar.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails", "Application");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderPaymentStatus", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("OrderPaymentStatusTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ShoppingCartItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ShoppingCartItemId");
-
-                    b.ToTable("OrderPaymentStatuses", "Application");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>
@@ -307,13 +282,13 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Height")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDownload")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Length")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("MetaDescription")
                         .HasColumnType("nvarchar(max)");
@@ -364,10 +339,10 @@ namespace Lipar.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Weight")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Width")
-                        .HasColumnType("DECIMAL(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -2699,21 +2674,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderPaymentStatus", b =>
-                {
-                    b.HasOne("Lipar.Entities.Domain.Application.Order", "Order")
-                        .WithMany("OrderPaymentStatuses")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Lipar.Entities.Domain.Application.ShoppingCartItem", "shoppingCartItem")
-                        .WithMany("OrderPaymentStatuses")
-                        .HasForeignKey("ShoppingCartItemId");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("shoppingCartItem");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Application.Category", "Category")
@@ -3728,8 +3688,6 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Order", b =>
                 {
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("OrderPaymentStatuses");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>
@@ -3775,11 +3733,6 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.Application.ShippingCost", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.ShoppingCartItem", b =>
-                {
-                    b.Navigation("OrderPaymentStatuses");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Core.CommentStatus", b =>

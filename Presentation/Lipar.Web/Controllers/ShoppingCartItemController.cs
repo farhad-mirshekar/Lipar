@@ -199,6 +199,30 @@ namespace Lipar.Web.Controllers
 
             return View(model);
         }
+
+        public IActionResult Payment(Guid bankId , Guid addressId)
+        {
+            if(bankId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(bankId));
+            }
+
+            if (addressId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(addressId));
+            }
+
+            var shoppingCartItemId = _workContext.ShoppingCartItems;
+
+            if(!shoppingCartItemId.HasValue || (shoppingCartItemId.HasValue 
+                                               && shoppingCartItemId.Value == Guid.Empty))
+            {
+                throw new ArgumentNullException(nameof(shoppingCartItemId));
+            }
+
+
+            return View();
+        }
         #endregion
 
         #region User Address Method

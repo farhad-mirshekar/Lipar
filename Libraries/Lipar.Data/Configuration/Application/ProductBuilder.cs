@@ -16,10 +16,10 @@ namespace Lipar.Data.Configuration.Application
             builder.Property(p => p.Name).IsRequired();
             builder.Property(p => p.Price).HasColumnType("DECIMAL(18,3)").IsRequired();
             builder.Property(p => p.CategoryId).IsRequired();
-            builder.Property(p => p.Height).IsRequired();
-            builder.Property(p => p.Weight).IsRequired();
-            builder.Property(p => p.Width).IsRequired();
-            builder.Property(p => p.Length).IsRequired();
+            builder.Property(p => p.Height).HasColumnType("DECIMAL(18,3)").IsRequired();
+            builder.Property(p => p.Weight).HasColumnType("DECIMAL(18,3)").IsRequired();
+            builder.Property(p => p.Width).HasColumnType("DECIMAL(18,3)").IsRequired();
+            builder.Property(p => p.Length).HasColumnType("DECIMAL(18,3)").IsRequired();
             builder.Property(p => p.StockQuantity).IsRequired();
 
             builder.Property(p => p.MetaDescription);

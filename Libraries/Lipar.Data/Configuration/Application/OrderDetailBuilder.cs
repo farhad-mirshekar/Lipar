@@ -15,6 +15,8 @@ namespace Lipar.Data.Configuration.Application
             builder.Property(od => od.ShippingCostName).HasMaxLength(3000);
             builder.Property(od => od.DeliveryDateName).HasMaxLength(3000);
             builder.Property(od => od.ProductCategoryName).HasMaxLength(3000);
+            builder.Property(od => od.ProductPrice).HasColumnType("DECIMAL(18,3)");
+            builder.Property(od => od.ProductDiscountPrice).HasColumnType("DECIMAL(18,3)");
 
             builder.HasOne(od => od.Order)
                 .WithMany(o => o.OrderDetails)

@@ -32,6 +32,8 @@ namespace Lipar.Data
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            connectionString = "Data Source=.;Integrated Security=true;Initial Catalog=LiparDb;Persist Security Info=True;;MultipleActiveResultSets=true;";
+
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new Exception("connection string is null");

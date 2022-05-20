@@ -88,6 +88,13 @@ namespace Lipar.Services.Financial.Implementations
 
             return models;
         }
+
+        public IQueryable<Bank> BankQuery(BankListVM listVM)
+        {
+            var query = _repository.TableNoTracking.AsQueryable();
+
+            return query;
+        }
         #endregion
     }
 }

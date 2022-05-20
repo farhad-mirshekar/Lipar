@@ -14,6 +14,7 @@ namespace Lipar.Entities.Domain.Application
         public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
+            OrderPaymentStatuses = new HashSet<OrderPaymentStatus>();
         }
         #endregion
 
@@ -26,10 +27,7 @@ namespace Lipar.Entities.Domain.Application
         /// gets or sets the user address id
         /// </summary>
         public Guid UserAddressId { get; set; }
-        /// <summary>
-        /// gets or sets the address
-        /// </summary>
-        public string Address { get; set; }
+
         /// <summary>
         /// gets or sets the bank port
         /// </summary>
@@ -38,7 +36,7 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the shipping cart rate
         /// </summary>
-        public decimal? ShoppingCartRate { get; set; }
+        public decimal? ShippingCartRate { get; set; }
 
         /// <summary>
         /// gets or sets price
@@ -48,6 +46,7 @@ namespace Lipar.Entities.Domain.Application
 
         #region Navigations
         public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<OrderPaymentStatus> OrderPaymentStatuses { get; set; }
         public BankPort BankPort { get; set; }
         public User User { get; set; }
         public UserAddress UserAddress { get; set; }

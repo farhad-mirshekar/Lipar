@@ -1,5 +1,4 @@
 ﻿using Lipar.Entities.Domain.Core;
-using Lipar.Entities.Domain.Organization;
 using System;
 using System.Collections.Generic;
 
@@ -47,8 +46,9 @@ namespace Lipar.Entities.Domain.Financial
         /// </summary>
         public DateTime ModifiedDate { get; set; }
         /// <summary>
-        /// gets or sets creator
+        /// gets or sets bank type
         /// </summary>
+        public int BankTypeId { get; set; }
         #endregion
 
         #region Navigations

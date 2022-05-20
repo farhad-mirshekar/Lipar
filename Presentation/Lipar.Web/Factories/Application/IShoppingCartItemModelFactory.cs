@@ -45,5 +45,13 @@ namespace Lipar.Web.Factories.Application
         /// </summary>
         /// <returns></returns>
         IList<BankModel> PrepareBankList();
+
+        /// <summary>
+        /// Payment
+        /// </summary>
+        /// <param name="bankId"></param>
+        /// <param name="addressId"></param>
+        /// <param name="shoppingCartItemId"></param>
+        void Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId);
     }
 }

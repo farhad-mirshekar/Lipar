@@ -1,6 +1,7 @@
 ﻿using Lipar.Core;
 using Lipar.Entities.Domain.Financial;
 using System;
+using System.Linq;
 
 namespace Lipar.Services.Financial.Contracts
 {
@@ -41,5 +42,12 @@ namespace Lipar.Services.Financial.Contracts
         /// <param name="listVM">bank list view model</param>
         /// <returns></returns>
         IPagedList<Bank> List(BankListVM listVM);
+
+        /// <summary>
+        /// get query bank
+        /// </summary>
+        /// <param name="listVM"></param>
+        /// <returns></returns>
+        IQueryable<Bank> BankQuery(BankListVM listVM);
     }
 }

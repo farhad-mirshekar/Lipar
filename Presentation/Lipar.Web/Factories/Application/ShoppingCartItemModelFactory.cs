@@ -3,6 +3,7 @@ using Lipar.Core.Caching;
 using Lipar.Core.Common;
 using Lipar.Entities.Domain.Application;
 using Lipar.Entities.Domain.Application.Enums;
+using Lipar.Entities.Domain.Financial.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Application;
 using Lipar.Services.Application.Contracts;
@@ -33,7 +34,7 @@ namespace Lipar.Web.Factories.Application
                                           , IProductMediaService productMediaService
                                           , IMediaService mediaService
                                           , IUserAddressService userAddressService
-                                          , IBankPortService bankPortService
+                                          , IBankService bankService
                                           , IOrderService orderService)
         {
             _shoppingCartItemService = shoppingCartItemService;
@@ -44,7 +45,7 @@ namespace Lipar.Web.Factories.Application
             _productMediaService = productMediaService;
             _mediaService = mediaService;
             _userAddressService = userAddressService;
-            _bankPortService = bankPortService;
+            _bankService = bankService;
             _orderService = orderService;
         }
         #endregion
@@ -58,7 +59,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IProductMediaService _productMediaService;
         private readonly IMediaService _mediaService;
         private readonly IUserAddressService _userAddressService;
-        private readonly IBankPortService _bankPortService;
+        private readonly IBankService _bankService;
         private readonly IOrderService _orderService;
         #endregion
 
@@ -121,6 +122,7 @@ namespace Lipar.Web.Factories.Application
                             shoppingCartItem.ProductId = model.Id;
                             shoppingCartItem.Quantity = 1;
                             shoppingCartItem.UserId = _workContext.CurrentUser.Id;
+                            shoppingCartItem.CreationDate = CommonHelper.GetCurrentDateTime();
                             var productAttributeJson = new ProductAttributeValue
                             {
                                 Id = productAttributeValue.Id,
@@ -189,6 +191,7 @@ namespace Lipar.Web.Factories.Application
             shoppingCartItem.ProductId = product.Id;
             shoppingCartItem.ShoppingCartItemId = _workContext.ShoppingCartItems.Value;
             shoppingCartItem.UserId = _workContext.CurrentUser.Id;
+            shoppingCartItem.CreationDate = CommonHelper.GetCurrentDateTime();
 
             var cart = _shoppingCartItemService.Get(_workContext.ShoppingCartItems.Value, product.Id);
             if (cart == null)
@@ -249,7 +252,7 @@ namespace Lipar.Web.Factories.Application
                         Priority = x.Product.ShippingCost.Priority
                     }
                     : null,
-                    ProductAttributeValues = !string.IsNullOrEmpty(x.AttributeJson) 
+                    ProductAttributeValues = !string.IsNullOrEmpty(x.AttributeJson)
                                              ? CommonHelper.DeserializeObject<List<ProductAttributeValue>>(x.AttributeJson)
                                              : null
                 }).ToList();
@@ -349,30 +352,42 @@ namespace Lipar.Web.Factories.Application
 
         public IList<BankModel> PrepareBankList()
         {
-            var bankPorts = _bankPortService.GetBankPorts();
+            var banks = _bankService.BankQuery(new Entities.Domain.Financial.BankListVM { });
 
-            var result = bankPorts.Select(bankPort => new BankModel
+            var result = banks.Select(bank => new BankModel
             {
-                Id = bankPort.Id,
-                Name = bankPort.Bank.Name,
-                CreationDate = bankPort.CreationDate,
-                PaymentUri = bankPort.Bank.PaymentUri,
-                RedirectUri = bankPort.Bank.RedirectUri,
-                BankPort = new BankPortModel
-                {
-                    BankId = bankPort.BankId,
-                    Id = bankPort.Id,
-                    CreationDate = bankPort.CreationDate,
-                    MerchantId = bankPort.MerchantId,
-                    MerchantKey = bankPort.MerchantKey,
-                    Name = bankPort.Name,
-                    Password = bankPort.Password,
-                    TerminalId = bankPort.TerminalId,
-                    Username = bankPort.Username,
-                }
+                Id = bank.Id,
+                Name = bank.Name,
+                CreationDate = bank.CreationDate,
+                PaymentUri = bank.PaymentUri,
+                RedirectUri = bank.RedirectUri,
             }).ToList();
 
             return result;
+        }
+
+        public void Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId)
+        {
+            var bank = _bankService.GetById(bankId, true);
+            if (bank is null)
+            {
+                throw new ArgumentNullException(nameof(bank));
+            }
+
+            var miniShoppingCartItem = PrepareMiniShoppingCartItemModel(shoppingCartItemId);
+
+            if(miniShoppingCartItem is null)
+            {
+                throw new ArgumentNullException(nameof(miniShoppingCartItem));
+            }
+
+            //
+            switch (bank.BankTypeId)
+            {
+                case (int)BankTypeEnum.melli:
+
+                    break;
+            }
         }
         #endregion
 
@@ -447,7 +462,7 @@ namespace Lipar.Web.Factories.Application
             else
             {
                 var orderSettings = _orderService.OrderSettings();
-                if(price < orderSettings.ShoppingCartRate)
+                if (price < orderSettings.ShoppingCartRate)
                 {
                     price = price + (orderSettings.ShoppingCartRate ?? 0);
                 }

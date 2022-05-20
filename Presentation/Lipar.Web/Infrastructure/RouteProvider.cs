@@ -91,6 +91,9 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("AddProductAnswers", "Product/CreateProductAnswers",
                 new { controller = "Product", action = "ProductAnswerAdd" });
+
+            endpointRouteBuilder.MapControllerRoute("Payment", "Cart/Payment",
+                new { controller = "ShoppingCartItem", action = "Payment" });
         }
         #endregion
     }
