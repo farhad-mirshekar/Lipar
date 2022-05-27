@@ -52,6 +52,17 @@ namespace Lipar.Web.Factories.Application
         /// <param name="bankId"></param>
         /// <param name="addressId"></param>
         /// <param name="shoppingCartItemId"></param>
-        void Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId);
+        string Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId);
+
+        /// <summary>
+        /// remove all basket
+        /// </summary>
+        /// <param name="shoppingCartItemsId"></param>
+        void DeleteAllShoppingCartItem(Guid shoppingCartItemsId);
+
+        /// <summary>
+        /// clear cache shopping cart
+        /// </summary>
+        void ClearCacheShoppingCart();
     }
 }

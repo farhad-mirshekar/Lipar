@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Lipar.Entities.Domain.Financial;
+using Lipar.Entities.Domain.Organization;
+using System;
 
 namespace Lipar.Entities.Domain.Application
 {
@@ -25,11 +27,66 @@ namespace Lipar.Entities.Domain.Application
         /// </summary>
         public int OrderPaymentStatusTypeId { get; set; }
 
+        /// <summary>
+        /// gets or sets user
+        /// </summary>
+        public Guid UserId { get; set; }
+
+        /// <summary>
+        /// gets or sets modified date
+        /// </summary>
+        public DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// gets or sets bank port
+        /// </summary>
+        public Guid? BankPortId { get; set; }
+
+        /// <summary>
+        /// gets or sets the user address
+        /// </summary>
+        public Guid? UserAddressId { get; set; }
+
+        /// <summary>
+        /// gets or sets the token
+        /// </summary>
+        public string Token { get; set; }
+        /// <summary>
+        /// gets or sets the sign data
+        /// </summary>
+        public string SignData { get; set; }
+
+        /// <summary>
+        /// gets or sets the response status
+        /// </summary>
+        public int? ResponseStatus { get; set; }
+
+        /// <summary>
+        /// gets or sets the response message
+        /// </summary>
+        public string ResponseMessage { get; set; }
+
+        /// <summary>
+        /// gets or sets the RetrivalRefNo
+        /// </summary>
+        public string RetrivalRefNo { get; set; }
+
+        /// <summary>
+        /// gets or sets the SystemTraceNo
+        /// </summary>
+        public string SystemTraceNo { get; set; }
+
+        /// <summary>
+        /// gets or sets the ReservationNumber
+        /// </summary>
+        public string ReservationNumber{ get; set; }
+
         #endregion
 
         #region Navigations
         public Order Order { get; set; }
-        public ShoppingCartItem shoppingCartItem { get; set; }
+        public BankPort BankPort { get; set; }
+        public User User { get; set; }
         #endregion
     }
 }

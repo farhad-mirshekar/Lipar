@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20220526151550_remove-field-in-order-detail")]
+    partial class removefieldinorderdetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,25 +303,10 @@ namespace Lipar.Data.Migrations
                     b.Property<int>("OrderPaymentStatusTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReservationNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResponseMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ResponseStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RetrivalRefNo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("ShoppingCartItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SignData")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SystemTraceNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")

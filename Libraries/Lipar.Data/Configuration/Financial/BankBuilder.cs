@@ -16,6 +16,7 @@ namespace Lipar.Data.Configuration.Financial
             builder.Property(b => b.Name).HasMaxLength(500).IsRequired();
             builder.Property(b => b.PaymentUri).HasMaxLength(500).IsRequired();
             builder.Property(b => b.RedirectUri).HasMaxLength(500).IsRequired();
+            builder.Property(b => b.VerifyUri).HasMaxLength(500).IsRequired();
 
             builder.HasOne(b => b.EnabledType)
                 .WithMany(e => e.Banks)

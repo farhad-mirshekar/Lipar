@@ -36,7 +36,7 @@ namespace Lipar.Entities.Domain.Application
         /// <summary>
         /// gets or sets the shipping cart rate
         /// </summary>
-        public decimal? ShippingCartRate { get; set; }
+        public decimal? ShoppingCartRate { get; set; }
 
         /// <summary>
         /// gets or sets price

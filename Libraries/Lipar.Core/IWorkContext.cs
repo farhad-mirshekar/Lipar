@@ -15,7 +15,7 @@ namespace Lipar.Core
         /// <summary>
         /// get shopping cart item  by cookie
         /// </summary>
-        Guid? ShoppingCartItems { get; }
+        Guid? ShoppingCartItems { get; set; }
         /// <summary>
         /// get or set working language
         /// </summary>

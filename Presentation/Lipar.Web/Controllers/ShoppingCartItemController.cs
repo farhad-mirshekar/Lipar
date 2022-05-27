@@ -131,8 +131,7 @@ namespace Lipar.Web.Controllers
             _shoppingCartItemService.Edit(shoppingCartItem);
 
             //clear cache shopping cart list
-            var cacheKey = new CacheKey(LiparWebCacheKey.Shopping_Cart_List);
-            _cacheManager.Remove(cacheKey);
+            _shoppingCartItemModelFactory.ClearCacheShoppingCart();
 
             var model = _shoppingCartItemModelFactory.PrepareShoppingCartItemListModel(_workContext.ShoppingCartItems.Value);
             return Json(new
@@ -165,8 +164,7 @@ namespace Lipar.Web.Controllers
             _shoppingCartItemService.Edit(shoppingCartItem);
 
             //clear cache shopping cart list
-            var cacheKey = new CacheKey(LiparWebCacheKey.Shopping_Cart_List);
-            _cacheManager.Remove(cacheKey);
+            _shoppingCartItemModelFactory.ClearCacheShoppingCart();
 
             var model = _shoppingCartItemModelFactory.PrepareShoppingCartItemListModel(_workContext.ShoppingCartItems.Value);
             return Json(new
@@ -200,9 +198,10 @@ namespace Lipar.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Payment(Guid bankId , Guid addressId)
+        [HttpPost]
+        public IActionResult Payment(Guid bankId, Guid addressId)
         {
-            if(bankId == Guid.Empty)
+            if (bankId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(bankId));
             }
@@ -214,14 +213,31 @@ namespace Lipar.Web.Controllers
 
             var shoppingCartItemId = _workContext.ShoppingCartItems;
 
-            if(!shoppingCartItemId.HasValue || (shoppingCartItemId.HasValue 
+            if (!shoppingCartItemId.HasValue || (shoppingCartItemId.HasValue
                                                && shoppingCartItemId.Value == Guid.Empty))
             {
                 throw new ArgumentNullException(nameof(shoppingCartItemId));
             }
 
+            var url = _shoppingCartItemModelFactory.Payment(bankId, addressId, shoppingCartItemId.Value);
 
-            return View();
+            if (!string.IsNullOrEmpty(url))
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = true,
+                    NotyType = "success",
+                    Message = "درحال اتصال به درگاه بانک",
+                    Url = url
+                });
+            }
+
+           return Json(new ResultViewModel
+            {
+                Success = false,
+                NotyType = "error",
+                Message = "خطا در ارتباط با درگاه بانک"
+            });
         }
         #endregion
 

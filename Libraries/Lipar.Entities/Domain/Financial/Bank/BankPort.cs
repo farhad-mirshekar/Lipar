@@ -14,6 +14,7 @@ namespace Lipar.Entities.Domain.Financial
         public BankPort()
         {
             Orders = new HashSet<Order>();
+            OrderPaymentStatuses = new HashSet<OrderPaymentStatus>();
         }
         #endregion
 
@@ -66,6 +67,7 @@ namespace Lipar.Entities.Domain.Financial
         public Bank Bank { get; set; }
         public EnabledType EnabledType { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderPaymentStatus> OrderPaymentStatuses { get; set; }
         #endregion
     }
 }

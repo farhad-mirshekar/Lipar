@@ -12,5 +12,11 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <returns></returns>
         OrderSetting OrderSettings();
+
+        /// <summary>
+        /// add order method
+        /// </summary>
+        /// <param name="model">order</param>
+        void Add(Order model);
     }
 }

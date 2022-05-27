@@ -29,5 +29,11 @@ namespace Lipar.Web.Factories.Organization
         /// <param name="userAddress">user address</param>
         /// <returns>userAddressModel</returns>
         UserAddressModel PrepareUserAddressModel(UserAddressModel model, UserAddress userAddress);
+
+        /// <summary>
+        /// prepare register model
+        /// </summary>
+        /// <returns></returns>
+        RegisterModel PrepareRegisterModel();
     }
 }

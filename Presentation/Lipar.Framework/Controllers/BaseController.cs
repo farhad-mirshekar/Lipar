@@ -124,5 +124,10 @@ namespace Lipar.Web.Framework.Controllers
             t.Wait();
             return stringWriter.GetStringBuilder().ToString();
         }
+
+        public IActionResult NotFoundView()
+        {
+            return RedirectToAction("PageNotFound", "Common");
+        }
     }
 }

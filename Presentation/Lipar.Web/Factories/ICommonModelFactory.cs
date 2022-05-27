@@ -55,5 +55,12 @@ namespace Lipar.Web.Factories
         /// <param name="provinceId">provinceid</param>
         /// <param name="defaultItemText"></param>
         void PrepareCities(IList<SelectListItem> items,int? provinceId = null, string defaultItemText = null);
+
+        /// <summary>
+        /// prepare drop down for gender type type
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="defaultItemText"></param>
+        void PrepareGenderType(IList<SelectListItem> items, string defaultItemText = null);
     }
 }

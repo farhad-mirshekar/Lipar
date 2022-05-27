@@ -102,6 +102,21 @@ namespace Lipar.Services.Application.Implementations
 
             return query.Where(x => x.ShoppingCartItemId == ShoppingCartItemId);
         }
+
+        public void Delete(Guid shoppingCartItemId)
+        {
+            if(shoppingCartItemId == Guid.Empty)
+            {
+                throw new Exception("shopping cart item is null");
+            }
+
+            var shoppingCartItems = _repository.Table.Where(s=>s.ShoppingCartItemId == shoppingCartItemId).ToList();
+
+            if(shoppingCartItems != null && shoppingCartItems.Any())
+            {
+                _repository.Delete(shoppingCartItems);
+            }
+        }
         #endregion
     }
 }

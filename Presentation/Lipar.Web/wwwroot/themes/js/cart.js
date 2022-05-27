@@ -174,6 +174,25 @@ $(document).on('click', '#btn-bank', function (e) {
         return false;
     }
 
+    var data = {
+        bankId: bankPort,
+        addressId: userAddress
+    };
+
+    $.ajax({
+        cache: false,
+        url: '/ShoppingCartItem/Payment',
+        type: "POST",
+        data: data,
+        success: function (response) {
+            if (response.Success) {
+                Message(response.Message, response.NotyType);
+
+                window.location.href = response.Url;
+            }
+        }
+    })
+
 })
 
 function Message(text, type) {

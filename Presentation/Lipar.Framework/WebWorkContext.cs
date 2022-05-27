@@ -33,9 +33,12 @@ namespace Lipar.Web.Framework
         private Position _cachedPosition;
         private IList<Command> _cachedCommand;
         private Language _cachedLanguage;
-        private CacheKey _cachKeyUser => new CacheKey("_cachedUser");
-        private CacheKey _cachKeyPosition => new CacheKey("_cachKeyPosition");
-        private CacheKey _cachKeyCommand => new CacheKey("_cachKeyCommand");
+        private Guid _cachedShoppingCart;
+
+        private CacheKey _cachKeyUser => new CacheKey(LiparCachingDefaults.LiparUser);
+        private CacheKey _cachKeyPosition => new CacheKey(LiparCachingDefaults.LiparPosition);
+        private CacheKey _cachKeyCommand => new CacheKey(LiparCachingDefaults.LiparCommand);
+        private CacheKey _cachKeyShoppingCartItem => new CacheKey(LiparCachingDefaults.LiparShoppingCartItem);
         #endregion
 
         #region Ctor
@@ -179,15 +182,27 @@ namespace Lipar.Web.Framework
         {
             get
             {
-                var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
-                if (_httpContextAccessor.HttpContext.Request.Cookies[cookieName] != null)
+                return _staticCacheManager.Get<Guid?>(_cachKeyShoppingCartItem, () =>
                 {
-                    var value = _httpContextAccessor.HttpContext.Request.Cookies[cookieName];
+                    if(_cachedShoppingCart != Guid.Empty)
+                    {
+                        return _cachedShoppingCart;
+                    }
 
-                    return Guid.Parse(value);
-                }
+                    var shoppingCartItemId = Guid.NewGuid();
 
-                return null;
+                    SetShoppingCartCookie(shoppingCartItemId);
+
+                    _cachedShoppingCart = shoppingCartItemId;
+
+                    return shoppingCartItemId;
+                });
+            }
+            set
+            {
+                _staticCacheManager.Remove(_cachKeyShoppingCartItem);
+
+                _cachedShoppingCart = value.HasValue ? value.Value : Guid.NewGuid();
             }
         }
         public Language WorkingLanguage
@@ -277,6 +292,33 @@ namespace Lipar.Web.Framework
                 return null;
 
             return requestLanguage;
+        }
+
+        protected void SetShoppingCartCookie(Guid shoppingCartItemId)
+        {
+            if (_httpContextAccessor.HttpContext?.Response == null)
+                return;
+
+            //delete current cookie value
+            var cookieName = $"{LiparCookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookieName);
+
+            //get date of cookie expiration
+            var cookieExpires = 24;
+            var cookieExpiresDate = DateTime.Now.AddHours(cookieExpires);
+
+            //if passed guid is empty set cookie as expired
+            if (shoppingCartItemId == Guid.Empty)
+                cookieExpiresDate = DateTime.Now.AddMonths(-1);
+
+            //set new cookie value
+            var options = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = cookieExpiresDate,
+                Secure = true
+            };
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, shoppingCartItemId.ToString(), options);
         }
         #endregion
     }

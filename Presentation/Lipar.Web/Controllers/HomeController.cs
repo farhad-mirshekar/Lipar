@@ -27,7 +27,7 @@ namespace Lipar.Web.Controllers
         public IActionResult Index()
         {
             //create shopping cart item cookie
-            SetCookie(CookieDefaults.ShoppingCartItems);
+            //SetCookie(CookieDefaults.ShoppingCartItems);
 
             return View();
         }
@@ -46,7 +46,9 @@ namespace Lipar.Web.Controllers
                     Secure = true
                 };
 
-                _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, "b75fd233-5194-4321-b4dd-b69e3648063f", cookieOptions);
+                var shoppingCartItem = Guid.NewGuid();
+
+                _httpContextAccessor.HttpContext.Response.Cookies.Append(cookieName, shoppingCartItem.ToString(), cookieOptions);
             }
         }
         #endregion

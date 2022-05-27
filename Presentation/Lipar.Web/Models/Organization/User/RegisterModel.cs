@@ -1,9 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Models.Organization
 {
     public class RegisterModel
     {
+        public RegisterModel()
+        {
+            AvailableGenderList = new List<SelectListItem>();
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalCode { get; set; }
@@ -13,5 +20,8 @@ namespace Lipar.Web.Models.Organization
         [Remote(action:"CheckDuplicateUserName",controller:"Account")]
         public string UserName { get; set; }
         public string Captcha { get; set; }
+        public int GenderId { get; set; }
+
+        public IList<SelectListItem> AvailableGenderList { get; set; }
     }
 }

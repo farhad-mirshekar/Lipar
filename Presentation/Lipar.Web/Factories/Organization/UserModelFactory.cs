@@ -61,5 +61,10 @@ namespace Lipar.Web.Factories.Organization
 
             return model;
         }
+
+        public RegisterModel PrepareRegisterModel()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

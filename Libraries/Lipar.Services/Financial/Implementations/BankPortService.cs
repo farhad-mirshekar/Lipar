@@ -65,10 +65,12 @@ namespace Lipar.Services.Financial.Implementations
                 return null;
             }
 
-            var query = _repository.Table;
+            var query = _repository.Table
+                                   .Include(b=>b.Bank);
             if (noTracking)
             {
-                query = _repository.TableNoTracking;
+                query = _repository.TableNoTracking
+                                   .Include(b => b.Bank);
             }
 
             var model = query.Where(bp => bp.Id == id).FirstOrDefault();
@@ -96,6 +98,25 @@ namespace Lipar.Services.Financial.Implementations
 
             query = query.Where(bp => bp.IsDefault == true && bp.EnabledTypeId == (int)EnabledTypeEnum.Active);
             return query;
+        }
+
+        public BankPort GetActiveBankPort(Guid bankId , bool noTracking = false)
+        {
+            if(bankId == Guid.Empty)
+            {
+                throw new Exception("bank id is not valid!");
+            }
+            
+            var query = _repository.Table;
+
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking;
+            }
+
+            var bankPort = query.Where(bp => bp.BankId == bankId).FirstOrDefault();
+
+            return bankPort;
         }
         #endregion
     }

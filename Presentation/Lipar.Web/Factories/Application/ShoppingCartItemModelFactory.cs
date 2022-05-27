@@ -3,6 +3,7 @@ using Lipar.Core.Caching;
 using Lipar.Core.Common;
 using Lipar.Entities.Domain.Application;
 using Lipar.Entities.Domain.Application.Enums;
+using Lipar.Entities.Domain.Financial;
 using Lipar.Entities.Domain.Financial.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Services.Application;
@@ -16,6 +17,7 @@ using Lipar.Web.Models.Application;
 using Lipar.Web.Models.Financial;
 using Lipar.Web.Models.General;
 using Lipar.Web.Models.Organization;
+using Melli.Portal.Services;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,9 @@ namespace Lipar.Web.Factories.Application
                                           , IMediaService mediaService
                                           , IUserAddressService userAddressService
                                           , IBankService bankService
-                                          , IOrderService orderService)
+                                          , IOrderService orderService
+                                          , IBankPortService bankPortService
+                                          , IOrderPaymentStatusService orderPaymentStatusService)
         {
             _shoppingCartItemService = shoppingCartItemService;
             _cacheManager = cacheManager;
@@ -47,6 +51,8 @@ namespace Lipar.Web.Factories.Application
             _userAddressService = userAddressService;
             _bankService = bankService;
             _orderService = orderService;
+            _bankPortService = bankPortService;
+            _orderPaymentStatusService = orderPaymentStatusService;
         }
         #endregion
 
@@ -61,6 +67,8 @@ namespace Lipar.Web.Factories.Application
         private readonly IUserAddressService _userAddressService;
         private readonly IBankService _bankService;
         private readonly IOrderService _orderService;
+        private readonly IBankPortService _bankPortService;
+        private readonly IOrderPaymentStatusService _orderPaymentStatusService;
         #endregion
 
         #region Methods
@@ -85,6 +93,8 @@ namespace Lipar.Web.Factories.Application
                     Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.YouMustBeLoggedIn")
                 };
             }
+
+            var productAttributes = new List<ProductAttributeValue>();
 
             if (model.ProductAttributes != null && model.ProductAttributes.Count > 0)
             {
@@ -118,11 +128,6 @@ namespace Lipar.Web.Factories.Application
                                 throw new ArgumentNullException(nameof(productAttributeValue));
                             }
 
-                            var shoppingCartItem = new ShoppingCartItem();
-                            shoppingCartItem.ProductId = model.Id;
-                            shoppingCartItem.Quantity = 1;
-                            shoppingCartItem.UserId = _workContext.CurrentUser.Id;
-                            shoppingCartItem.CreationDate = CommonHelper.GetCurrentDateTime();
                             var productAttributeJson = new ProductAttributeValue
                             {
                                 Id = productAttributeValue.Id,
@@ -138,21 +143,37 @@ namespace Lipar.Web.Factories.Application
                                     TextPrompt = productAttributeValue.ProductAttributeMapping.TextPrompt
                                 }
                             };
-                            shoppingCartItem.AttributeJson = CommonHelper.SerializeObject(productAttributeJson);
 
-                            _shoppingCartItemService.Add(shoppingCartItem);
+                            productAttributes.Add(productAttributeJson);
 
-                            if (shoppingCartItem.Id != Guid.Empty)
-                            {
-                                return new ResultViewModel
-                                {
-                                    Success = true,
-                                    Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.AddToCart"),
-                                    NotyType = "success",
-                                };
-                            }
                             break;
                     }
+                }
+
+                var shoppingCartItem = new ShoppingCartItem();
+                shoppingCartItem.ProductId = model.Id;
+                shoppingCartItem.Quantity = 1;
+                shoppingCartItem.UserId = _workContext.CurrentUser.Id;
+                shoppingCartItem.CreationDate = CommonHelper.GetCurrentDateTime();
+                if (productAttributes != null && productAttributes.Any())
+                {
+                    shoppingCartItem.AttributeJson = CommonHelper.SerializeObject(productAttributes);
+                }
+                shoppingCartItem.ShoppingCartItemId = _workContext.ShoppingCartItems.Value;
+
+                _shoppingCartItemService.Add(shoppingCartItem);
+
+                if (shoppingCartItem.Id != Guid.Empty)
+                {
+                    //clear cache shopping cart
+                    ClearCacheShoppingCart();
+
+                    return new ResultViewModel
+                    {
+                        Success = true,
+                        Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.AddToCart"),
+                        NotyType = "success",
+                    };
                 }
             }
 
@@ -205,17 +226,21 @@ namespace Lipar.Web.Factories.Application
                 _shoppingCartItemService.Edit(shoppingCartItem);
             }
 
+            //clear cache shopping cart
+            ClearCacheShoppingCart();
+
             return new ResultViewModel
             {
                 Success = true,
                 Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.AddToCart"),
-                Url = "Cart"
+                //Url = "Cart",
+                NotyType = "success",
             };
         }
 
         public ShoppingCartItemListModel PrepareShoppingCartItemListModel(Guid shoppingCartItemId)
         {
-            var cacheKey = new CacheKey(LiparWebCacheKey.Shopping_Cart_List);
+            var cacheKey = new CacheKey(LiparWebCacheKey.LiparShoppingCartList);
 
             return _cacheManager.Get(cacheKey, () =>
             {
@@ -276,7 +301,7 @@ namespace Lipar.Web.Factories.Application
 
         public MiniShoppingCartItemModel PrepareMiniShoppingCartItemModel(Guid shoppingCartItemId)
         {
-            var cacheKey = new CacheKey(LiparWebCacheKey.Mini_Shopping_Cart_List);
+            var cacheKey = new CacheKey(LiparWebCacheKey.LiparMiniShoppingCartList);
 
             return _cacheManager.Get(cacheKey, () =>
             {
@@ -366,7 +391,7 @@ namespace Lipar.Web.Factories.Application
             return result;
         }
 
-        public void Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId)
+        public string Payment(Guid bankId, Guid addressId, Guid shoppingCartItemId)
         {
             var bank = _bankService.GetById(bankId, true);
             if (bank is null)
@@ -376,18 +401,45 @@ namespace Lipar.Web.Factories.Application
 
             var miniShoppingCartItem = PrepareMiniShoppingCartItemModel(shoppingCartItemId);
 
-            if(miniShoppingCartItem is null)
+            if (miniShoppingCartItem is null)
             {
                 throw new ArgumentNullException(nameof(miniShoppingCartItem));
             }
 
+            var token = string.Empty;
+            var result = false;
             //
             switch (bank.BankTypeId)
             {
                 case (int)BankTypeEnum.melli:
-
+                    result = ConnectToBankMelli(bank, addressId, miniShoppingCartItem.CartAmount, shoppingCartItemId, out token);
                     break;
             }
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                var url = $"{bank.ServiceUri}?token={token}";
+
+                return url;
+            }
+
+            return string.Empty;
+        }
+
+        public void DeleteAllShoppingCartItem(Guid shoppingCartItemsId)
+        {
+            if (shoppingCartItemsId == Guid.Empty)
+            {
+                throw new Exception("shopping cart item is null");
+            }
+
+            _shoppingCartItemService.Delete(shoppingCartItemsId);
+        }
+
+        public void ClearCacheShoppingCart()
+        {
+            _cacheManager.Remove(new CacheKey(LiparWebCacheKey.LiparShoppingCartList));
+            _cacheManager.Remove(new CacheKey(LiparWebCacheKey.LiparMiniShoppingCartList));
         }
         #endregion
 
@@ -492,6 +544,93 @@ namespace Lipar.Web.Factories.Application
             }
 
             return discountPrice;
+        }
+
+        private bool ConnectToBankMelli(Bank bank, Guid userAddressId, decimal price, Guid shoppingCartItemId, out string token)
+        {
+            token = string.Empty;
+            var result = false;
+
+            try
+            {
+                if (bank is null)
+                {
+                    throw new ArgumentNullException(nameof(bank));
+                }
+
+                if (price == 0)
+                {
+                    throw new Exception("Price is not valid!");
+                }
+
+                var bankPort = _bankPortService.GetActiveBankPort(bank.Id, true);
+
+                if (bankPort is null)
+                {
+                    throw new ArgumentNullException(nameof(bankPort));
+                }
+
+                var orderPaymentStatus = new OrderPaymentStatus();
+                orderPaymentStatus.ShoppingCartItemId = shoppingCartItemId;
+                orderPaymentStatus.OrderPaymentStatusTypeId = (int)OrderPaymentStatusTypeEnum.Unpaid;
+                orderPaymentStatus.BankPortId = bankPort.Id;
+                orderPaymentStatus.UserId = _workContext.CurrentUser.Id;
+                orderPaymentStatus.UserAddressId = userAddressId;
+
+                _orderPaymentStatusService.Add(orderPaymentStatus);
+
+                var bankMelliService = new BankMelliService(new Melli.Portal.BankPortDetail
+                {
+                    MerchantId = bankPort.MerchantId,
+                    MerchantKey = bankPort.MerchantKey,
+                    PaymentUrl = bank.PaymentUri,
+                    RedirectUrl = bank.RedirectUri,
+                    TerminalId = bankPort.TerminalId,
+                });
+
+                var payResult = bankMelliService.PaymentRequest((long)price);
+
+                if (payResult is null)
+                {
+                    throw new Exception("خطا در ارتباط با درگاه بانک");
+                }
+
+                if (!string.IsNullOrEmpty(payResult.Token))
+                {
+                    token = payResult.Token;
+                }
+
+                switch (payResult.ResCode)
+                {
+                    case (int)Melli.Portal.Model.ResCodeVerify.نتیجه_تراکنش_موفق_است:
+                        orderPaymentStatus.Token = payResult.Token;
+                        orderPaymentStatus.SignData = payResult.Request;
+                        orderPaymentStatus.ResponseMessage = payResult.Description;
+                        orderPaymentStatus.ResponseStatus = payResult.ResCode;
+
+                        _orderPaymentStatusService.Edit(orderPaymentStatus);
+                        result = true;
+
+                        break;
+
+                    default:
+
+                        orderPaymentStatus.ResponseMessage = payResult.Description;
+                        orderPaymentStatus.ResponseStatus = payResult.ResCode;
+                        _orderPaymentStatusService.Edit(orderPaymentStatus);
+
+                        result = false;
+                        break;
+                }
+
+                return result;
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return result;
         }
         #endregion
     }

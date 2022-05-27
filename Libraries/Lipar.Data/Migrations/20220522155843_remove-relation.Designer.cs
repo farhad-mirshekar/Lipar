@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20220522155843_remove-relation")]
+    partial class removerelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +164,7 @@ namespace Lipar.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("DECIMAL(18,3)");
 
-                    b.Property<decimal?>("ShoppingCartRate")
+                    b.Property<decimal?>("ShippingCartRate")
                         .HasColumnType("DECIMAL(18,3)");
 
                     b.Property<Guid>("UserAddressId")
@@ -198,11 +200,14 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<int?>("DeliveryDatePriority")
+                    b.Property<int>("DeliveryDatePriority")
                         .HasColumnType("int");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductAttributeJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ProductCategoryId")
                         .HasColumnType("uniqueidentifier");
@@ -236,7 +241,7 @@ namespace Lipar.Data.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
-                    b.Property<int?>("ShippingCostPriority")
+                    b.Property<int>("ShippingCostPriority")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -246,47 +251,13 @@ namespace Lipar.Data.Migrations
                     b.ToTable("OrderDetails", "Application");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderDetailAttribute", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsPreSelected")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("OrderDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("DECIMAL(18,3)");
-
-                    b.Property<Guid>("ProductAttributeMappingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductAttributeValueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderDetailId");
-
-                    b.ToTable("OrderDetailAttributes", "Application");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderPaymentStatus", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankPortId")
+                    b.Property<Guid>("BanlPortId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
@@ -301,31 +272,7 @@ namespace Lipar.Data.Migrations
                     b.Property<int>("OrderPaymentStatusTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReservationNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResponseMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ResponseStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RetrivalRefNo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("ShoppingCartItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SignData")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SystemTraceNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("UserAddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -333,7 +280,7 @@ namespace Lipar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BankPortId");
+                    b.HasIndex("BanlPortId");
 
                     b.HasIndex("OrderId");
 
@@ -2770,23 +2717,13 @@ namespace Lipar.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderDetailAttribute", b =>
-                {
-                    b.HasOne("Lipar.Entities.Domain.Application.OrderDetail", "OrderDetail")
-                        .WithMany("OrderDetailAttributes")
-                        .HasForeignKey("OrderDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderDetail");
-                });
-
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderPaymentStatus", b =>
                 {
                     b.HasOne("Lipar.Entities.Domain.Financial.BankPort", "BankPort")
                         .WithMany("OrderPaymentStatuses")
-                        .HasForeignKey("BankPortId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("BanlPortId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Lipar.Entities.Domain.Application.Order", "Order")
                         .WithMany("OrderPaymentStatuses")
@@ -3821,11 +3758,6 @@ namespace Lipar.Data.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("OrderPaymentStatuses");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderDetail", b =>
-                {
-                    b.Navigation("OrderDetailAttributes");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>

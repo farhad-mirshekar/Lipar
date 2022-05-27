@@ -2,7 +2,14 @@
 {
     public partial class LiparWebCacheKey
     {
-        public static string Shopping_Cart_List => "Shopping-Cart-List";
-        public static string Mini_Shopping_Cart_List => "Mini_Shopping-Cart-List";
+        /// <summary>
+        /// shopping cart list cache key
+        /// </summary>
+        public static string LiparShoppingCartList => "LiparShoppingCartList";
+
+        /// <summary>
+        /// mini shopping cart list cache key
+        /// </summary>
+        public static string LiparMiniShoppingCartList => "LiparMiniShoppingCartList";
     }
 }

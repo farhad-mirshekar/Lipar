@@ -34,6 +34,10 @@ namespace Lipar.Entities.Domain.Financial
         /// </summary>
         public string RedirectUri { get; set; }
         /// <summary>
+        /// gets or sets verify uri
+        /// </summary>
+        public string VerifyUri { get; set; }
+        /// <summary>
         /// gets or sets the transaction cost
         /// </summary>
         public int? TransactionCost { get; set; }

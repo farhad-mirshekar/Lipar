@@ -8,7 +8,7 @@ namespace Lipar.Services.Financial.Contracts
     /// <summary>
     /// bank port service
     /// </summary>
-   public interface IBankPortService
+    public interface IBankPortService
     {
         /// <summary>
         /// add bank port method
@@ -48,5 +48,13 @@ namespace Lipar.Services.Financial.Contracts
         /// </summary>
         /// <returns></returns>
         IQueryable<BankPort> GetBankPorts();
+
+        /// <summary>
+        /// get bank port active by bank id
+        /// </summary>
+        /// <param name="bankId"></param>
+        /// <param name="noTracking"></param>
+        /// <returns></returns>
+        BankPort GetActiveBankPort(Guid bankId, bool noTracking = false);
     }
 }

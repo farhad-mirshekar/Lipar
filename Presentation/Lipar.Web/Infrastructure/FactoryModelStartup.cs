@@ -40,6 +40,7 @@ namespace Lipar.Web.Infrastructure
         {
             services.AddTransient<App.IProductModelFactory, App.ProductModelFactory>();
             services.AddTransient<App.IShoppingCartItemModelFactory, App.ShoppingCartItemModelFactory>();
+            services.AddTransient<App.IRedirectModelFactory, App.RedirectModelFactory>();
         }
 
         public void OrganizationConfigureService(IServiceCollection services)

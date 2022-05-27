@@ -13,7 +13,7 @@ namespace Lipar.Data.Configuration.Application
             builder.HasKey(o => o.Id);
             builder.Property(o => o.Id).ValueGeneratedOnAdd();
             builder.Property(o => o.Price).HasColumnType("DECIMAL(18,3)");
-            builder.Property(o => o.ShippingCartRate).HasColumnType("DECIMAL(18,3)");
+            builder.Property(o => o.ShoppingCartRate).HasColumnType("DECIMAL(18,3)");
 
             builder.HasOne(o => o.User)
                 .WithMany(u => u.Orders)

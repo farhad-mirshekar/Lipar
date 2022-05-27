@@ -34,6 +34,7 @@ namespace Lipar.Entities.Domain.Organization
             Banks = new HashSet<Bank>();
             UserAddresses = new HashSet<UserAddress>();
             Orders = new HashSet<Order>();
+            OrderPaymentStatuses = new HashSet<OrderPaymentStatus>();
         }
         #endregion
 
@@ -109,6 +110,7 @@ namespace Lipar.Entities.Domain.Organization
         public ICollection<Bank> Banks { get; set; }
         public ICollection<UserAddress> UserAddresses { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<Application.OrderPaymentStatus> OrderPaymentStatuses { get; set; }
         #endregion
     }
 }

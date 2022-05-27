@@ -17,9 +17,14 @@ namespace Lipar.Data.Configuration.Application
                 .HasForeignKey(ops => ops.OrderId);
 
 
-            builder.HasOne(ops => ops.shoppingCartItem)
-                .WithMany(o => o.OrderPaymentStatuses)
-                .HasForeignKey(ops => ops.ShoppingCartItemId);
+            builder.HasOne(ops => ops.BankPort)
+               .WithMany(o => o.OrderPaymentStatuses)
+               .HasForeignKey(ops => ops.BankPortId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(ops => ops.User)
+               .WithMany(o => o.OrderPaymentStatuses)
+               .HasForeignKey(ops => ops.UserId);
         }
     }
 }

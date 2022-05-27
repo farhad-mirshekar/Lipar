@@ -53,5 +53,11 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="ShoppingCartItemId">shopping cart item id</param>
         /// <returns></returns>
         IQueryable<ShoppingCartItem> GetShoppingCartItemQuery(Guid ShoppingCartItemId);
+
+        /// <summary>
+        /// delete all basket by shopping cart item id
+        /// </summary>
+        /// <param name="shoppingCartItemId"></param>
+        void Delete(Guid shoppingCartItemId);
     }
 }

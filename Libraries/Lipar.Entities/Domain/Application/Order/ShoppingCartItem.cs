@@ -9,13 +9,6 @@ namespace Lipar.Entities.Domain.Application
     /// </summary>
    public class ShoppingCartItem : BaseEntity<Guid>
     {
-        #region Ctor
-        public ShoppingCartItem()
-        {
-            OrderPaymentStatuses = new HashSet<OrderPaymentStatus>();
-        }
-        #endregion
-
         #region Fields
         /// <summary>
         /// gets or sets the product id
@@ -46,7 +39,6 @@ namespace Lipar.Entities.Domain.Application
         #region Navigations
         public Product Product { get; set; }
         public User User { get; set; }
-        public ICollection<OrderPaymentStatus> OrderPaymentStatuses { get; set; }
         #endregion
     }
 }

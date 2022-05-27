@@ -232,6 +232,11 @@ namespace Lipar.Web.Factories
             const string value = "";
             items.Insert(0, new SelectListItem { Value = value, Text = defaultItemText });
         }
+
+        public void PrepareGenderType(IList<SelectListItem> items, string defaultItemText = null)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }
