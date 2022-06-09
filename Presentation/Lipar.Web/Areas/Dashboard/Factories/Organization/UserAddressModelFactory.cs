@@ -40,6 +40,9 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Organization
                 userAddressModel.PostalCode = u.PostalCode;
                 userAddressModel.UserId = u.UserId;
                 userAddressModel.Address = u.Address;
+                userAddressModel.CountryId = u.CountryId;
+                userAddressModel.ProvinceId = u.ProvinceId;
+                userAddressModel.CityId = u.CityId;
                 userAddressModel.CreationDate = u.CreationDate;
 
                 return userAddressModel;
@@ -60,6 +63,9 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Organization
                 model.Id = userAddress.Id;
                 model.PostalCode = userAddress.PostalCode;
                 model.UserId = userAddress.UserId;
+                model.CountryId = userAddress.CountryId;
+                model.ProvinceId = userAddress.ProvinceId;
+                model.CityId = model.CityId;
             }
 
             return model;

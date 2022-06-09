@@ -1,4 +1,6 @@
 ﻿using Lipar.Core.Infrastructure;
+using Lipar.Web.Areas.Dashboard.Factories;
+using Lipar.Web.Areas.Dashboard.Factories.Application;
 using Lipar.Web.Areas.Dashboard.Factories.Organization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -17,12 +19,22 @@ namespace Lipar.Web.Areas.Dashboard.Infrastructure
 
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<ICommonModelFactory, CommonModelFactory>();
+
             OrganizationService(services);
+
+            ApplicationService(services);
         }
 
         protected void OrganizationService(IServiceCollection services)
         {
             services.AddTransient<IUserAddressModelFactory, UserAddressModelFactory>();
         }
+
+        protected void ApplicationService(IServiceCollection services)
+        {
+            services.AddTransient<IOrderModelFactory, OrderModelFactory>();
+        }
+
     }
 }

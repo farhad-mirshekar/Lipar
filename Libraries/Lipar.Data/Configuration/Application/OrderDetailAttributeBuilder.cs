@@ -15,6 +15,7 @@ namespace Lipar.Data.Configuration.Application
 
             builder.HasKey(o => o.Id);
             builder.Property(o => o.Price).HasColumnType("DECIMAL(18,3)");
+            builder.Property(p => p.AttributeName).HasColumnType("NVARCHAR(1000)").IsRequired();
 
             builder.HasOne(o => o.OrderDetail)
                 .WithMany(od => od.OrderDetailAttributes)

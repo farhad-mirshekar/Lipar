@@ -11,9 +11,6 @@
 @{
     foreach (var shoppingCartItem in Model.AvailableShoppingCartItemModels)
     {
-        decimal temp1 = 0;
-        decimal temp2 = 0;
-        decimal attributePrice = 0;
         var imgUrl = $"../images/site/product-empty.png";
         if (shoppingCartItem.MediaModel != null && shoppingCartItem.MediaModel.MediaId != Guid.Empty)
         {
@@ -38,8 +35,7 @@
                                             <label> @productAttributeValue.Name</label>
                                             if (productAttributeValue.Price.HasValue && productAttributeValue.Price.Value > 0)
                                             {
-                                                attributePrice = productAttributeValue.Price ?? 0;
-                                                <label>@string.Format("{0:C0} تومان", productAttributeValue.Price)</label>
+                                                <label>@string.Format("{0:#,0} {1}", productAttributeValue.Price,T("Web.Currency").Text)</label>
                                             }
                                         }
                                     }
@@ -50,21 +46,19 @@
                                     <div class="row">
                                         <div class="col-md-7">
                                             <label>قیمت</label>
-                                            <label>@string.Format("{0:#,0} تومان", shoppingCartItem.ProductPrice)</label><br />
+                                            <label>@string.Format("{0:#,0} {1}", shoppingCartItem.ProductPrice,T("Web.Currency").Text)</label><br />
                                             @{
                                                 switch (shoppingCartItem.ProductDiscountTypeId)
                                                 {
                                                     case (int)DiscountTypeEnum.Amount:
-                                                        temp1 = shoppingCartItem.ProductDiscount ?? 0;
                                                         <label class="control-label">
                                                             @T("Product.Field.Discount")
                                                         </label>
                                                         <label class="control-label text-danger">
-                                                            @string.Format("{0:#,0} تومان", shoppingCartItem.ProductDiscount)
+                                                            @string.Format("{0:#,0} {1}", shoppingCartItem.ProductDiscount,T("Web.Currency").Text)
                                                         </label>
                                                         break;
                                                     case (int)DiscountTypeEnum.Percentage:
-                                                        temp1 = (shoppingCartItem.ProductPrice * (shoppingCartItem.ProductDiscount ?? 0)) / 100;
                                                         <label class="control-label">
                                                             @T("Product.Field.Discount")
                                                         </label>
@@ -76,13 +70,14 @@
                                             }
                                         </div>
                                         <div class="col-md-5 quantity">
-                                            <i class="fa fa-plus" data-href="@Url.RouteUrl("ShoppingCartQuantityPlus",new { id = shoppingCartItem.Id})" style="color:blue;padding:10px"></i>
+                                            <i class="fa fa-plus cart-plus" data-href="@Url.RouteUrl("ShoppingCartQuantityPlus",new { id = shoppingCartItem.Id})"></i>
                                             <label>@shoppingCartItem.Quantity</label>
-                                            <i class="fa fa-minus" data-href="@Url.RouteUrl("ShoppingCartQuantityMinus",new { id = shoppingCartItem.Id})" style="color:#ff0000;padding:10px"></i>
+                                            <i class="fa fa-minus cart-minus" data-href="@Url.RouteUrl("ShoppingCartQuantityMinus",new { id = shoppingCartItem.Id})"></i>
+                                            <button class="btn btn-danger remove-shopping-cart" type="button" data-href="@Url.RouteUrl("ShoppingCartRemove",new { id = shoppingCartItem.Id})">حذف از سبد</button>
                                         </div>
                                         <div class="col-md-12">
                                             <label>@T("Product.Field.Sum")</label>
-                                            <label>@string.Format("{0:#,0} تومان", (attributePrice + (shoppingCartItem.ProductPrice - (temp1 + temp2)) * shoppingCartItem.Quantity))</label>
+                                            <label>@string.Format("{0:#,0} {1}", shoppingCartItem.ProductPrice,T("Web.Currency").Text)</label>
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +94,7 @@
             {
                 <div class="col-md-4">
                     <label class="label label-default">@T("Web.ShoppingCartItem.Cart.shippingCost") (@shippingCost.Name) : </label>
-                    <label class="label text-danger">@string.Format("{0:#,0} تومان", shippingCost.Price)</label>
+                    <label class="label text-danger">@string.Format("{0:#,0} {1}", shippingCost.Price,T("Web.Currency").Text)</label>
                 </div>
             }
             else
@@ -109,14 +104,14 @@
 
                     <div class="col-md-4">
                         <label class="label label-default">@T("Web.ShoppingCartItem.Cart.shippingCost") </label>
-                        <label class="label text-danger">@string.Format("{0:#,0} تومان", orderSetting.ShoppingCartRate)</label>
+                        <label class="label text-danger">@string.Format("{0:#,0} {1}", orderSetting.ShoppingCartRate,T("Web.Currency").Text)</label>
                     </div>
                 }
             }
 
             <div class="col-md-4">
                 <label class="label label-default">@T("Web.ShoppingCartItem.Cart.CartAmount")</label>
-                <label class="label text-danger">@string.Format("{0:#,0} تومان", Model.CartAmount)</label>
+                <label class="label text-danger">@string.Format("{0:#,0} {1}", Model.CartAmount,T("Web.Currency").Text)</label>
             </div>
 
         }

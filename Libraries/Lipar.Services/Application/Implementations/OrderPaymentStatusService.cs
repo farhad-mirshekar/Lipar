@@ -110,6 +110,31 @@ namespace Lipar.Services.Application.Implementations
 
             return model;
         }
+
+        public IQueryable<OrderPaymentStatus> GetOrderForCustomer(OrderPaymentStatusListVM listVM,out int totalRowCount)
+        {
+            totalRowCount = 0;
+
+               var query = _repository.TableNoTracking;
+
+            if(listVM.UserId.HasValue && listVM.UserId.Value != Guid.Empty)
+            {
+                query = query.Where(x => x.UserId == listVM.UserId);
+            }
+
+            if(listVM.OrderPaymentStatusTypeId.HasValue && listVM.OrderPaymentStatusTypeId.Value != 0)
+            {
+                query = query.Where(x => x.OrderPaymentStatusTypeId == listVM.OrderPaymentStatusTypeId);
+            }
+            if(listVM.PageSize < 100)
+            {
+                totalRowCount = query.Count();
+            }
+
+            query = query.OrderByDescending(x => x.CreationDate).Skip(listVM.PageIndex)
+                                                              .Take(listVM.PageSize);
+            return query;
+        }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Lipar.Entities.Domain.Application;
+using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -18,5 +19,7 @@ namespace Lipar.Services.Application.Contracts
         /// </summary>
         /// <param name="model">order</param>
         void Add(Order model);
+
+        IQueryable<Order> GetQuery();
     }
 }

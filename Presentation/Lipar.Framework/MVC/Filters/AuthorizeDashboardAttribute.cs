@@ -37,7 +37,7 @@ namespace Lipar.Web.Framework.MVC.Filters
                 if (filterContext.Filters.Any(filter => filter is AuthorizeDashboardFilter))
                 {
                     //authorize permission of access to the admin area
-                    if (_workContext.CurrentUser == null || !(_workContext.CurrentUser != null && _workContext.CurrentUser.UserTypeId != (int)UserTypeEnum.Users_With_In_The_Organization))
+                    if (_workContext.CurrentUser == null || !(_workContext.CurrentUser != null && _workContext.CurrentUser.UserTypeId != (int)UserTypeEnum.Admin))
                         filterContext.Result = new ChallengeResult();
                 }
             }

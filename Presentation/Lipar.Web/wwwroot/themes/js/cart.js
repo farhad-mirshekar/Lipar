@@ -195,6 +195,37 @@ $(document).on('click', '#btn-bank', function (e) {
 
 })
 
+/*delete shopping cart function*/
+$(document).off('click', '.remove-shopping-cart');
+$(document).on('click', '.remove-shopping-cart', function (e) {
+    e.preventDefault();
+
+    var $this = $(this);
+    var url = $this.attr('data-href');
+    if (url == null || url.length == 0) {
+        Message('متاسفانه خطایی رخ داده است', 'error');
+        return;
+    }
+
+    $.ajax({
+        cache: false,
+        url: url,
+        type: "POST",
+        success: function (response) {
+            if (response.Success) {
+                Message(response.Message, response.NotyType);
+
+                if (response.DivName != null && response.DivName.length > 0) {
+                    if (response.Html != null && response.Html.length > 0) {
+                        $(response.DivName).html(response.Html);
+                    }
+                }
+            }
+        }
+    })
+
+})
+
 function Message(text, type) {
     new Noty({
         text: text,

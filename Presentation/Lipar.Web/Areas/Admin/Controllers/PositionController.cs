@@ -173,7 +173,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
                     Email = model.Email.Trim(),
                     EmailVerified = true,
                     Username = model.NationalCode.Trim(),
-                    UserTypeId = (int)UserTypeEnum.Users_With_In_The_Organization,
+                    UserTypeId = (int)UserTypeEnum.Admin,
                     EnabledTypeId = (int)EnabledTypeEnum.Active
                 };
 

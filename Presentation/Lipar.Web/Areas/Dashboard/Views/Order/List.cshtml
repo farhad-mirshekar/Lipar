@@ -1,0 +1,61 @@
+﻿@model OrderListModel
+@using Lipar.Core.Common
+@{
+    ViewBag.PageTitle = "جزئیات سفارش";
+}
+@{
+    if (Model != null && Model.AvailableOrders != null && Model.AvailableOrders.Any())
+    {
+
+        @foreach (var order in Model.AvailableOrders)
+        {
+            <section class="card mb-2">
+                <div class="card-body">
+                    <div class="d-flex jc-between">
+                        <div class="d-flex flex-column">
+                            <div class="p-2">
+                                <span class="text-secondary">تاریخ خرید : </span>
+                                <span class="text-info">
+                                    @CommonHelper.GetPersianDateByFormat(DateTimeFormatTypeEnum.DisplayTheTitleOfTheMonth,order.CreationDate)
+                                </span>
+
+                                <span class="text-secondary">قیمت : </span>
+                                <span class="text-info">
+                                    @string.Format("{0:#,0} {1}", order.Price,T("Web.Currency").Text)
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex p-2">
+                                <a href="@Url.RouteUrl("Invoice" , new {orderId = order.Id})">
+                                    <i class="align-self-center fa fa-angle-left order-detail-show" title="مشاهده جزئیات خرید"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    @{
+                        if (order.AvailableOrderDetails != null && order.AvailableOrderDetails.Any())
+                        {
+                            foreach (var orderDetail in order.AvailableOrderDetails)
+                            {
+                                <label>@orderDetail.ProductName</label>
+                            }
+                        }
+                    }
+                </div>
+            </section>
+        }
+
+
+        <section class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center" dir="ltr">
+                    <lipar-pagination paging-info="@Model.PagingInfo" />
+                </div>
+            </div>
+        </section>
+    }
+}

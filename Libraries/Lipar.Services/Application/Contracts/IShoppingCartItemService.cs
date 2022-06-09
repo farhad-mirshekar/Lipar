@@ -36,9 +36,10 @@ namespace Lipar.Services.Application.Contracts
         /// retrieve shopping cart item method
         /// </summary>
         /// <param name="shoppingCartItemId">shopping Cart Item Id</param>
+        /// <param name="noTracking">if param True, model retrieve no tracking</param>
         /// <param name="productId">product id</param>
         /// <returns></returns>
-        ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId);
+        ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId, bool noTracking = false);
 
         /// <summary>
         /// get count shopping cart item method

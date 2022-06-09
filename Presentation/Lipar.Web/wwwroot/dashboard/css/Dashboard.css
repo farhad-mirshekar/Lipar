@@ -108,3 +108,16 @@ body {
         font-size: 19px;
     }
 
+.order-detail-show{
+    cursor:pointer;
+    font-size:20px !important;
+}
+.jc-between {
+    justify-content: space-between;
+}
+.jc-start{
+    justify-content:flex-start;
+}
+.w-full {
+    width: 100%;
+}

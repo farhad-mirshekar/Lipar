@@ -104,7 +104,7 @@ namespace Lipar.Web.Framework
                         return _cachedPosition;
                     }
 
-                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Admin)
                     {
                         var position = _positionService.GetActivePosition(CurrentUser.Id);
 
@@ -128,7 +128,7 @@ namespace Lipar.Web.Framework
             get
             {
 
-                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+                if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Admin)
                 {
                     var positions = _positionService.List(new PositionListVM { UserId = CurrentUser.Id });
 
@@ -149,7 +149,7 @@ namespace Lipar.Web.Framework
                         return _cachedCommand;
                     }
 
-                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+                    if (CurrentUser != null && CurrentUser.UserTypeId == (int)UserTypeEnum.Admin)
                     {
                         var roleId = CurrentPosition.PositionRoles.Select(r => r.RoleId).First();
                         var commands = _commandService.List(new CommandListVM { RoleId = roleId });
@@ -184,18 +184,26 @@ namespace Lipar.Web.Framework
             {
                 return _staticCacheManager.Get<Guid?>(_cachKeyShoppingCartItem, () =>
                 {
-                    if(_cachedShoppingCart != Guid.Empty)
+                    if (_cachedShoppingCart != Guid.Empty)
                     {
                         return _cachedShoppingCart;
                     }
 
+                    var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ShoppingCartItems}";
+                    if (_httpContextAccessor.HttpContext.Request.Cookies[cookieName] != null)
+                    {
+                        var cacheKey = _httpContextAccessor.HttpContext.Request.Cookies[cookieName].ToString();
+                        _cachedShoppingCart = Guid.Parse(cacheKey);
+
+                        return _cachedShoppingCart;
+                    }
                     var shoppingCartItemId = Guid.NewGuid();
 
                     SetShoppingCartCookie(shoppingCartItemId);
 
                     _cachedShoppingCart = shoppingCartItemId;
 
-                    return shoppingCartItemId;
+                    return _cachedShoppingCart;
                 });
             }
             set

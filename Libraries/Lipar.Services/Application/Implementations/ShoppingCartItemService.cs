@@ -75,9 +75,14 @@ namespace Lipar.Services.Application.Implementations
             return query.FirstOrDefault(s => s.Id == Id);
         }
 
-        public ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId)
+        public ShoppingCartItem Get(Guid shoppingCartItemId, Guid? productId,bool noTracking = false)
         {
-            var query = _repository.TableNoTracking;
+            var query = _repository.Table;
+
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking;
+            }
 
             query = query.Where(s => s.ShoppingCartItemId == shoppingCartItemId);
 

@@ -148,6 +148,7 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<ICommentStatusService, CommentStatusService>();
             services.AddTransient<IViewStatusService, ViewStatusService>();
             services.AddTransient<IEnabledTypeService, EnabledTypeService>();
+            services.AddTransient<IGenderService, GenderService>();
         }
 
         protected void FinancialService(IServiceCollection services, IConfiguration configuration)

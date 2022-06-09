@@ -2,7 +2,6 @@
 @inject Lipar.Core.IWorkContext _workContext;
 @using Lipar.Core.Common;
 @{
-    var commonHelper = new CommonHelper();
     var allowCustomerReviews = ViewBag.AllowCustomerReviews ?? false;
 }
 <div class="row">
@@ -41,7 +40,7 @@
                                             <span class="card-title p-1">@productQuestionModel.FullName</span>
 
                                             <i class="fa fa-calendar ml-2 p-1"></i>
-                                            <span class="p-1">@commonHelper.GetPersianDateByFormat(1, productQuestionModel.CreationDate)</span>
+                                            <span class="p-1">@CommonHelper.GetPersianDateByFormat(DateTimeFormatTypeEnum.General, productQuestionModel.CreationDate)</span>
                                         </div>
 
                                         @if (_workContext.CurrentUser != null)

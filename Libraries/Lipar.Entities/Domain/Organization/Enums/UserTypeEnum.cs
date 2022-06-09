@@ -3,12 +3,12 @@
     public enum UserTypeEnum
     {
         /// <summary>
-        /// کاربران درون سازمان
+        /// Admin
         /// </summary>
-        Users_With_In_The_Organization = 1,
+        Admin = 1,
         /// <summary>
-        /// کاربران بیرون سازمان
+        /// Customer
         /// </summary>
-        Users_Outside_TheOrganization
+        Customer
     }
 }

@@ -145,7 +145,9 @@ namespace Lipar.Web.Controllers
 
         public IActionResult Register()
         {
-            return View();
+            var registerModel = _userModelFactory.PrepareRegisterModel();
+
+            return View(registerModel);
         }
 
         [HttpPost]
@@ -189,8 +191,9 @@ namespace Lipar.Web.Controllers
                     CellPhoneVerified = true,
                     NationalCode = model.NationalCode,
                     Username = model.UserName,
-                    UserTypeId = (int)UserTypeEnum.Users_Outside_TheOrganization,
+                    UserTypeId = (int)UserTypeEnum.Customer,
                     EnabledTypeId = (int)EnabledTypeEnum.Active,
+                    GenderId = model.GenderId,
                 };
 
                 _userService.Add(user);

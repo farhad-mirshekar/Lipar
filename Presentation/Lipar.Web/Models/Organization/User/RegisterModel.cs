@@ -21,6 +21,8 @@ namespace Lipar.Web.Models.Organization
         public string UserName { get; set; }
         public string Captcha { get; set; }
         public int GenderId { get; set; }
+        public bool ShowCaptcha { get; set; }
+        public bool ShowCaptchaInRegisterPage { get; set; }
 
         public IList<SelectListItem> AvailableGenderList { get; set; }
     }

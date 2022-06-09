@@ -64,7 +64,17 @@ namespace Lipar.Web.Factories.Organization
 
         public RegisterModel PrepareRegisterModel()
         {
-            throw new System.NotImplementedException();
+            var registerModel = new RegisterModel();
+
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha")?.Value, out bool showCaptcha);
+            bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInRegisterPage")?.Value, out bool ShowCaptchaInRegisterPage);
+
+            registerModel.ShowCaptcha = showCaptcha;
+            registerModel.ShowCaptchaInRegisterPage = ShowCaptchaInRegisterPage;
+
+            _commonModelFactory.PrepareGenderType(registerModel.AvailableGenderList);
+
+            return registerModel;
         }
     }
 }

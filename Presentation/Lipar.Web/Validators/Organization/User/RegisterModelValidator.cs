@@ -41,6 +41,10 @@ namespace Lipar.Web.Validators.Organization
                 .NotEmpty().WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotNull"))
                 .NotNull().WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotNull"))
                 .Equal(s=>s.Password).WithMessage(_localeStringResourceService.GetResource("User.Field.RePassword.Validator.NotEqualByPassword"));
+
+            RuleFor(r => r.GenderId)
+                .NotNull().WithMessage("*")
+                .NotEqual(0).WithMessage("**");
         }
     }
 }

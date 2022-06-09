@@ -16,6 +16,8 @@ namespace Lipar.Web.Framework.Infrastructure.Extensions
         public static void LiparStaticFiles(this IApplicationBuilder app)
         {
             app.UseStaticFiles();
+
+            app.UseBrowserLink();
         }
 
         public static void UseLiparAuthentication(this IApplicationBuilder application)

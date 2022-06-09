@@ -163,9 +163,16 @@ ul{
     }
 }
 
+.logout{
+    border:none;
+}
+.logout:hover{
+    color:#9f0a0a;
+}
+
 /*----------------Card--------------------*/
-.card-header h2{
-    font-size:18px !important;
+.card-header h2 {
+    font-size: 18px !important;
 }
 .card-header h2 > a :hover {
     text-decoration:none;
@@ -225,4 +232,20 @@ ul{
 }
 #product-description {
     font-family: Vazir !important;
+}
+/*---------------------Mini Shopping------------------------*/
+#basket-count {
+    position: absolute;
+    top: 7px;
+}
+/*---------------------Cart------------------------*/
+.cart-plus {
+    color: blue;
+    padding: 10px;
+    cursor:pointer;
+}
+.cart-minus {
+    color: red;
+    padding: 10px;
+    cursor: pointer;
 }

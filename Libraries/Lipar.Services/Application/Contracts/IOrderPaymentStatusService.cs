@@ -1,5 +1,6 @@
 ﻿using Lipar.Entities.Domain.Application;
 using System;
+using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
 {
@@ -27,5 +28,7 @@ namespace Lipar.Services.Application.Contracts
         OrderPaymentStatus GetById(Guid id , bool noTracking = false);
 
         OrderPaymentStatus GetByShoppingCartItem(Guid shoppingCartItemId,string token, bool noTracking = false);
+
+        IQueryable<OrderPaymentStatus> GetOrderForCustomer(OrderPaymentStatusListVM listVM, out int totalRowCount);
     }
 }

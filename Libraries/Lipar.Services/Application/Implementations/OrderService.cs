@@ -4,6 +4,7 @@ using Lipar.Entities.Domain.Application;
 using Lipar.Services.Application.Contracts;
 using Lipar.Services.General.Contracts;
 using System;
+using System.Linq;
 
 namespace Lipar.Services.Application.Implementations
 {
@@ -40,6 +41,13 @@ namespace Lipar.Services.Application.Implementations
             model.CreationDate = CommonHelper.GetCurrentDateTime();
 
             _repository.Insert(model);
+        }
+
+        public IQueryable<Order> GetQuery()
+        {
+            var query = _repository.TableNoTracking;
+
+            return query;
         }
         #endregion
     }

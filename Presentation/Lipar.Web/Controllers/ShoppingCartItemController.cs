@@ -138,7 +138,7 @@ namespace Lipar.Web.Controllers
             {
                 Success = true,
                 NotyType = "success",
-                Message = "",
+                Message = "تغییرات با موفقیت انجام شد",
                 Html = RenderPartialViewToString("_Cart", model),
                 DivName = "#cart"
 
@@ -161,6 +161,10 @@ namespace Lipar.Web.Controllers
             }
 
             shoppingCartItem.Quantity -= 1;
+            if (shoppingCartItem.Quantity <= 0)
+            {
+                shoppingCartItem.Quantity = 1;
+            }
             _shoppingCartItemService.Edit(shoppingCartItem);
 
             //clear cache shopping cart list
@@ -171,7 +175,58 @@ namespace Lipar.Web.Controllers
             {
                 Success = true,
                 NotyType = "success",
-                Message = "",
+                Message = "تغییرات با موفقیت انجام شد",
+                Html = RenderPartialViewToString("_Cart", model),
+                DivName = "#cart"
+
+            });
+        }
+
+        public JsonResult GetShoppingCart()
+        {
+            return Json(new
+            {
+                Html = RenderViewComponentToString("MiniShoppingCart")
+            });
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public JsonResult Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    NotyType = "error",
+                    Message = "درخواست مورد نظر قابل اجرا نمی باشد"
+                });
+            }
+
+            var shoppingCartItem = _shoppingCartItemService.GetById(id);
+            if (shoppingCartItem == null)
+            {
+                return Json(new ResultViewModel
+                {
+                    Success = false,
+                    NotyType = "error",
+                    Message = ""
+                });
+            }
+
+            //delete shopping cart item
+            _shoppingCartItemService.Delete(shoppingCartItem);
+
+            //clear cache shopping cart list
+            _shoppingCartItemModelFactory.ClearCacheShoppingCart();
+
+            var model = _shoppingCartItemModelFactory.PrepareShoppingCartItemListModel(_workContext.ShoppingCartItems.Value);
+            return Json(new
+            {
+                Success = true,
+                NotyType = "success",
+                Message = "حذف با موفقیت انجام شد",
                 Html = RenderPartialViewToString("_Cart", model),
                 DivName = "#cart"
 
@@ -232,7 +287,7 @@ namespace Lipar.Web.Controllers
                 });
             }
 
-           return Json(new ResultViewModel
+            return Json(new ResultViewModel
             {
                 Success = false,
                 NotyType = "error",

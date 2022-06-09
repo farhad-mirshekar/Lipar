@@ -22,7 +22,7 @@ namespace Lipar.Data.Seeds.Organization
                     EnabledTypeId = (int)EnabledTypeEnum.Active,
                     FirstName="ادمین",
                     LastName="ادمین",
-                    UserTypeId = (int)UserTypeEnum.Users_With_In_The_Organization,
+                    UserTypeId = (int)UserTypeEnum.Admin,
                     Username="admin",
                     UserGuid = Guid.NewGuid(),
                     NationalCode="0017300762",

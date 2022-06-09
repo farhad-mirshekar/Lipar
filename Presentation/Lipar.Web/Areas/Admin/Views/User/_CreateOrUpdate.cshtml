@@ -4,7 +4,7 @@
 @await Html.PartialAsync("_CreateOrUpdate.Info", Model)
 
 <!--render all role-->
-@if (Model.AvailableRoles != null && Model.UserTypeId == (int)UserTypeEnum.Users_With_In_The_Organization)
+@if (Model.AvailableRoles != null && Model.UserTypeId == (int)UserTypeEnum.Admin)
 {
     @await Html.PartialAsync("_CreateOrUpdate.Roles", Model)
 }

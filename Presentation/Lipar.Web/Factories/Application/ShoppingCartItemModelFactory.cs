@@ -152,7 +152,6 @@ namespace Lipar.Web.Factories.Application
 
                 var shoppingCartItem = new ShoppingCartItem();
                 shoppingCartItem.ProductId = model.Id;
-                shoppingCartItem.Quantity = 1;
                 shoppingCartItem.UserId = _workContext.CurrentUser.Id;
                 shoppingCartItem.CreationDate = CommonHelper.GetCurrentDateTime();
                 if (productAttributes != null && productAttributes.Any())
@@ -161,7 +160,18 @@ namespace Lipar.Web.Factories.Application
                 }
                 shoppingCartItem.ShoppingCartItemId = _workContext.ShoppingCartItems.Value;
 
-                _shoppingCartItemService.Add(shoppingCartItem);
+                var cart = _shoppingCartItemService.Get(_workContext.ShoppingCartItems.Value, model.Id);
+                if (cart == null)
+                {
+                    shoppingCartItem.Quantity = 1;
+                    _shoppingCartItemService.Add(shoppingCartItem);
+                }
+                else
+                {
+                    cart.Quantity += 1;
+                    _shoppingCartItemService.Edit(cart);
+                    shoppingCartItem.Id = cart.Id;
+                }
 
                 if (shoppingCartItem.Id != Guid.Empty)
                 {
@@ -173,6 +183,7 @@ namespace Lipar.Web.Factories.Application
                         Success = true,
                         Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.AddToCart"),
                         NotyType = "success",
+                        Url ="/Cart"
                     };
                 }
             }
@@ -222,8 +233,8 @@ namespace Lipar.Web.Factories.Application
             }
             else
             {
-                shoppingCartItem.Quantity = cart.Quantity + 1;
-                _shoppingCartItemService.Edit(shoppingCartItem);
+                cart.Quantity += 1;
+                _shoppingCartItemService.Edit(cart);
             }
 
             //clear cache shopping cart
@@ -233,7 +244,7 @@ namespace Lipar.Web.Factories.Application
             {
                 Success = true,
                 Message = _localeStringResourceService.GetResource("Web.ShoppingCartItem.AddToCart"),
-                //Url = "Cart",
+                Url = "/Cart",
                 NotyType = "success",
             };
         }
@@ -285,14 +296,17 @@ namespace Lipar.Web.Factories.Application
                 foreach (var shoppingCartItem in shoppingCartItemModels)
                 {
                     shoppingCartItem.MediaModel = PrepareMediaModel(shoppingCartItem.ProductId);
-                    shoppingCartItemListModel.CartAmount += CalculatePrice(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice, shoppingCartItem.Quantity);
+                    shoppingCartItemListModel.CartAmount += CalculatePrice(shoppingCartItem);
                 }
 
-                shoppingCartItemListModel.AvailableShoppingCartItemModels = shoppingCartItemModels;
+                if(shoppingCartItemModels != null && shoppingCartItemModels.Any())
+                {
+                    shoppingCartItemListModel.AvailableShoppingCartItemModels = shoppingCartItemModels;
 
-                var shippingCost = shoppingCartItemModels.Where(x => x.ShippingCost != null).OrderByDescending(x => x.ShippingCost.Priority).Select(x => x.ShippingCost).FirstOrDefault();
+                    var shippingCost = shoppingCartItemModels.Where(x => x.ShippingCost != null).OrderByDescending(x => x.ShippingCost.Priority).Select(x => x.ShippingCost).FirstOrDefault();
 
-                shoppingCartItemListModel.CartAmount = CalculateShippingCost(shoppingCartItemListModel.CartAmount, shippingCost);
+                    shoppingCartItemListModel.CartAmount = CalculateShippingCost(shoppingCartItemListModel.CartAmount, shippingCost);
+                }
 
                 return shoppingCartItemListModel;
             });
@@ -337,38 +351,41 @@ namespace Lipar.Web.Factories.Application
                                              : null
                 }).ToList();
 
-                miniShoppingCartItemModel.ShoppingCartItemId = shoppingCartItemId;
-                miniShoppingCartItemModel.AmountProducts = shoppingCartItemModels.Sum(x => x.Quantity * x.ProductPrice);
-
-                foreach (var shoppingCartItem in shoppingCartItemModels)
+                if(shoppingCartItemModels != null && shoppingCartItemModels.Any())
                 {
-                    var discount = CalculateDiscount(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice);
-                    miniShoppingCartItemModel.CartDiscountAmount = miniShoppingCartItemModel.CartDiscountAmount.GetValueOrDefault(0) + discount;
-                }
+                    miniShoppingCartItemModel.ShoppingCartItemId = shoppingCartItemId;
+                    miniShoppingCartItemModel.AmountProducts = shoppingCartItemModels.Sum(x => x.Quantity * x.ProductPrice);
 
-                miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.AmountProducts - (miniShoppingCartItemModel.CartDiscountAmount ?? 0);
-                miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate?.Priority).Select(cart => cart.DeliveryDate).FirstOrDefault();
-                miniShoppingCartItemModel.ShippingCost = shoppingCartItemModels.Where(cart => cart.ShippingCost != null).OrderByDescending(cart => cart.ShippingCost.Priority).Select(cart => cart.ShippingCost).FirstOrDefault();
-
-                if (miniShoppingCartItemModel.ShippingCost != null)
-                {
-                    miniShoppingCartItemModel.CartAmount += miniShoppingCartItemModel.ShippingCost.Price;
-                }
-                var userAddressList = _userAddressService.List(new UserAddressListVM
-                {
-                    UserId = _workContext.CurrentUser.Id
-                });
-
-                foreach (var userAddress in userAddressList)
-                {
-                    miniShoppingCartItemModel.AvailableUserAddress.Add(new UserAddressModel
+                    foreach (var shoppingCartItem in shoppingCartItemModels)
                     {
-                        Address = userAddress.Address,
-                        Id = userAddress.Id,
-                        CreationDate = userAddress.CreationDate,
-                        PostalCode = userAddress.PostalCode,
-                        UserId = userAddress.UserId,
+                        var discount = CalculateDiscount(shoppingCartItem.ProductDiscountTypeId, shoppingCartItem.ProductDiscount, shoppingCartItem.ProductPrice);
+                        miniShoppingCartItemModel.CartDiscountAmount = miniShoppingCartItemModel.CartDiscountAmount.GetValueOrDefault(0) + discount;
+                    }
+
+                    miniShoppingCartItemModel.CartAmount = miniShoppingCartItemModel.AmountProducts - (miniShoppingCartItemModel.CartDiscountAmount ?? 0);
+                    miniShoppingCartItemModel.DeliveryDate = shoppingCartItemModels.OrderByDescending(cart => cart.DeliveryDate?.Priority).Select(cart => cart.DeliveryDate).FirstOrDefault();
+                    miniShoppingCartItemModel.ShippingCost = shoppingCartItemModels.Where(cart => cart.ShippingCost != null).OrderByDescending(cart => cart.ShippingCost.Priority).Select(cart => cart.ShippingCost).FirstOrDefault();
+
+                    if (miniShoppingCartItemModel.ShippingCost != null)
+                    {
+                        miniShoppingCartItemModel.CartAmount += miniShoppingCartItemModel.ShippingCost.Price;
+                    }
+                    var userAddressList = _userAddressService.List(new UserAddressListVM
+                    {
+                        UserId = _workContext.CurrentUser.Id
                     });
+
+                    foreach (var userAddress in userAddressList)
+                    {
+                        miniShoppingCartItemModel.AvailableUserAddress.Add(new UserAddressModel
+                        {
+                            Address = userAddress.Address,
+                            Id = userAddress.Id,
+                            CreationDate = userAddress.CreationDate,
+                            PostalCode = userAddress.PostalCode,
+                            UserId = userAddress.UserId,
+                        });
+                    }
                 }
 
                 return miniShoppingCartItemModel;
@@ -477,26 +494,42 @@ namespace Lipar.Web.Factories.Application
         /// <param name="price"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        private decimal CalculatePrice(int? ProductDiscountTypeId, decimal? discount, decimal price, int quantity)
+        private decimal CalculatePrice(ShoppingCartItemModel shoppingCartItem)
         {
-            switch (ProductDiscountTypeId)
+            if(shoppingCartItem is null)
+            {
+                throw new Exception("shopping cart item is null");
+            }
+
+            switch (shoppingCartItem.ProductDiscountTypeId)
             {
                 case (int)DiscountTypeEnum.Amount:
-                    price = price - (discount ?? 0);
+                    shoppingCartItem.ProductPrice = shoppingCartItem.ProductPrice - (shoppingCartItem.ProductDiscount ?? 0);
                     break;
 
                 case (int)DiscountTypeEnum.Percentage:
-                    price = (price * (discount ?? 1)) / 100;
+                    shoppingCartItem.ProductPrice = (shoppingCartItem.ProductPrice * (shoppingCartItem.ProductDiscount ?? 1)) / 100;
                     break;
             }
 
-            if (quantity == 0)
+            if (shoppingCartItem.Quantity == 0)
             {
-                quantity = 1;
+                shoppingCartItem.Quantity = 1;
             }
 
-            price = price * quantity;
-            return price;
+            shoppingCartItem.ProductPrice = shoppingCartItem.ProductPrice * shoppingCartItem.Quantity;
+
+            if(shoppingCartItem.ProductAttributeValues != null && shoppingCartItem.ProductAttributeValues.Any())
+            {
+                shoppingCartItem.ProductAttributeValues.ForEach(attribute =>
+                {
+                    if(attribute.Price.HasValue && attribute.Price.Value != 0)
+                    {
+                        shoppingCartItem.ProductPrice += attribute.Price ?? 0;
+                    }
+                });
+            }
+            return shoppingCartItem.ProductPrice;
         }
 
         /// <summary>

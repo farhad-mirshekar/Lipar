@@ -1,0 +1,14 @@
+﻿@model List<OrderDetailModel>
+
+@{
+    <table class="table">
+        <tbody>
+            @foreach (var orderDetail in Model)
+            {
+                <tr>
+                    <td>@orderDetail.ProductName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

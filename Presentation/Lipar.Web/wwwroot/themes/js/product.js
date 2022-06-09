@@ -74,7 +74,33 @@
             url: url,
             data: $(formselector).serialize(),
             type: "POST",
-            success: this.success_process,
+            success: function (response) {
+
+                new Noty({
+                    text: response.Message,
+                    theme: 'bootstrap-v4',
+                    timeout: 3500,
+                    layout: 'topCenter',
+                    progressBar: true,
+                    type: response.NotyType
+
+                }).show();
+
+                $.get('/ShoppingCartItem/GetShoppingCart', function (r) {
+                    $('#shoppingCartItemCount').html(r.Html);
+                });
+
+                if (response.Url) {
+                    setTimeout(function () {
+                        location.href = response.Url;
+                        return true;
+                    }, 1000);
+                }
+
+                if (response.Clear) {
+                    $(response.DivName).html('');
+                }
+            },
             error: this.ajaxFailure
         })
     },

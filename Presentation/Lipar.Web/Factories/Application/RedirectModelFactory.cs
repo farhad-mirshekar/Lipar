@@ -104,6 +104,9 @@ namespace Lipar.Web.Factories.Application
                     orderPaymentStatus.OrderId = order.Id;
                     orderPaymentStatus.ResponseMessage = verifyResult.Description;
                     orderPaymentStatus.ResponseStatus = verifyResult.ResCode;
+                    orderPaymentStatus.ReservationNumber = verifyResult.OrderId.ToString();
+                    orderPaymentStatus.RetrivalRefNo = verifyResult.RetrivalRefNo;
+                    orderPaymentStatus.SystemTraceNo = verifyResult.SystemTraceNo;
                     _orderPaymentStatusService.Edit(orderPaymentStatus);
 
                     //fill redirect model

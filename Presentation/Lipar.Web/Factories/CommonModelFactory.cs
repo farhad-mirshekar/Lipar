@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lipar.Entities.Domain.General;
+using Lipar.Services.Core.Contracts;
 
 namespace Lipar.Web.Factories
 {
@@ -24,7 +25,8 @@ namespace Lipar.Web.Factories
                                 , ILanguageService languageService
                                 , ICountryService countryService
                                 , IProvinceService provinceService
-                                , ICityService cityService)
+                                , ICityService cityService
+                                , IGenderService genderService)
         {
             _workContext = workContext;
             _staticPageService = staticPageService;
@@ -34,6 +36,7 @@ namespace Lipar.Web.Factories
             _countryService = countryService;
             _provinceService = provinceService;
             _cityService = cityService;
+            _genderService = genderService;
         }
         #endregion
 
@@ -46,6 +49,7 @@ namespace Lipar.Web.Factories
         private readonly ICountryService _countryService;
         private readonly IProvinceService _provinceService;
         private readonly ICityService _cityService;
+        private readonly IGenderService _genderService;
         #endregion
 
         #region Methods
@@ -215,6 +219,7 @@ namespace Lipar.Web.Factories
                 model.UserInfo = $"{user.FirstName} {user.LastName}";
                 model.IsAuthenticated = true;
                 model.UserTypeId = user.UserTypeId;
+                model.GenderId = user.GenderId;
             }
 
             return model;
@@ -235,7 +240,18 @@ namespace Lipar.Web.Factories
 
         public void PrepareGenderType(IList<SelectListItem> items, string defaultItemText = null)
         {
-            throw new NotImplementedException();
+            var genders = _genderService.GetGenders(); ;
+
+            foreach (var gender in genders)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = gender.Title,
+                    Value = gender.Id.ToString(),
+                });
+            }
+
+            PrepareDefaultItem(items, defaultItemText);
         }
         #endregion
     }

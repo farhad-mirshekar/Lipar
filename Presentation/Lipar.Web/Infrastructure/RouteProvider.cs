@@ -55,7 +55,7 @@ namespace Lipar.Web.Infrastructure
 
             endpointRouteBuilder.MapControllerRoute("ShoppingCartView", "Cart",
                 new { controller = "ShoppingCartItem", action = "Cart" });
-            
+
             endpointRouteBuilder.MapControllerRoute("ShoppingCartQuantityPlus", "Cart/QuantityPlus/{Id:guid}",
                 new { controller = "ShoppingCartItem", action = "CartItemPlus" });
 
@@ -87,13 +87,28 @@ namespace Lipar.Web.Infrastructure
                 new { controller = "Account", action = "PasswordRecovery" });
 
             endpointRouteBuilder.MapControllerRoute("PasswordRecoveryConfirm", "Password-Recovery-Confirm",
-                new {controller="Account" , action= "PasswordRecoveryConfirm" });
+                new { controller = "Account", action = "PasswordRecoveryConfirm" });
 
             endpointRouteBuilder.MapControllerRoute("AddProductAnswers", "Product/CreateProductAnswers",
                 new { controller = "Product", action = "ProductAnswerAdd" });
 
             endpointRouteBuilder.MapControllerRoute("Payment", "Cart/Payment",
                 new { controller = "ShoppingCartItem", action = "Payment" });
+
+            endpointRouteBuilder.MapControllerRoute("ShoppingCartRemove", "Cart/Remove/{Id:guid}",
+                new { controller = "ShoppingCartItem", action = "Delete" });
+
+            //register dashboard routes
+            RegisterRoutesForDashboard(endpointRouteBuilder);
+        }
+        #endregion
+
+        #region Utilities
+
+        private void RegisterRoutesForDashboard(IEndpointRouteBuilder endpointRouteBuilder)
+        {
+            endpointRouteBuilder.MapControllerRoute("Invoice", "Order/Invoice/{orderId:guid}",
+                new { area = "Dashboard", controller = "Order", action = "Invoice" });
         }
         #endregion
     }

@@ -59,7 +59,10 @@ namespace Lipar.Web.Areas.Dashboard.Controllers
                 var userAddress = new UserAddress
                 {
                     Address = model.Address,
-                    PostalCode = model.PostalCode
+                    PostalCode = model.PostalCode,
+                    CountryId = model.CountryId,
+                    ProvinceId = model.ProvinceId,
+                    CityId = model.CityId,
                 };
 
                 _userAddressService.Add(userAddress);

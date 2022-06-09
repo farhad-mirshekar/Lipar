@@ -1,9 +1,7 @@
 ﻿@model IList<ProductAnswersModel>
 @using Lipar.Core.Common
 @inject Lipar.Core.IWorkContext _workContext
-@{
-    var commonHelper = new CommonHelper();
-}
+
 @{
     foreach (var productAnswersModel in Model)
     {
@@ -16,7 +14,7 @@
                             <span class="card-title p-1">@productAnswersModel.FullName</span>
 
                             <i class="fa fa-calendar ml-2 p-1"></i>
-                            <span class="p-1">@commonHelper.GetPersianDateByFormat(1, productAnswersModel.CreationDate)</span>
+                            <span class="p-1">@CommonHelper.GetPersianDateByFormat(DateTimeFormatTypeEnum.General, productAnswersModel.CreationDate)</span>
                         </div>
                     </div>
                     <div class="card-body">

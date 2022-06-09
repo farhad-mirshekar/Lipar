@@ -34,6 +34,11 @@ namespace Lipar.Entities.Domain.Application
         /// </summary>
         public Guid ProductAttributeMappingId { get; set; }
 
+        /// <summary>
+        /// gets or sets the attribute name
+        /// </summary>
+        public string AttributeName { get; set; }
+
         #region Navigations
         public OrderDetail OrderDetail { get; set; }
         #endregion

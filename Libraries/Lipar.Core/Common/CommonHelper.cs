@@ -180,15 +180,20 @@ namespace Lipar.Core.Common
         /// </param>
         /// <param name="dateTime">datetime</param>
         /// <returns></returns>
-        public string GetPersianDateByFormat(int format, DateTime? dateTime)
+        public static string GetPersianDateByFormat(DateTimeFormatTypeEnum format, DateTime? dateTime)
         {
+            var value = string.Empty;
             switch (format)
             {
-                case 1:
-                    return PersianDateFormat1(dateTime);
+                case DateTimeFormatTypeEnum.General:
+                    value = PersianDateGeneralFormat(dateTime);
+                    break;
+                case DateTimeFormatTypeEnum.DisplayTheTitleOfTheMonth:
+                    value = PersianDateDisplayTheTitleOfTheMonthFormat(dateTime);
+                    break;
             }
 
-            return string.Empty;
+            return value;
         }
 
         /// <summary>
@@ -196,11 +201,25 @@ namespace Lipar.Core.Common
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        private string PersianDateFormat1(DateTime? dateTime)
+        private static string PersianDateGeneralFormat(DateTime? dateTime)
         {
             if (dateTime.HasValue)
             {
                 return $"{GetPersianYear(dateTime.Value)}/{GetPersianMonth(dateTime.Value)}/{GetPersianDay(dateTime.Value)}";
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// YYYY/Month Name/DD
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        private static string PersianDateDisplayTheTitleOfTheMonthFormat(DateTime? dateTime)
+        {
+            if (dateTime.HasValue)
+            {
+                return $"{GetPersianDay(dateTime.Value)} {GetPersianMonthName(dateTime.Value)} {GetPersianYear(dateTime.Value)}";
             }
             return string.Empty;
         }

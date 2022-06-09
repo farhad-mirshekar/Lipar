@@ -1,10 +1,6 @@
 ﻿@model RegisterModel
 @using Lipar.Services.General.Contracts
-@inject ISettingService _settingService
-@{
-    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptcha").Value, out bool showCaptcha);
-    bool.TryParse(_settingService.GetSetting("CommonSetting.ShowCaptchaInRegisterPage").Value, out bool showCaptchaInRegisterPage);
-}
+
 <section class="card">
     <div class="card-header">
         <span class="card-title">@T("Web.Register.Page.Title")</span>
@@ -24,20 +20,27 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label asp-for="UserName">@T("User.Field.UserName")</label>
                     <input type="text" class="form-control" asp-for="UserName" />
                     <span asp-validation-for="UserName" class="text-danger" />
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label asp-for="NationalCode">@T("User.Field.NationalCode")</label>
                     <input type="text" class="form-control" asp-for="NationalCode" />
                     <span asp-validation-for="NationalCode" class="text-danger" />
                 </div>
-                <div class="form-group col-md-4">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
                     <label asp-for="CellPhone">@T("User.Field.CellPhone")</label>
                     <input type="text" class="form-control" asp-for="CellPhone" />
                     <span asp-validation-for="CellPhone" class="text-danger" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="CellPhone">@T("User.Field.GenderId")</label>
+                    <lipar-select asp-for="GenderId" asp-items="@Model.AvailableGenderList" asp-required="true" />
+                    <span asp-validation-for="GenderId" class="text-danger" />
                 </div>
             </div>
             <div class="form-row">
@@ -53,7 +56,7 @@
                 </div>
             </div>
 
-            @if (showCaptcha && showCaptchaInRegisterPage)
+            @if (Model.ShowCaptcha && Model.ShowCaptchaInRegisterPage)
             {
                 <div class="form-group row">
                     <label class="col-md-1 col-sm-1 col-form-label">
@@ -78,14 +81,14 @@
 </section>
 
 @section Scripts{
-    <script type="text/javascript">
-		$(document).off('click', '#captcha-reload');
-		$(document).on('click', '#captcha-reload', function (e) {
-			e.preventDefault();
-			var rnd = Math.ceil(Math.random() * 10000);
-			var imageUrl = '@Url.Action("CaptchaImage", "Captcha")'+'?prefix=Register&rnd=' + rnd;
-			$("#captcha-image").attr('src', imageUrl);
-		});
+<script type="text/javascript">
+    $(document).off('click', '#captcha-reload');
+    $(document).on('click', '#captcha-reload', function (e) {
+        e.preventDefault();
+        var rnd = Math.ceil(Math.random() * 10000);
+        var imageUrl = '@Url.Action("CaptchaImage", "Captcha")'+'?prefix=Register&rnd=' + rnd;
+        $("#captcha-image").attr('src', imageUrl);
+    });
 
-    </script>
+</script>
 }

@@ -1,36 +1,71 @@
 ﻿@model Lipar.Web.Models.General.MenuModel
 @using Lipar.Entities.Domain.Organization.Enums
+@using Lipar.Entities.Domain.Core.Enums
 @using Lipar.Core.ReadingTime
-
+@{
+    var genderTitle = string.Empty;
+}
 <div class="header-upper">
-    <div class="header-selectors-wrapper">
-        @await Component.InvokeAsync("LanguageSelector")
-    </div>
-    <div class="header-links-wrapper">
-        <div class="header-links">
-            <ul>
-                @if (Model.UserHeaderLink.IsAuthenticated)
-                {
-                    switch (Model.UserHeaderLink.UserTypeId)
-                    {
-                        case (int)UserTypeEnum.Users_With_In_The_Organization:
-                            <li><a href="@Url.Action("Index","Home",new {Area="Admin" })" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
-                            break;
-                    }
-                    <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
-                }
-                else
-                {
-                    var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
-                        ? url.ToString()
-                        : string.Empty;
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div class="flex-grow-1">
+                <div class="header-links-wrapper">
+                    <div class="header-links">
+                        <ul>
+                            @if (Model.UserHeaderLink.IsAuthenticated)
+                            {
+                                if (Model.UserHeaderLink.GenderId != 0)
+                                {
+                                    switch (Model.UserHeaderLink.GenderId)
+                                    {
+                                        case (int)GenderTypeEnum.Men:
+                                            genderTitle = @T("Commom.Male").Text;
+                                            break;
+                                        case (int)GenderTypeEnum.Woman:
+                                            genderTitle = @T("Commom.Female").Text;
+                                            break;
+                                    }
+                                }
 
-                    <li><a href="@Url.RouteUrl("Register")" class="ico-register">@T("Account.Register")</a></li>
-                    <li><a href="@Url.RouteUrl("Login")" class="ico-login">@T("Account.Login")</a></li>
-                }
-            </ul>
+                                <span class="text-info">
+                                    @string.Format("{0} {1} {2}" , genderTitle , Model.UserHeaderLink.UserInfo , T("Commom.Wellcome").Text)
+                                </span>
+                                switch (Model.UserHeaderLink.UserTypeId)
+                                {
+                                    case (int)UserTypeEnum.Admin:
+                                        <li><a href="@Url.Action("Index","Home",new {Area="Admin" })" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+                                        break;
+                                        case (int)UserTypeEnum.Customer:
+                                        <li><a href="@Url.Action("Index","Home",new {Area="Dashboard" })" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+                                        break;
+                                }
+                                <li>
+                                    <form action="/Account/Logout">
+                                        <button class="mt-2 logout" type="submit">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            @T("Account.Logout")
+                                        </button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
+                                ? url.ToString()
+                                : string.Empty;
+
+                                <li><a href="@Url.RouteUrl("Register")" class="ico-register">@T("Account.Register")</a></li>
+                                <li><a href="@Url.RouteUrl("Login")" class="ico-login">@T("Account.Login")</a></li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-1 p-2">@await Component.InvokeAsync("LanguageSelector")</div>
+            <div class="text-center mt-1 p-2">@await Component.InvokeAsync("MiniShoppingCart")</div>
         </div>
-
     </div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

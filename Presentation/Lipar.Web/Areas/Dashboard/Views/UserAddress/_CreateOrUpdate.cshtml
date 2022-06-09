@@ -13,3 +13,73 @@
     <textarea asp-for="Address" class="form-control" rows="2" cols="2" required></textarea>
     <span class="text-danger" asp-validation-for="Address" />
 </div>
+<div class="form-group">
+    <label asp-for="CountryId">@T("UserAddress.Field.CountryId")</label>
+    <input asp-for="CountryId" class="form-control" />
+    <span class="text-danger" asp-validation-for="CountryId"></span>
+
+</div>
+<div class="form-group">
+    <label asp-for="ProvinceId">@T("UserAddress.Field.ProvinceId")</label>
+    <input asp-for="ProvinceId" class="form-control" disabled />
+    <span class="text-danger" asp-validation-for="ProvinceId"></span>
+</div>
+<div class="form-group">
+    <label asp-for="CityId">@T("UserAddress.Field.CityId")</label>
+    <input asp-for="CityId" class="form-control" disabled></input>
+    <span class="text-danger" asp-validation-for="CityId"></span>
+</div>
+
+<script type="text/javascript">
+    var countryUrl = '@Url.Action("Countries","Common")';
+    var provinceUrl = '@Url.Action("Provinces","Common")';
+    var cityUrl = '@Url.Action("Cities","Common")';
+
+    function provinceFilter(){
+        var countryId = $('#CountryId').val();
+        return{
+            countryId:countryId
+        }
+    }
+
+    function cityFilter(){
+        var provinceUrl = $('#ProvinceId').val();
+        return{
+            provinceId : provinceUrl
+        }
+    }
+
+    $("#CountryId").kendoDropDownList({
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: countryUrl
+            }
+        }
+    })
+
+    $("#ProvinceId").kendoDropDownList({
+        autoBind: false,
+        cascadeFrom: "CountryId",
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: {"url":provinceUrl , "data":provinceFilter},
+            }
+        }
+    })
+
+    $("#CityId").kendoDropDownList({
+        autoBind: false,
+        cascadeFrom: "ProvinceId",
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataSource: {
+            transport:{
+                 read: {"url":cityUrl , "data":cityFilter},
+            }
+        }
+    })
+</script>
