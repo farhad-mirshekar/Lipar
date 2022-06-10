@@ -33,11 +33,11 @@
 
     @RenderSection("Head", false)
 </head>
-<body>
+<body class="rtl">
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-3 bg-light" id="sidebar">
-                <div id="sidebar-close">
+                <div id="sidebar-close" class="mt-1">
                     <i class="fa fa-remove" aria-hidden="true"></i>
                 </div>
                 <div id="sidebar-title">
@@ -69,7 +69,21 @@
             $('#sidebar-switch').click(function(e){
                 e.preventDefault();
                 $('#sidebar').toggleClass('toggle-sidebar');
-                $('#wrapper').toggleClass('col-md-12');
+
+                var $wrapper = $('#wrapper');
+                if($wrapper.hasClass('col-md-9')){
+                    $wrapper.removeClass('col-md-9');
+                    $wrapper.toggleClass('col-md-12');
+                }else{
+                    $wrapper.removeClass('col-md-12');
+                    $wrapper.toggleClass('col-md-9');
+                }
+            })
+
+            $('#sidebar-close').click(function(e){
+                e.preventDefault();
+                 $('#sidebar').toggleClass('toggle-sidebar');
+                 $('#wrapper').toggleClass('toggle-sidebar');
             })
         })
 

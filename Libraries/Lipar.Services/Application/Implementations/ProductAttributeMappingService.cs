@@ -79,6 +79,21 @@ namespace Lipar.Services.Application.Implementations
 
             return _repository.GetById(Id);
         }
+
+        public string GetAttributeName(Guid productAttributeMappingId)
+        {
+            if (productAttributeMappingId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(productAttributeMappingId));
+            }
+
+            var title = _repository.TableNoTracking
+                                   .Where(a => a.Id == productAttributeMappingId)
+                                   .Select(a => a.ProductAttribute.Name)
+                                   .FirstOrDefault();
+
+            return title;
+        }
         #endregion
     }
 }

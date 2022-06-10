@@ -11,5 +11,6 @@ namespace Lipar.Web.Areas.Dashboard.Models.Application
         public decimal? Price { get; set; }
         public bool IsPreSelected { get; set; }
         public Guid ProductAttributeMappingId { get; set; }
+        public string AttributeName { get; set; }
     }
 }

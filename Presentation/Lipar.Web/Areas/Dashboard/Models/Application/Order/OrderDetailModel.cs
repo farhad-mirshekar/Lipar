@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Dashboard.Models.Application
 {
     public class OrderDetailModel:BaseEntityModel
     {
+        public OrderDetailModel()
+        {
+            AvailableOrderDetailAttributes = new List<OrderDetailAttributeModel>();
+        }
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }
@@ -19,5 +24,7 @@ namespace Lipar.Web.Areas.Dashboard.Models.Application
         public string DeliveryDateName { get; set; }
         public int? DeliveryDatePriority { get; set; }
         public int Quantity { get; set; }
+
+        public IEnumerable<OrderDetailAttributeModel> AvailableOrderDetailAttributes { get; set; }
     }
 }

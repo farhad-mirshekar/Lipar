@@ -264,7 +264,10 @@ namespace Lipar.Web.Areas.Admin.Controllers
         public IActionResult ChangePosition(Guid Id)
         {
             if (Id == Guid.Empty)
+            {
                 return RedirectToRoute("areaRoute", new { area = AreaNames.Admin, controller = "Home", action = "Index" });
+            }
+
             var _workContext = EngineContext.Current.Resolve<IWorkContext>();
             var positions = new List<Position>();
 
@@ -291,7 +294,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
             _workContext.CurrentPosition = position;
 
-            var roleId = position.PositionRoles.Select(p => p.Id).First();
+            var roleId = position.PositionRoles.Select(p => p.RoleId).First();
             var commands = _commandService.List(new CommandListVM { RoleId = roleId });
 
             if (commands.Count() == 0)

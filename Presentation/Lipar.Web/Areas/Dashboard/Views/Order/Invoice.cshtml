@@ -1,6 +1,8 @@
 ﻿@model OrderModel
 @using Lipar.Core.Common
-
+@{
+    ViewBag.PageTitle = "جزئیات سفارش";
+}
 @{
     if (Model != null)
     {
@@ -78,7 +80,7 @@
 
         <section class="card">
             <div class="card-body">
-                @if(Model.AvailableOrderDetails != null && Model.AvailableOrderDetails.Any())
+                @if (Model.AvailableOrderDetails != null && Model.AvailableOrderDetails.Any())
                 {
                     @await Html.PartialAsync("_ProductDetail" , Model.AvailableOrderDetails)
                 }

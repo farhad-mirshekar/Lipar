@@ -24,7 +24,8 @@ namespace Lipar.Web.Factories.Application
                                   , IShoppingCartItemModelFactory shoppingCartItemModelFactory
                                   , ISettingService settingService
                                   , IOrderService orderService
-                                  , IStaticCacheManager cacheManager)
+                                  , IStaticCacheManager cacheManager
+                                  , IProductAttributeMappingService productAttributeMappingService)
         {
             _orderPaymentStatusService = orderPaymentStatusService;
             _workContext = workContext;
@@ -33,6 +34,7 @@ namespace Lipar.Web.Factories.Application
             _settingService = settingService;
             _orderService = orderService;
             _cacheManager = cacheManager;
+            _productAttributeMappingService = productAttributeMappingService;
         }
         #endregion
 
@@ -44,6 +46,7 @@ namespace Lipar.Web.Factories.Application
         private readonly ISettingService _settingService;
         private readonly IOrderService _orderService;
         private readonly IStaticCacheManager _cacheManager;
+        private readonly IProductAttributeMappingService _productAttributeMappingService;
         #endregion
 
 
@@ -212,6 +215,10 @@ namespace Lipar.Web.Factories.Application
             orderDetailAttribute.Price = productAttributeValue.Price;
             orderDetailAttribute.Name = productAttributeValue.Name;
             orderDetailAttribute.CreationDate = CommonHelper.GetCurrentDateTime();
+
+            //get attribute name
+            var attributeName = _productAttributeMappingService.GetAttributeName(productAttributeValue.ProductAttributeMappingId);
+            orderDetailAttribute.AttributeName = attributeName;
 
             return orderDetailAttribute;
         }

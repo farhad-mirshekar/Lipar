@@ -33,7 +33,7 @@ body {
 .sidebar-sticky {
     position: relative;
     top: 0;
-    height: calc(70vh - 48px);
+    /*height: calc(70vh - 48px);*/
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -123,4 +123,31 @@ body {
 }
 #sidebar.toggle-sidebar {
     display: none;
+}
+.jc-between {
+    justify-content: space-between;
+}
+
+.jc-start {
+    justify-content: flex-start;
+}
+
+.w-full {
+    width: 100%;
+}
+#sidebar-switch{
+    cursor:pointer;
+}
+#sidebar-switch:hover{
+    color:#7e0068;
+}
+#sidebar-close {
+    display:none;
+    cursor:pointer;
+}
+
+@media screen and (max-width:767px){
+    #sidebar-close{
+        display:inline-block;
+    }
 }

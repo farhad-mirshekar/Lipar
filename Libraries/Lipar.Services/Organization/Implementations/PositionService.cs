@@ -91,7 +91,8 @@ namespace Lipar.Services.Organization.Implementations
         public Position GetById(Guid Id)
         {
             var query = _repository.Table;
-            query = query.Include(position => position.User);
+            query = query.Include(position => position.User)
+                         .Include(position=>position.PositionRoles);
 
             var position = query.Where(p => p.Id.Equals(Id) &&
                                        p.RemoverId == null &&

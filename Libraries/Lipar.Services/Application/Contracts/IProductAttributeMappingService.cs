@@ -33,5 +33,12 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="listVM"></param>
         /// <returns></returns>
         IPagedList<ProductAttributeMapping> List(ProductAttributeMappingListVM listVM);
+
+        /// <summary>
+        /// get attribute name
+        /// </summary>
+        /// <param name="productAttributeMappingId"></param>
+        /// <returns></returns>
+        string GetAttributeName(Guid productAttributeMappingId);
     }
 }

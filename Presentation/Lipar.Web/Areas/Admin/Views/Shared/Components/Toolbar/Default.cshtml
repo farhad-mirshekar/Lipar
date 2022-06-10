@@ -1,23 +1,14 @@
 ﻿@model List<Lipar.Entities.Domain.Organization.Position>
 @inject Lipar.Core.IWorkContext _workContext
 
-<div id="toolbar" class="row">
-    <div class="col-md-3">
-        <div class="d-inline-block">
-            <div id="sidebar-switch">
-                <i class="fa fa-align-justify"></i>
+<div class="d-flex w-full p-2 border-bottom">
+    <div class="w-full d-flex flex-row jc-between">
+        <div class="flex-grow-1 align-self-center">
+            <div class="d-flex w-full">
+                <i class="fa fa-align-justify" id="sidebar-switch" title="تمام صفحه"></i>
             </div>
         </div>
-    </div>
-    <div class="col-md-9">
-        <div class="d-inline-block header-icon float-right mt-1">
-            <div class="d-inline-flex mr-2">
-                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-outline-warning">
-                    <i class="fa fa-sign-out"></i>
-                </a>
-            </div>
-        </div>
-        <div class="d-inline-block header-icon pull-left mt-2">
+        <div class="d-flex align-self-center pr-4">
             @{
                 if (Model != null && Model.Count > 0)
                 {
@@ -29,8 +20,8 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 @foreach (var position in Model)
                                 {
-                                    <a href="@Url.Action("ChangePosition","Position",new { Id = position.Id})" class="@overrideClass(position)">
-                                        @position.PositionType.Title - @position.Department.Name
+                                    <a href="@Url.Action("ChangePosition","Position",new { Id = position.Id })" class="@overrideClass(position)">
+                                        <span>@position.PositionType.Title - @position.Department.Name</span>
                                     </a>
                                 }
                             </div>
@@ -39,9 +30,13 @@
                 }
             }
         </div>
+        <div class="d-flex align-self-center">
+            <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-outline-danger">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>
     </div>
 </div>
-
 @functions {
     string overrideClass(Lipar.Entities.Domain.Organization.Position position)
     {

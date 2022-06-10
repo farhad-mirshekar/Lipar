@@ -1,14 +1,72 @@
 ﻿@model List<OrderDetailModel>
+@using Lipar.Entities.Domain.Application.Enums
 
 @{
-    <table class="table">
-        <tbody>
-            @foreach (var orderDetail in Model)
-            {
-                <tr>
-                    <td>@orderDetail.ProductName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
+    @foreach (var orderDetail in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex w-full flex-column">
+                    <div class="d-flex">
+                        <label class="text-info">@orderDetail.ProductName</label>
+                    </div>
+                    <div class="d-flex w-full flex-row">
+                        <div class="d-flex p-2">
+                            <label class="text-secondary">قیمت</label>
+                            <label class="text-info ml-2">
+                                @string.Format("{0:#,0} {1}", orderDetail.ProductPrice,T("Web.Currency").Text)
+                            </label>
+                        </div>
+                        @if (orderDetail.ProductDiscountTypeId.HasValue && orderDetail.ProductDiscountTypeId.Value != 0)
+                        {
+                            <div class="d-flex p-2">
+                                <label class="text-secondary">تلفن همراه</label>
+                                switch (orderDetail.ProductDiscountTypeId)
+                                {
+                                case (int)DiscountTypeEnum.Amount:
+                                <label class="control-label">
+                                    @T("Product.Field.Discount")
+                                </label>
+                                <label class="text-info ml-2">
+                                    @string.Format("{0:#,0} {1}", orderDetail.ProductDiscountPrice,T("Web.Currency").Text)
+                                </label>
+                                break;
+                                case (int)DiscountTypeEnum.Percentage:
+                                <label class="control-label">
+                                    @T("Product.Field.Discount")
+                                </label>
+                                <label class="text-info ml-2">
+                                    @string.Format("{0:#,0} درصد", orderDetail.ProductDiscountPrice)
+                                </label>
+                                break;
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex w-full-flex-column">
+                        @if (orderDetail.AvailableOrderDetailAttributes != null && orderDetail.AvailableOrderDetailAttributes.Any())
+                        {
+                            @foreach (var attributeModel in orderDetail.AvailableOrderDetailAttributes)
+                            {
+                                <div class="d-flex p-2">
+                                    <label class="text-secondary">@attributeModel.AttributeName</label>
+                                    <label class="text-info ml-2">
+                                        <span>@attributeModel.Name</span>
+                                        @if (attributeModel.Price.HasValue && attributeModel.Price.Value > 0)
+                                        {
+                                            @string.Format("{0:#,0} {1}", attributeModel.Price,T("Web.Currency").Text)
+                                        }
+                                    </label>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
 }

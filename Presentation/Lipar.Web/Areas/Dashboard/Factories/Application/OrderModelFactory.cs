@@ -99,6 +99,13 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Application
                     ProductPrice = d.ProductPrice,
                     ShippingCostName = d.ShippingCostName,
                     ProductDiscountTypeId = d.ProductDiscountTypeId,
+                    AvailableOrderDetailAttributes = d.OrderDetailAttributes.Select(a => new OrderDetailAttributeModel
+                    {
+                        Price = a.Price,
+                        Name = a.Name,
+                        AttributeName = a.AttributeName,
+                        
+                    })
                 })
             }).FirstOrDefault();
 

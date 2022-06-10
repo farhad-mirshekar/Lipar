@@ -29,6 +29,13 @@
         "js/select2.full.min.js",
         "js/select2.js"
       ]
+    },
+    {
+      "library": "popper.js@2.11.5",
+      "destination": "wwwroot/libs/popper.js/",
+      "files": [
+        "umd/popper.min.js"
+      ]
     }
   ]
 }
