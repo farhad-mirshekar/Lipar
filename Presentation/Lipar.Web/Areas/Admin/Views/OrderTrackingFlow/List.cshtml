@@ -1,0 +1,66 @@
+﻿@model OrderTrackingFlowSearchModel
+@{
+    Html.SetActiveMenuItemSystemName("Payment-Managment-List");
+    ViewBag.PageTitle = T("Admin.OrderTrackingFlow.List.Title").Text;
+}
+
+<form asp-action="List" asp-controller="OrderTrackingFlow" method="post">
+    <section class="card">
+        <div class="card-body collapse" id="order-tracking-flow-list-search">
+            <input type="hidden" asp-for="ToPositionId" value="@Model.ToPositionId" />
+        </div>
+    </section>
+
+    <section class="card mt-2">
+        <div class="card-header">
+            <span class="card-title">@T("Admin.OrderTrackingFlow.List.Title")</span>
+        </div>
+        <div class="card-body">
+            @{
+                var gridModel = new DataTablesModel
+            {
+                Name = "order-tracking-flow-grid",
+                UrlRead = new DataUrl("List", "OrderTrackingFlow", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                Filters = new List<FilterParameter>()
+                    {
+                        new FilterParameter(nameof(Model.ToPositionId))
+                    }
+            };
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(OrderTrackingFlowModel.CustomerFullName))
+            {
+                Title = "نام و نام خانوادگی مشتری"
+            });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(OrderTrackingFlowModel.Price))
+            {
+                Title = "مبلغ پرداختی",
+            });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(OrderTrackingFlowModel.BankName))
+            {
+                Title = "نام درگاه",
+            });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(OrderTrackingFlowModel.PaymentDate))
+            {
+                Title = "تاریخ پرداخت",
+                Render = new RenderDate(),
+                Width = "200"
+            });
+
+                gridModel.ColumnCollection.Add(new ColumnProperty(nameof(OrderTrackingFlowModel.Id))
+            {
+                Title = "",
+                Width = "10",
+                ClassName = LiparColumnClassDefaults.Button,
+                Render = new RenderButtonEdit(new DataUrl("Edit"))
+            });
+
+                @await Html.PartialAsync("Table", gridModel)
+            }
+        </div>
+    </section>
+</form>

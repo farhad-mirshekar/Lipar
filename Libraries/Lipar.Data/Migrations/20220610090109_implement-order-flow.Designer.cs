@@ -4,14 +4,16 @@ using Lipar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lipar.Data.Migrations
 {
     [DbContext(typeof(LiparContext))]
-    partial class LiparContextModelSnapshot : ModelSnapshot
+    [Migration("20220610090109_implement-order-flow")]
+    partial class implementorderflow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,34 +360,11 @@ namespace Lipar.Data.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OrderNumber")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderTrackings", "Application");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderTrackingDocState", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 6, 12, 20, 32, 58, 375, DateTimeKind.Local).AddTicks(8415));
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderTrackingDocStates", "Application");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderTrackingFlow", b =>
@@ -421,13 +400,9 @@ namespace Lipar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FromDocStateId");
-
                     b.HasIndex("FromPositionId");
 
                     b.HasIndex("OrderTrackingId");
-
-                    b.HasIndex("ToDocStateId");
 
                     b.HasIndex("ToPositionId");
 
@@ -2910,12 +2885,6 @@ namespace Lipar.Data.Migrations
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderTrackingFlow", b =>
                 {
-                    b.HasOne("Lipar.Entities.Domain.Application.OrderTrackingDocState", "FromDocState")
-                        .WithMany("FromDocStates")
-                        .HasForeignKey("FromDocStateId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Lipar.Entities.Domain.Organization.Position", "FromPosition")
                         .WithMany("FromOrderTrackingFlows")
                         .HasForeignKey("FromPositionId");
@@ -2926,23 +2895,13 @@ namespace Lipar.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Lipar.Entities.Domain.Application.OrderTrackingDocState", "ToDocState")
-                        .WithMany("ToDocStates")
-                        .HasForeignKey("ToDocStateId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Lipar.Entities.Domain.Organization.Position", "ToPosition")
                         .WithMany("ToOrderTrackingFlows")
                         .HasForeignKey("ToPositionId");
 
-                    b.Navigation("FromDocState");
-
                     b.Navigation("FromPosition");
 
                     b.Navigation("OrderTracking");
-
-                    b.Navigation("ToDocState");
 
                     b.Navigation("ToPosition");
                 });
@@ -3975,13 +3934,6 @@ namespace Lipar.Data.Migrations
             modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderTracking", b =>
                 {
                     b.Navigation("OrderTrackingFlows");
-                });
-
-            modelBuilder.Entity("Lipar.Entities.Domain.Application.OrderTrackingDocState", b =>
-                {
-                    b.Navigation("FromDocStates");
-
-                    b.Navigation("ToDocStates");
                 });
 
             modelBuilder.Entity("Lipar.Entities.Domain.Application.Product", b =>

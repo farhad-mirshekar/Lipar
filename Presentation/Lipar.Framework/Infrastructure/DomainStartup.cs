@@ -141,6 +141,7 @@ namespace Lipar.Web.Framework.Infrastructure
             services.AddTransient<AppContract.IOrderService, AppImplement.OrderService>();
             services.AddTransient<AppContract.IProductTagService, AppImplement.ProductTagService>();
             services.AddTransient<AppContract.IOrderPaymentStatusService, AppImplement.OrderPaymentStatusService>();
+            services.AddTransient<AppContract.IOrderTrackingFlowService, AppImplement.OrderTrackingFlowService>();
         }
 
         protected void CoreService(IServiceCollection services, IConfiguration configuration)

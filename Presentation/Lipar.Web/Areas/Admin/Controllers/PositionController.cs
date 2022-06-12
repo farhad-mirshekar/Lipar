@@ -263,6 +263,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
         public IActionResult ChangePosition(Guid Id)
         {
+            
             if (Id == Guid.Empty)
             {
                 return RedirectToRoute("areaRoute", new { area = AreaNames.Admin, controller = "Home", action = "Index" });
@@ -271,7 +272,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
             var _workContext = EngineContext.Current.Resolve<IWorkContext>();
             var positions = new List<Position>();
 
-            var currentPosition = _workContext.CurrentPosition;
+            var currentPosition = _positionService.GetById(_workContext.CurrentPosition.Id);
             var position = _positionService.GetById(Id);
 
             if (position == null)

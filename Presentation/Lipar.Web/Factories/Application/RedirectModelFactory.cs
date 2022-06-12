@@ -25,7 +25,8 @@ namespace Lipar.Web.Factories.Application
                                   , ISettingService settingService
                                   , IOrderService orderService
                                   , IStaticCacheManager cacheManager
-                                  , IProductAttributeMappingService productAttributeMappingService)
+                                  , IProductAttributeMappingService productAttributeMappingService
+                                  , IOrderTrackingFlowService orderTrackingFlowService)
         {
             _orderPaymentStatusService = orderPaymentStatusService;
             _workContext = workContext;
@@ -35,6 +36,7 @@ namespace Lipar.Web.Factories.Application
             _orderService = orderService;
             _cacheManager = cacheManager;
             _productAttributeMappingService = productAttributeMappingService;
+            _orderTrackingFlowService = orderTrackingFlowService;
         }
         #endregion
 
@@ -47,6 +49,7 @@ namespace Lipar.Web.Factories.Application
         private readonly IOrderService _orderService;
         private readonly IStaticCacheManager _cacheManager;
         private readonly IProductAttributeMappingService _productAttributeMappingService;
+        private readonly IOrderTrackingFlowService _orderTrackingFlowService;
         #endregion
 
 
@@ -111,6 +114,9 @@ namespace Lipar.Web.Factories.Application
                     orderPaymentStatus.RetrivalRefNo = verifyResult.RetrivalRefNo;
                     orderPaymentStatus.SystemTraceNo = verifyResult.SystemTraceNo;
                     _orderPaymentStatusService.Edit(orderPaymentStatus);
+
+                    //initial order tracking
+                    _orderTrackingFlowService.InitialRegistration(order.Id);
 
                     //fill redirect model
                     redirectModel.PaymentStatus = true;

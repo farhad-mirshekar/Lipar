@@ -18,7 +18,7 @@ namespace Lipar.Data.Seeds.Organization
                     Address="البرز",
                     CenterId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     CodePhone="026",
-                    DepartmentTypeId = (int)DepartmentTypeEnum.Main_Unit,
+                    DepartmentTypeId = (int)DepartmentTypeEnum.MainUnit,
                     EnabledTypeId = (int)EnabledTypeEnum.Active,
                     Name="واحد مرکزی",
                     Phone="33309282",

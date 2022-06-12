@@ -112,5 +112,10 @@
         /// Manage Product Tag
         /// </summary>
         public const string ManageProductTag = "ManageProductTag";
+
+        /// <summary>
+        /// Manage Product Tag
+        /// </summary>
+        public const string ManagePaymentManagement = "ManagePaymentManagement";
     }
 }

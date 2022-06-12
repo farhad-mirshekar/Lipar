@@ -74,6 +74,7 @@ namespace Lipar.Web.Areas.Admin.Infrastructure
             services.AddTransient<App.IProductCommentModelFactory, App.ProductCommentModelFactory>();
             services.AddTransient<App.IProductQuestionModelFactory, App.ProductQuestionModelFactory>();
             services.AddTransient<App.IProductTagModelFactory, App.ProductTagModelFactory>();
+            services.AddTransient<App.IOrderTrackingFlowModelFactory, App.OrderTrackingFlowModelFactory>();
         }
 
         protected void FinancialService(IServiceCollection services)

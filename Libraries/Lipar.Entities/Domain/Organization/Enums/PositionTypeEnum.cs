@@ -7,5 +7,9 @@
         /// </summary>
         Managment = 1,
 
+        /// <summary>
+        /// مدیر
+        /// </summary>
+        Manager
     }
 }

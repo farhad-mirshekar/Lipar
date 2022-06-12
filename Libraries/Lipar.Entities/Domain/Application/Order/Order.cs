@@ -15,6 +15,7 @@ namespace Lipar.Entities.Domain.Application
         {
             OrderDetails = new HashSet<OrderDetail>();
             OrderPaymentStatuses = new HashSet<OrderPaymentStatus>();
+            OrderTrackings = new HashSet<OrderTracking>();
         }
         #endregion
 
@@ -45,11 +46,12 @@ namespace Lipar.Entities.Domain.Application
         #endregion
 
         #region Navigations
-        public ICollection<OrderDetail> OrderDetails { get; set; }
-        public ICollection<OrderPaymentStatus> OrderPaymentStatuses { get; set; }
         public BankPort BankPort { get; set; }
         public User User { get; set; }
         public UserAddress UserAddress { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<OrderPaymentStatus> OrderPaymentStatuses { get; set; }
+        public ICollection<OrderTracking> OrderTrackings { get; set; }
         #endregion
     }
 }
