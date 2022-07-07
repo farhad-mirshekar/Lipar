@@ -39,8 +39,6 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
                 BankName = o.BankName,
                 CustomerFullName = o.CustomerFullName,
                 Id = o.Id,
-                LastPositionId = o.LastPositionId,
-                LastToDocStateId = o.LastToDocStateId,
                 OrderId = o.OrderId,
                 OrderTrackingId = o.OrderTrackingId,
                 PaymentDate = o.PaymentDate,
@@ -68,6 +66,25 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
             searchModel.ToPositionId = _workContext.CurrentPosition.Id;
 
             return searchModel;
+        }
+
+        public OrderTrackingFlowModel PrepareOrderTrackingFlowModel(OrderTrackingFlowSearchModel searchModel)
+        {
+            var query = _orderTrackingFlowService.GetQuery();
+
+            var orderTrackingFlowModel = query.Where(otf => otf.OrderTrackingId == searchModel.OrderTrackingId.Value
+                                                         && otf.ToPositionId == _workContext.CurrentPosition.Id)
+                                              .Select(otf => new OrderTrackingFlowModel
+                                              {
+                                                  OrderTrackingId = otf.OrderTrackingId,
+                                                  OrderId = otf.OrderTracking.OrderId,
+                                                  BankName = otf.OrderTracking.Order.BankPort.Bank.Name,
+                                                  CustomerFullName = otf.OrderTracking.Order.User.FirstName + " " + otf.OrderTracking.Order.User.LastName,
+                                                  PaymentDate = otf.OrderTracking.Order.CreationDate,
+                                                  Price = otf.OrderTracking.Order.Price,
+                                              }).FirstOrDefault();
+
+            return orderTrackingFlowModel;
         }
 
         #endregion

@@ -22,6 +22,7 @@ namespace Lipar.Web.Areas.Admin.Models.Organization
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int UserTypeId { get; set; }
+        public string CellPhone { get; set; }
         public IEnumerable<RolesModel> AvailableRoles { get; set; }
         public IEnumerable<PositionRoleModel> AvailablePositionRole { get; set; }
         #endregion

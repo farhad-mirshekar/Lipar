@@ -13,5 +13,6 @@
     <ProjectReference Include="..\Lipar.Core\Lipar.Core.csproj" />
     <ProjectReference Include="..\Lipar.Data\Lipar.Data.csproj" />
     <ProjectReference Include="..\Lipar.Entities\Lipar.Entities.csproj" />
+    <ProjectReference Include="..\Lipar.ViewModels\Lipar.ViewModels.csproj" />
   </ItemGroup>
 </Project>

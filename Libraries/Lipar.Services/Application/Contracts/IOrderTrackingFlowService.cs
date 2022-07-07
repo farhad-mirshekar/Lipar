@@ -19,5 +19,15 @@ namespace Lipar.Services.Application.Contracts
         /// <param name="listVM"></param>
         /// <returns></returns>
         IQueryable<OrderTrackingFlowDTO> GetOrderTrackingFlows(OrderTrackingFlowListVM listVM);
+
+        /// <summary>
+        /// get order tracking flow
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="noTracking"></param>
+        /// <returns></returns>
+        OrderTrackingFlow GetById(Guid Id , bool noTracking = false);
+
+        IQueryable<OrderTrackingFlow> GetQuery();
     }
 }

@@ -4,6 +4,7 @@ using Lipar.Web.Areas.Admin.Models.Application;
 using Lipar.Web.Framework.Controllers;
 using Lipar.Web.Framework.MVC.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Controllers
 {
@@ -41,6 +42,21 @@ namespace Lipar.Web.Areas.Admin.Controllers
             var model = _orderTrackingFlowModelFactory.PreapreOrderTrackingFlowListModel(searchModel);
 
             return Json(model);
+        }
+
+        public IActionResult Edit(Guid id)
+        {
+            if(id == Guid.Empty)
+            {
+                return RedirectToAction("List");
+            }
+
+            var searchModel = new OrderTrackingFlowSearchModel();
+            searchModel.OrderTrackingId = id;
+
+            var model = _orderTrackingFlowModelFactory.PrepareOrderTrackingFlowModel(searchModel);
+
+            return View(model);
         }
         #endregion
     }

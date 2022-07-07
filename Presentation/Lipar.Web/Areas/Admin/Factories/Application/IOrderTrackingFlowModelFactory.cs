@@ -1,4 +1,6 @@
-﻿using Lipar.Web.Areas.Admin.Models.Application;
+﻿using Lipar.Entities.Domain.Application;
+using Lipar.Web.Areas.Admin.Models.Application;
+using System;
 
 namespace Lipar.Web.Areas.Admin.Factories.Application
 {
@@ -17,5 +19,12 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         /// </summary>
         /// <returns></returns>
         OrderTrackingFlowSearchModel PrepareOrderTrackingFlowSearchModel();
+
+        /// <summary>
+        /// prepare order tracking flow model
+        /// </summary>
+        /// <param name="searchModel"></param>
+        /// <returns></returns>
+        OrderTrackingFlowModel PrepareOrderTrackingFlowModel(OrderTrackingFlowSearchModel searchModel);
     }
 }

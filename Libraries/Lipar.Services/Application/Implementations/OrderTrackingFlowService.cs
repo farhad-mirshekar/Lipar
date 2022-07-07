@@ -7,6 +7,7 @@ using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.Organization.Enums;
 using Lipar.Services.Application.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -67,9 +68,20 @@ namespace Lipar.Services.Application.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            query = query.Where(o => o.ToPositionId == listVM.ToPositionId);
+            if(listVM.OrderTrackingId.HasValue && listVM.OrderTrackingId.Value != Guid.Empty)
+            {
+                query = query.Where(o => o.OrderTrackingId == listVM.OrderTrackingId);
+            }
 
-            query = query.Where(o => !o.ActionDate.HasValue);
+            if (listVM.ToPositionId.HasValue && listVM.ToPositionId.Value != Guid.Empty)
+            {
+                query = query.Where(o => o.ToPositionId == listVM.ToPositionId);
+            }
+
+            if (listVM.ActionState.HasValue && listVM.ActionState.Value)
+            {
+                query = query.Where(o => !o.ActionDate.HasValue);
+            }
 
             query = query.OrderByDescending(o => o.CreationDate).Skip(listVM.PageIndex)
                                                                 .Take(listVM.PageSize);
@@ -86,9 +98,44 @@ namespace Lipar.Services.Application.Implementations
                 PaymentDate = o.OrderTracking.Order.CreationDate,
                 Price = o.OrderTracking.Order.Price,
                 LastDocStateTitle = o.ToDocState.Title,
+                ActionDate = o.ActionDate,
+                Description = o.Description,
+                FromDocStateId = o.FromDocStateId,
+                FromDocStateTitle = o.FromDocState.Title,
+                FromPositionId = o.FromPositionId,
+                FromPositionFullName = o.FromPositionId.HasValue
+                                       ? o.FromPosition.User.FirstName + " " + o.FromPosition.User.LastName
+                                       : "",
+                ToDocStateId = o.ToDocStateId,
+                ToDocStateTitle = o.ToDocState.Title,
+                ToPositionId = o.ToPositionId,
+                ToPositionFullName = o.ToPositionId.HasValue
+                                       ? o.ToPosition.User.FirstName + " " + o.ToPosition.User.LastName
+                                       : "",
             });
 
             return result;
+        }
+
+        public OrderTrackingFlow GetById(Guid id, bool noTracking = false)
+        {
+            var query = _repository.Table;
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking;
+            }
+
+            var model = query.Where(otf => otf.OrderTrackingId == id)
+                             .FirstOrDefault();
+
+            return model;
+        }
+
+        public IQueryable<OrderTrackingFlow> GetQuery()
+        {
+            var query = _repository.TableNoTracking;
+
+            return query;
         }
 
         #endregion

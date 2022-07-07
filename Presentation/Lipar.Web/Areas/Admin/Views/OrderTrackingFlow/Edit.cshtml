@@ -1,0 +1,27 @@
+﻿@model OrderTrackingFlowModel
+
+<section class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>نام و نام خانوادگی خریدار</th>
+                    <th>مبلغ</th>
+                    <th>نام درگاه</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.CustomerFullName</td>
+                    <td>@Model.Price</td>
+                    <td>@Model.BankName</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@await Component.InvokeAsync("Order" , new { orderId = Model.OrderId })
+
+@await Component.InvokeAsync("ListFlows" , new { orderTrackingId = Model.OrderTrackingId })
+

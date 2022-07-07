@@ -1,4 +1,6 @@
 ﻿using Lipar.Entities.Domain.Application;
+using Lipar.ViewModels.Application;
+using System;
 using System.Linq;
 
 namespace Lipar.Services.Application.Contracts
@@ -21,5 +23,7 @@ namespace Lipar.Services.Application.Contracts
         void Add(Order model);
 
         IQueryable<Order> GetQuery();
+
+        OrderViewModel GetOrderViewModel(Guid orderId);
     }
 }

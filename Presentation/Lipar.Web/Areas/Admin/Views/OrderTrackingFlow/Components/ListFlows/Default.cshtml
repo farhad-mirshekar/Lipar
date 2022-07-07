@@ -1,0 +1,34 @@
+﻿@model List<OrderTrackingFlowModel>
+
+@{
+    if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>از وضعیت</th>
+                    <th>ارجاع دهنده</th>
+                    <th>به وضعیت</th>
+                    <th>گیرنده</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+                    var index = 0;
+                    foreach (var orderTrackingFlow in Model)
+                    {
+                        <tr>
+                            <td>@(++index)</td>
+                            <td>@orderTrackingFlow.FromDocStateTitle</td>
+                            <td>@orderTrackingFlow.FromPositionFullName</td>
+                            <td>@orderTrackingFlow.ToDocStateTitle</td>
+                            <td>@orderTrackingFlow.ToPositionFullName</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+}
