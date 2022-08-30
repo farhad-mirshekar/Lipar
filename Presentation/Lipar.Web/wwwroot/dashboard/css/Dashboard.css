@@ -33,7 +33,7 @@ body {
 .sidebar-sticky {
     position: relative;
     top: 0;
-    height: calc(70vh - 48px);
+    /*height: calc(70vh - 48px);*/
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -108,6 +108,24 @@ body {
         font-size: 19px;
     }
 
+#sidebar-menu-container::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #ededed
+}
+
+#sidebar-menu-container::-webkit-scrollbar {
+    width: 6px;
+    background-color: #ededed
+}
+
+#sidebar-menu-container::-webkit-scrollbar-thumb {
+    background-color: #406080
+}
+
+#sidebar.toggle-sidebar {
+    display: none;
+}
+
 .order-detail-show{
     cursor:pointer;
     font-size:20px !important;
@@ -120,4 +138,27 @@ body {
 }
 .w-full {
     width: 100%;
+}
+#sidebar-switch {
+    cursor: pointer;
+}
+
+    #sidebar-switch:hover {
+        color: #7e0068;
+    }
+
+#sidebar-close {
+    display: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width:767px) {
+    #sidebar-close {
+        display: inline-block;
+    }
+}
+
+span.order-doc-state + span.order-doc-state::before {
+    content: '>>';
+    padding: 10px;
 }

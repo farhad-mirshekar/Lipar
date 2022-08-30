@@ -26,5 +26,22 @@ namespace Lipar.Web.Areas.Admin.Factories.Application
         /// <param name="searchModel"></param>
         /// <returns></returns>
         OrderTrackingFlowModel PrepareOrderTrackingFlowModel(OrderTrackingFlowSearchModel searchModel);
+
+        /// <summary>
+        /// strp financial
+        /// </summary>
+        /// <param name="orderTrackingFlowId"></param>
+        /// <param name="orderTrackingId"></param>
+        /// <returns></returns>
+        bool FinancialStep(Guid orderTrackingFlowId, Guid orderTrackingId , string description);
+
+        /// <summary>
+        /// step ware house
+        /// </summary>
+        /// <param name="orderTrackingFlowId"></param>
+        /// <param name="orderTrackingId"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        bool WarehouseStep(Guid orderTrackingFlowId, Guid orderTrackingId, string description);
     }
 }

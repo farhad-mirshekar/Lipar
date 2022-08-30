@@ -46,6 +46,9 @@ namespace Lipar.Web.Areas.Dashboard.Controllers
 
             var orderModel = _orderModelFactory.PrepareInvoiceDetail(searchModel);
 
+            var orderTrackingFlows = _orderModelFactory.GetOrderDocStates(orderId);
+            ViewBag.orderTrackingFlows = orderTrackingFlows;
+
             return View(orderModel);
         }
         #endregion

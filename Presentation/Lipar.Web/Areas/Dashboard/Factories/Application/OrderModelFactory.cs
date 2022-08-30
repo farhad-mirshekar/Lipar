@@ -2,6 +2,7 @@
 using Lipar.Entities.Domain.Application;
 using Lipar.Entities.Domain.Application.Enums;
 using Lipar.Services.Application.Contracts;
+using Lipar.ViewModels.Application.Order;
 using Lipar.Web.Areas.Dashboard.Models.Application;
 using Lipar.Web.Framework.Models;
 using System;
@@ -15,11 +16,13 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Application
         #region Ctor
         public OrderModelFactory(IOrderService orderService
                                , IOrderPaymentStatusService orderPaymentStatusService
-                               , IWorkContext workContext)
+                               , IWorkContext workContext
+                               , IOrderTrackingFlowService orderTrackingFlowService)
         {
             _orderService = orderService;
             _orderPaymentStatusService = orderPaymentStatusService;
             _workContext = workContext;
+            _orderTrackingFlowService = orderTrackingFlowService;
         }
         #endregion
 
@@ -27,6 +30,7 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Application
         private readonly IOrderService _orderService;
         private readonly IOrderPaymentStatusService _orderPaymentStatusService;
         private readonly IWorkContext _workContext;
+        private readonly IOrderTrackingFlowService _orderTrackingFlowService;
         #endregion
 
         #region Methods
@@ -110,6 +114,24 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Application
             }).FirstOrDefault();
 
             return orderDetail;
+        }
+
+        public OrderDocStateViewModel GetOrderDocStates(Guid orderId)
+        {
+            var result = new OrderDocStateViewModel();
+
+            var orderTrackingFlows = _orderTrackingFlowService.GetOrderTrackingFlowForCustomers(orderId);
+            if (orderTrackingFlows != null && orderTrackingFlows.Any())
+            {
+                result.AvailableOrderTrackingFlows = orderTrackingFlows.ToList();
+            }
+
+            var getAllDocStates = _orderTrackingFlowService.GetOrderDocStates();
+            if (getAllDocStates != null && getAllDocStates.Any())
+            {
+                result.AvailableDocStates = getAllDocStates;
+            }
+            return result;
         }
 
         #endregion

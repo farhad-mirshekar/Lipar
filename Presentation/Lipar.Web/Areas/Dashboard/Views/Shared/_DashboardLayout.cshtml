@@ -26,8 +26,8 @@
 <body class="rtl">
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
-                <div id="sidebar-close">
+            <nav class="col-md-3 bg-light" id="sidebar">
+                <div id="sidebar-close" class="mt-1">
                     <i class="fa fa-remove" aria-hidden="true"></i>
                 </div>
                 <div id="sidebar-title">
@@ -39,25 +39,10 @@
                 @await Html.PartialAsync("Menu")
 
             </nav>
-            <div class="col-md-10" id="wrapper">
-                <div id="toolbar" class="row">
-                    <div class="col-md-3">
-                        <div class="d-inline-block">
-                            <div id="sidebar-switch">
-                                <i class="fa fa-align-justify"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="d-inline-block header-icon float-right mt-1">
-                            <div class="d-inline-flex mr-2">
-                                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-outline-warning">
-                                    <i class="fa fa-sign-out"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-9" id="wrapper">
+
+                @await Component.InvokeAsync("Toolbar-Dashboard")
+
                 @await Html.PartialAsync("Notifications")
 
                 <div id="content" dir="rtl">
@@ -71,6 +56,29 @@
     </div>
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
+        $(document).ready(function(){
+            $('#sidebar-switch').click(function(e){
+                e.preventDefault();
+                $('#sidebar').toggleClass('toggle-sidebar');
+
+                var $wrapper = $('#wrapper');
+                if($wrapper.hasClass('col-md-9')){
+                    $wrapper.removeClass('col-md-9');
+                    $wrapper.toggleClass('col-md-12');
+                }else{
+                    $wrapper.removeClass('col-md-12');
+                    $wrapper.toggleClass('col-md-9');
+                }
+            })
+
+            $('#sidebar-close').click(function(e){
+                e.preventDefault();
+                 $('#sidebar').toggleClass('toggle-sidebar');
+                 $('#wrapper').toggleClass('toggle-sidebar');
+            })
+        })
+
+
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust();

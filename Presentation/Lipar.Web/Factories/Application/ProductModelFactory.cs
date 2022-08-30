@@ -158,7 +158,6 @@ namespace Lipar.Web.Factories.Application
             model.Price = product.Price;
             model.Published = product.Published;
             model.ShortDescription = product.ShortDescription;
-            model.CreationDate = product.CreationDate;
             model.UpdatedDate = product.UpdatedDate;
             #endregion
 

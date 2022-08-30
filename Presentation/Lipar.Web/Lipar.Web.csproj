@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Lipar.Data\Lipar.Data.csproj" />
     <ProjectReference Include="..\..\Libraries\Lipar.Services\Lipar.Services.csproj" />
+    <ProjectReference Include="..\..\Libraries\Lipar.ViewModels\Lipar.ViewModels.csproj" />
     <ProjectReference Include="..\Lipar.Framework\Lipar.Web.Framework.csproj" />
   </ItemGroup>
 

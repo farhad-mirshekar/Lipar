@@ -74,13 +74,13 @@ namespace Lipar.Services.Organization.Implementations
 
         public Position GetActivePosition(Guid userId)
         {
-            if(userId == Guid.Empty)
+            if (userId == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(userId));
             }
 
             var position = _repository.TableNoTracking
-                                      .Include(p=>p.PositionRoles)
+                                      .Include(p => p.PositionRoles)
                                       .Where(p => p.UserId == userId &&
                                                 p.EnabledTypeId == (int)EnabledTypeEnum.Active &&
                                                 p.Default).FirstOrDefault();
@@ -92,11 +92,32 @@ namespace Lipar.Services.Organization.Implementations
         {
             var query = _repository.Table;
             query = query.Include(position => position.User)
-                         .Include(position=>position.PositionRoles);
+                         .Include(position => position.PositionRoles);
 
             var position = query.Where(p => p.Id.Equals(Id) &&
                                        p.RemoverId == null &&
                                        p.RemoveDate == null).FirstOrDefault();
+            return position;
+        }
+
+        public Position GetPosition(int positionTypeId, int? enableTypeId, int? departmentTypeId)
+        {
+            var positions = _repository.TableNoTracking;
+
+            positions = positions.Where(p => p.PositionTypeId == positionTypeId);
+            
+            if(enableTypeId.HasValue && enableTypeId.Value != 0)
+            {
+                positions = positions.Where(p => p.EnabledTypeId == enableTypeId);
+            }
+
+            if (departmentTypeId.HasValue && departmentTypeId.Value != 0)
+            {
+                positions = positions.Where(p => p.Department.DepartmentTypeId == departmentTypeId);
+            }
+
+            var position = positions.FirstOrDefault();
+
             return position;
         }
 

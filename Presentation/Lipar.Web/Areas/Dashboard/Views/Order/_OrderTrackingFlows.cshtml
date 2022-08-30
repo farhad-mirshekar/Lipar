@@ -1,0 +1,21 @@
+﻿@model OrderDocStateViewModel
+@{
+    var docStates = Model?.AvailableDocStates ?? new Dictionary<int, string>();
+    var orderDocStates = Model?.AvailableOrderTrackingFlows ?? new List<OrderTrackingFlowViewModel>();
+}
+@{
+    if (docStates != null && docStates.Any())
+    {
+    <div class="d-flex justify-content-center">
+                @foreach (var item in docStates)
+            {
+                var className = "text-danger";
+                if (orderDocStates.Any(o => o.ToDocStateId == item.Key))
+                {
+                    className = "text-success";
+                }
+                    <span class="@className order-doc-state">@item.Value</span>
+            }
+    </div>
+    }
+}

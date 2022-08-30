@@ -2,10 +2,19 @@
 @using Lipar.Core.Common
 @{
     ViewBag.PageTitle = "جزئیات سفارش";
+    var orderTrackingFlows = ViewBag.orderTrackingFlows != null
+                            ? ViewBag.orderTrackingFlows as OrderDocStateViewModel
+                            : new OrderDocStateViewModel();
 }
 @{
     if (Model != null)
     {
+        <section class="card">
+            <div class="card-body">
+                @await Html.PartialAsync("_OrderTrackingFlows" , orderTrackingFlows)
+            </div>
+        </section>
+
         <section class="card">
             <div class="card-body">
                 <div class="d-flex flex-column">

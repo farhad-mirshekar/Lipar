@@ -1,4 +1,7 @@
-﻿using Lipar.Web.Areas.Dashboard.Models.Application;
+﻿using Lipar.ViewModels.Application.Order;
+using Lipar.Web.Areas.Dashboard.Models.Application;
+using System;
+using System.Collections.Generic;
 
 namespace Lipar.Web.Areas.Dashboard.Factories.Application
 {
@@ -19,5 +22,7 @@ namespace Lipar.Web.Areas.Dashboard.Factories.Application
         /// <param name="searchModel"></param>
         /// <returns></returns>
         OrderModel PrepareInvoiceDetail(OrderSearchModel searchModel);
+
+        OrderDocStateViewModel GetOrderDocStates(Guid orderId);
     }
 }

@@ -21,5 +21,14 @@ namespace Lipar.Services.Organization.Contracts
         /// <param name="userId">userid</param>
         /// <returns>position</returns>
         Position GetActivePosition(Guid userId);
+
+
+        /// <summary>
+        /// get position by postion type
+        /// </summary>
+        /// <param name="positionTypeId"></param>
+        /// <param name="enableTypeId"></param>
+        /// <returns></returns>
+        Position GetPosition(int positionTypeId, int? enableTypeId , int? departmentTypeId);
     }
 }

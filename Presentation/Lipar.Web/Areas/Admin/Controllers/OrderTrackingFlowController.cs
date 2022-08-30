@@ -46,7 +46,7 @@ namespace Lipar.Web.Areas.Admin.Controllers
 
         public IActionResult Edit(Guid id)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 return RedirectToAction("List");
             }
@@ -55,6 +55,29 @@ namespace Lipar.Web.Areas.Admin.Controllers
             searchModel.OrderTrackingId = id;
 
             var model = _orderTrackingFlowModelFactory.PrepareOrderTrackingFlowModel(searchModel);
+
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(OrderTrackingFlowModel model)
+        {
+            if(model is null)
+            {
+                return RedirectToAction("List");
+            }
+
+            var confirmed = _orderTrackingFlowModelFactory.FinancialStep(model.Id, model.OrderTrackingId , model.Description);
+            if (confirmed)
+            {
+                return Redirect("List");
+            }
+
+            var searchModel = new OrderTrackingFlowSearchModel();
+            searchModel.OrderTrackingId = model.Id;
+
+             model = _orderTrackingFlowModelFactory.PrepareOrderTrackingFlowModel(searchModel);
 
             return View(model);
         }

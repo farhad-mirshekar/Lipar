@@ -7,8 +7,10 @@ using Lipar.Entities.Domain.Core.Enums;
 using Lipar.Entities.Domain.Organization;
 using Lipar.Entities.Domain.Organization.Enums;
 using Lipar.Services.Application.Contracts;
+using Lipar.ViewModels.Application.Order;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Lipar.Services.Application.Implementations
@@ -18,11 +20,13 @@ namespace Lipar.Services.Application.Implementations
         #region Ctor
         public OrderTrackingFlowService(IRepository<OrderTrackingFlow> repository
                                       , IRepository<OrderTracking> orderTrackingRepository
-                                      , IRepository<Position> positionRepository)
+                                      , IRepository<Position> positionRepository
+                                      , IRepository<OrderTrackingDocState> orderTrackingDocStateRepository)
         {
             _repository = repository;
             _orderTrackingRepository = orderTrackingRepository;
             _positionRepository = positionRepository;
+            _orderTrackingDocStateRepository = orderTrackingDocStateRepository;
         }
         #endregion
 
@@ -30,6 +34,7 @@ namespace Lipar.Services.Application.Implementations
         private readonly IRepository<OrderTrackingFlow> _repository;
         private readonly IRepository<OrderTracking> _orderTrackingRepository;
         private readonly IRepository<Position> _positionRepository;
+        private readonly IRepository<OrderTrackingDocState> _orderTrackingDocStateRepository;
         #endregion
 
         #region Methods
@@ -68,7 +73,7 @@ namespace Lipar.Services.Application.Implementations
         {
             var query = _repository.TableNoTracking;
 
-            if(listVM.OrderTrackingId.HasValue && listVM.OrderTrackingId.Value != Guid.Empty)
+            if (listVM.OrderTrackingId.HasValue && listVM.OrderTrackingId.Value != Guid.Empty)
             {
                 query = query.Where(o => o.OrderTrackingId == listVM.OrderTrackingId);
             }
@@ -138,6 +143,92 @@ namespace Lipar.Services.Application.Implementations
             return query;
         }
 
+        public void Add(OrderTrackingFlow flow)
+        {
+            if (flow is null)
+            {
+                throw new ArgumentNullException(nameof(flow));
+            }
+
+            flow.Id = Guid.NewGuid();
+            flow.CreationDate = CommonHelper.GetCurrentDateTime();
+            _repository.Insert(flow);
+        }
+
+        public void Edit(OrderTrackingFlow flow)
+        {
+            if (flow is null)
+            {
+                throw new ArgumentNullException(nameof(flow));
+            }
+
+            _repository.Update(flow);
+        }
+        public OrderTrackingFlow GetById(Guid id, Guid? toPositionId, bool noTracking = false)
+        {
+            var query = _repository.Table;
+            if (noTracking)
+            {
+                query = _repository.TableNoTracking;
+            }
+
+            query = query.Where(otf => !otf.ActionDate.HasValue);
+
+            query = query.Where(otf => otf.Id == id);
+
+            if (toPositionId.HasValue && toPositionId.Value != Guid.Empty)
+            {
+                query = query.Where(otf => otf.ToPositionId == toPositionId);
+            }
+
+            var model = query.FirstOrDefault();
+
+            return model;
+        }
+
+        public IList<OrderTrackingFlowViewModel> GetOrderTrackingFlowForCustomers(Guid orderId)
+        {
+            if (orderId == Guid.Empty)
+            {
+                throw new Exception("order id is invalid");
+            }
+
+            var query = _repository.TableNoTracking;
+            query = query.Where(otf => otf.OrderTracking.OrderId == orderId);
+
+            var result = query.Select(item => new OrderTrackingFlowViewModel
+            {
+                Id = item.Id,
+                OrderTrackingId = item.OrderTrackingId,
+                ActionDate = item.ActionDate,
+                FromDocStateId = item.FromDocStateId,
+                FromDocStateTitle = item.FromDocState.Title,
+                ToDocStateTitle = item.ToDocState.Title,
+                ToDocStateId = item.ToDocStateId
+            }).ToList();
+
+            return result;
+        }
+
+        public Dictionary<int, string> GetOrderDocStates()
+        {
+            var dic = new Dictionary<int, string>();
+            var query = _orderTrackingDocStateRepository.TableNoTracking;
+
+            var result = query.Select(item => new
+            {
+                item.Id,
+                item.Title
+            }).OrderBy(item => item.Id)
+            .ToList();
+
+            result.ForEach(item =>
+            {
+                dic.Add(item.Id, item.Title);
+            });
+
+            return dic;
+        }
         #endregion
 
         #region Utilities
