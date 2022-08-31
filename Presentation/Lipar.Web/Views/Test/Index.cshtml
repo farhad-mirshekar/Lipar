@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Index";
+
+    var column = new List<ColumnInfo>
+    {
+        new ColumnInfo { HeaderText = "" , Name = "Id" , IsKey = true , Visible = false },
+        new ColumnInfo { HeaderText = "LastName" , Name = "LastName" },
+        new ColumnInfo { HeaderText = "FirstName" , Name = "FirstName" },
+    };
+
+    var commands = new List<Command>
+    {
+        new Command
+        {
+            Name = "Edit",
+            Title = "ویرایش",
+            CommandType = CommandType.Edit
+        },
+        new Command
+        {
+            Name = "Delete",
+            Title = "حذف",
+            CommandType = CommandType.Delete
+        },
+    };
+}
+
+
+<lipar-grid asp-grid-id="test"
+            asp-grid-name="test"
+            asp-columns="column"
+            asp-grid-read-url="@Url.Action("GetList")"
+            asp-commands="commands">
+</lipar-grid>
+

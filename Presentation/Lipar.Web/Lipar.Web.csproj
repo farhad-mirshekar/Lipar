@@ -6,17 +6,22 @@
 
   <ItemGroup>
     <Compile Remove="app\**" />
+    <Compile Remove="App_Data\**" />
     <Compile Remove="wwwroot\assets\**" />
     <Content Remove="app\**" />
+    <Content Remove="App_Data\**" />
     <Content Remove="wwwroot\assets\**" />
     <EmbeddedResource Remove="app\**" />
+    <EmbeddedResource Remove="App_Data\**" />
     <EmbeddedResource Remove="wwwroot\assets\**" />
     <None Remove="app\**" />
+    <None Remove="App_Data\**" />
     <None Remove="wwwroot\assets\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="KendoUICore" Version="2022.2.802" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -43,7 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App_Data\Install\" />
     <Folder Include="Properties\" />
     <Folder Include="wwwroot\admin\lib\" />
     <Folder Include="wwwroot\themes\lib\" />

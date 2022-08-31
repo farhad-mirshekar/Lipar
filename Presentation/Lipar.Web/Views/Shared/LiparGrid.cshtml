@@ -1,0 +1,163 @@
+﻿@model Grid
+
+<table class="table" id="@Model.Id">
+    @if (Model.Columns != null && Model.Columns.Any())
+    {
+        <thead>
+            <tr>
+                @foreach (var column in Model.Columns)
+                {
+                    if (column.Visible && !column.IsKey)
+                    {
+                        <th id="@column.Name">@column.HeaderText</th>
+                    }
+                }
+                @if (Model.Commands != null && Model.Commands.Any(c => c.Visible))
+                {
+                    <td>عملیات</td>
+                }
+            </tr>
+        </thead>
+
+        <tbody id="@Model.Name-body">
+        </tbody>
+    }
+</table>
+
+
+
+
+<script type="text/javascript">
+    var readUrl = '@Model.ReadUrl';
+    var columns = new Array();
+    var commands = new Array();
+    var bodyTable = '@Model.Name-body';
+
+    @foreach (var columnInfo in Model?.Columns)
+    {
+        <text>
+            columns.push
+                (
+                    {
+                        Name: '@columnInfo.Name',
+                        IsKey: '@columnInfo.IsKey',
+                        Visible: '@columnInfo.Visible'
+                    }
+                );
+        </text>
+
+    }
+
+    @foreach (var command in Model?.Commands)
+    {
+        <text>
+            commands.push
+                (
+                    {
+                        Name: '@command.Name',
+                        Title: '@command.Title',
+                        CommandType: '@command.CommandType',
+                        Visible: '@command.Visible'
+                    }
+                );
+        </text>
+
+    }
+
+        $(document).ready(function() {
+            getItems();
+        });
+
+    function getItems() {
+        $.ajax({
+            method: 'post',
+            url: readUrl,
+            dataType: "json",
+            success: function(response) {
+                var data = response.data;
+                createElement(data, columns, commands);
+            }
+        })
+    }
+
+    function getValue(item, column) {
+        var value = item[column.Name];
+        return value;
+    }
+
+    function createElement(data, columns, commands) {
+        if (data != null && data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                var tr = document.createElement("tr");
+                for (var j = 0; j < columns.length; j++) {
+                    if (columns[j].Visible == 'True' && columns[j].IsKey != 'True') {
+                        var value = getValue(data[i], columns[j]);
+                        var td = document.createElement("td");
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    }
+                }
+
+                //check command for create command element
+                if (commands != null && commands.length > 0) {
+                    //create commands element
+                    var commandElement = createCommandElement(data, commands);
+
+                    //append commands element into tr
+                    tr.appendChild(commandElement);
+                }
+
+                //append tr element into body table
+                $(`#${bodyTable}`).append(tr);
+            }
+        }
+        else {
+            createEmptyElement('یافت نشد', columns.length, bodyTable);
+        }
+    }
+
+    function createEmptyElement(text, size, bodyTable) {
+        var tr = document.createElement("tr");
+        var td = document.createElement("td");
+        td.setAttribute('colspan', size);
+        td.textContent = text;
+        td.style.textAlign = 'center';
+        tr.appendChild(td);
+        $(`#${bodyTable}`).append(tr);
+    }
+
+    ///create command element function
+    ///data : current row
+    ///command : current command
+    ///bodyTable : body for table
+    function createCommandElement(data, commands) {
+        var td = document.createElement("td");
+
+        for (let c = 0; c < commands.length; c++) {
+
+            //create button command
+            var button = createButtonElement(commands[c]);
+
+            td.appendChild(button);
+        }
+
+        return td;
+    }
+
+    function createButtonElement(command) {
+        var button = document.createElement('button');
+        switch (command.CommandType) {
+            case 'Edit': // edit
+                button.textContent = 'edit';
+                button.classList.add('btn', 'btn-success', 'm-2');
+                break;
+
+            case 'Delete': // delete
+                button.textContent = 'delete';
+                button.classList.add('btn' ,'btn-danger' ,'m-2');
+                break;
+        }
+
+        return button;
+    }
+</script>
